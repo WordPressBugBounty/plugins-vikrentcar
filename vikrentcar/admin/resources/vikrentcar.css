@@ -2599,7 +2599,7 @@ label.vrc-timeline-label {
     margin: 0;
     padding: 0;
     background: var(--vrc-light-FFF);
-    border: 1px solid var(--vrc-light-200);;
+    border: 1px solid var(--vrc-light-200);
 }
 .vrc-translation-tab {
 	display: inline-block;
@@ -3345,7 +3345,7 @@ textarea.vradminnotestarea {
 	flex: 1;
 	background: var(--vrc-light-FFF);
 	border-radius: 8px;
-	margin: 18px 15px 20px;;
+	margin: 18px 15px 20px;
 	padding: 0;
 }
 .vrc-bookingdet-noteslogs-btns {
@@ -5886,7 +5886,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 .vrc-closed-date-entry {
     display: inline-block;
     background-color: var(--vrc-blue-200);
-    border: 1px solid var(--vrc-blue-200);;
+    border: 1px solid var(--vrc-blue-200);
     border-radius: 30px;
     margin: 5px 5px 0px 0;
     padding: 5px 10px;
@@ -6782,7 +6782,7 @@ td.vrc-cardaynote-full span.vrc-cardaynote-trigger, td.vrc-cardaynote-empty span
 	content: "";
 	width: 100%;
 	height: 3px;
-	background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);;
+	background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
 	position: absolute;
 	bottom: 0;
 	left: 0;

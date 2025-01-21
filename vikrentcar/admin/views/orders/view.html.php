@@ -133,8 +133,8 @@ class VikRentCarViewOrders extends JViewVikRentCar
 				// seek for various values
 				$q->andWhere([
 					$dbo->qn('o.id') . ' = ' . $dbo->q($pfiltnc),
-					$dbo->qn('o.sid') . ' = ' . $dbo->q(str_replace('_', '', trim($pfiltnc))),
-					'CONCAT_WS(\'_\', ' . $dbo->qn('o.sid') . ', ' . $dbo->qn('o.ts') . ') = ' . $dbo->q($pfiltnc),
+					$dbo->qn('o.sid') . ' = ' . $dbo->q(str_replace(['_', '-'], '', trim($pfiltnc))),
+					'CONCAT_WS(\'_\', ' . $dbo->qn('o.sid') . ', ' . $dbo->qn('o.ts') . ') = ' . $dbo->q(str_replace('-', '_', $pfiltnc)),
 					$dbo->qn('o.custdata') . ' LIKE ' . $dbo->q('%'.$pfiltnc.'%'),
 					$dbo->qn('o.nominative') . ' LIKE ' . $dbo->q('%'.$pfiltnc.'%'),
 				], $glue = 'OR');

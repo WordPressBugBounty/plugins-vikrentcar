@@ -1428,7 +1428,7 @@ h1.vikwp-download-error {
 	font-size: 19.5px;
 	line-height: 36px;
 	color: var(--vrc-dark-444);
-	border-bottom: 1px solid ar(--vrc-light-200);;
+	border-bottom: 1px solid ar(--vrc-light-200);
 	width: 100%;
 }
 .vrc-smstpl-toolbar {

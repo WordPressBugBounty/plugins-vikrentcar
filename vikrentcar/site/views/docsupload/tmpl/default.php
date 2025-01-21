@@ -157,6 +157,7 @@ $backto = JRoute::rewrite('index.php?option=com_vikrentcar&view=order&sid='.$thi
 			</div>
 		</div>
 
+		<?php echo JHtml::fetch('form.token'); ?>
 	</form>
 
 </div>

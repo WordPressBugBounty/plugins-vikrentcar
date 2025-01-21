@@ -1368,6 +1368,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function cars() {
+		if (!JFactory::getUser()->authorise('core.vrc.cars', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("7");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'cars'));
@@ -1380,6 +1384,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function newcar() {
+		if (!JFactory::getUser()->authorise('core.vrc.cars', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("7");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'managecar'));
@@ -1392,6 +1400,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function editcar() {
+		if (!JFactory::getUser()->authorise('core.vrc.cars', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("7");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'managecar'));
@@ -2152,6 +2164,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function tariffs() {
+		if (!JFactory::getUser()->authorise('core.vrc.prices', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("fares");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'tariffs'));
@@ -2187,6 +2203,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function tariffshours() {
+		if (!JFactory::getUser()->authorise('core.vrc.prices', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("fares");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'tariffshours'));
@@ -2222,6 +2242,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function hourscharges() {
+		if (!JFactory::getUser()->authorise('core.vrc.prices', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		VikRentCarHelper::printHeader("fares");
 
 		VikRequest::setVar('view', VikRequest::getCmd('view', 'hourscharges'));
@@ -3308,7 +3332,7 @@ class VikRentCarController extends JControllerVikRentCar
 							if ($basetwo['year'] % 4 == 0 && ($basetwo['year'] % 100 != 0 || $basetwo['year'] % 400 == 0)) {
 								$leapts = mktime(0, 0, 0, 2, 29, $basetwo['year']);
 								if ($basetwo[0] > $leapts) {
-									$sto -= 86400;
+									$sto -= date('d-m', $baseone[0]) != '31-12' && date('d-m', $basetwo[0]) == '31-12' ? 1 : 86400;
 								}
 							}
 						}
@@ -3504,7 +3528,7 @@ class VikRentCarController extends JControllerVikRentCar
 							if ($basetwo['year'] % 4 == 0 && ($basetwo['year'] % 100 != 0 || $basetwo['year'] % 400 == 0)) {
 								$leapts = mktime(0, 0, 0, 2, 29, $basetwo['year']);
 								if ($basetwo[0] > $leapts) {
-									$sto -= 86400;
+									$sto -= date('d-m', $baseone[0]) != '31-12' && date('d-m', $basetwo[0]) == '31-12' ? 1 : 86400;
 								}
 							}
 						}
@@ -8586,10 +8610,15 @@ class VikRentCarController extends JControllerVikRentCar
 	 * 
 	 * @return 	void
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function add_cardaynote()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$dt 	 = VikRequest::getString('dt', '', 'request');
 		$idcar   = VikRequest::getInt('idcar', 0, 'request');
 		$subunit = VikRequest::getInt('subunit', 0, 'request');
@@ -8636,14 +8665,14 @@ class VikRentCarController extends JControllerVikRentCar
 		// reload all car day notes for this day for the AJAX response
 		$all_notes = $notes->loadCarDayNotes($dt, $end_date, $idcar, $subunit);
 
-		if (!$all_notes || !count($all_notes)) {
+		if (!$all_notes) {
 			// no notes found even after storing it
 			echo 'e4j.error.3';
 			exit;
 		}
 
-		echo json_encode($all_notes);
-		exit;
+		// output the JSON encoded response and exit
+		VRCHttpDocument::getInstance()->json($all_notes);
 	}
 
 	/**
@@ -8651,10 +8680,15 @@ class VikRentCarController extends JControllerVikRentCar
 	 * 
 	 * @return 	void
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function remove_cardaynote()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$dt 	 = VikRequest::getString('dt', '', 'request');
 		$idcar   = VikRequest::getInt('idcar', 0, 'request');
 		$subunit = VikRequest::getInt('subunit', 0, 'request');
@@ -8707,21 +8741,26 @@ class VikRentCarController extends JControllerVikRentCar
 	 * Loads a specific admin widget ID and executes the requested method.
 	 * Useful for loading a newly added widget, or to execute custom functions.
 	 * 
-	 * @throws 	Exception 	this is an AJAX endpoint.
+	 * @see 	this is an AJAX endpoint.
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function exec_admin_widget()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$widget_id  = VikRequest::getString('widget_id', '', 'request');
 		$call 		= VikRequest::getString('call', '', 'request');
-		
+
 		if (empty($widget_id)) {
-			throw new Exception("Empty Admin Widget ID", 500);
+			VRCHttpDocument::getInstance()->close(500, 'Empty Admin Widget ID');
 		}
 
 		if (empty($call)) {
-			throw new Exception("Empty Admin Widget Callback", 500);
+			VRCHttpDocument::getInstance()->close(500, 'Empty Admin Widget Callback');
 		}
 
 		// invoke admin widgets helper
@@ -8729,45 +8768,55 @@ class VikRentCarController extends JControllerVikRentCar
 		$widget = $widgets_helper->getWidget($widget_id);
 		
 		if ($widget === false) {
-			throw new Exception("Requested Admin Widget not found", 404);
+			VRCHttpDocument::getInstance()->close(404, 'Requested Admin Widget not found');
 		}
 
 		if (!method_exists($widget, $call) || !is_callable(array($widget, $call))) {
-			throw new Exception("Admin Widget Callback not found or forbidden", 403);
+			VRCHttpDocument::getInstance()->close(403, 'Admin Widget Callback not found or forbidden');
 		}
 
-		// invoke the widget's method within a buffer
-		ob_start();
-		$widget->{$call}();
-		$widget_response = ob_get_contents();
-		ob_end_clean();
+		try {
+			// invoke the widget's method within a buffer
+			ob_start();
+			$widget->{$call}();
+			$widget_response = ob_get_contents();
+			ob_end_clean();
+		} catch (Throwable $e) {
+			VRCHttpDocument::getInstance()->close($e->getCode() ?: 500, $e->getMessage());
+		} catch (Exception $e) {
+			VRCHttpDocument::getInstance()->close($e->getCode(), $e->getMessage());
+		}
 
 		// prepare response object with a property equal to the called method
 		$response = new stdClass;
 		$response->{$call} = $widget_response;
 
-		// echo the response and exit
-		echo json_encode($response);
-		exit;
+		// output the JSON encoded response and exit
+		VRCHttpDocument::getInstance()->json($response);
 	}
 
 	/**
 	 * Updates the map of admin widgets.
 	 * 
-	 * @throws 	Exception 	this is an AJAX endpoint.
+	 * @see 	this is an AJAX endpoint.
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function save_admin_widgets()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		// make sure permissions are sufficient
 		if (!JFactory::getUser()->authorise('core.vrc.gsettings', 'com_vikrentcar')) {
-			throw new Exception("You are not authorized to modify the widgets.", 403);
+			VRCHttpDocument::getInstance()->close(403, 'You are not authorized to modify the widgets.');
 		}
 
 		$psections = VikRequest::getVar('sections', array(), 'request', 'array');
 		if (!is_array($psections) || !count($psections)) {
-			throw new Exception("No sections found in map", 500);
+			VRCHttpDocument::getInstance()->close(500, 'No sections found in map');
 		}
 
 		// request values are all converted to arrays, so restore the object styling
@@ -8779,15 +8828,14 @@ class VikRentCarController extends JControllerVikRentCar
 		$response = new stdClass;
 		$response->status = (int)$result;
 
-		// echo the response and exit
-		echo json_encode($response);
-		exit;
+		// output the JSON encoded response and exit
+		VRCHttpDocument::getInstance()->json($response);
 	}
 
 	/**
 	 * Restores the default admin widgets map.
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function reset_admin_widgets()
 	{
@@ -8801,10 +8849,15 @@ class VikRentCarController extends JControllerVikRentCar
 	/**
 	 * Updates the welcome message status for the widget's customizer via AJAX.
 	 * 
-	 * @since 	1.2.0
+	 * @since 	1.14.5 (J) - 1.2.0 (WP)
 	 */
 	public function admin_widgets_welcome()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$hide_welcome = VikRequest::getInt('hide_welcome', 0, 'request');
 		// update configuration value
 		VikRentCar::getAdminWidgetsInstance()->updateWelcome($hide_welcome);
@@ -8812,9 +8865,8 @@ class VikRentCarController extends JControllerVikRentCar
 		$response = new stdClass;
 		$response->status = $hide_welcome;
 
-		// echo the response and exit
-		echo json_encode($response);
-		exit;
+		// output the JSON encoded response and exit
+		VRCHttpDocument::getInstance()->json($response);
 	}
 
 	/**
@@ -9013,7 +9065,7 @@ class VikRentCarController extends JControllerVikRentCar
 			$file = $input->files->get('file', array(), 'array');
 
 			// try to upload the file
-			$result = VikRentCar::uploadFileFromRequest($file, $dirpath . $customer->docsfolder, "/(image\/.+)|(application\/(zip|rar|pdf|msword|vnd.*?))|(text\/(plain|markdown|csv))$/i");
+			$result = VikRentCar::uploadFileFromRequest($file, $dirpath . $customer->docsfolder, 'png,jpg,jpeg,bmp,heic,zip,rar,pdf,doc,docx,rtf,odt,pages,xls,xlsx,csv,ods,numbers,txt,md');
 			$result->status = 1;
 
 			$result->size = JHtml::fetch('number.bytes', filesize($result->path), 'auto', 0);

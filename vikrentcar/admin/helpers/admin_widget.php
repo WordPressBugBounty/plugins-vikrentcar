@@ -331,4 +331,22 @@ abstract class VikRentCarAdminWidget
 
 		return $name;
 	}
+
+	/**
+	 * Rewrites a given URI to perform an AJAX request.
+	 * 
+	 * @param 	string 	$uri 	the optional URI plus query to force.
+	 * 
+	 * @return 	string 	the proper AJAX uri for the current platform.
+	 * 
+	 * @since 	1.15.6 (J) - 1.4.3 (WP)
+	 */
+	protected function getExecWidgetAjaxUri($uri = '')
+	{
+		if (empty($uri)) {
+			$uri = 'index.php?option=com_vikrentcar&task=exec_admin_widget';
+		}
+
+		return VikRentCar::ajaxUrl($uri);
+	}
 }

@@ -21,13 +21,13 @@ $vrc_tn = $this->vrc_tn;
 
 // in case of extra hours charges, we take the days from the tariffs rather than from $days, which may need to be greater
 $use_days = $days;
+$all_durations = [];
 foreach ($res as $r) {
 	foreach ($r as $t) {
-		$use_days = (int)$t['days'];
-		break 2;
+		$all_durations[] = (int) $t['days'];
 	}
 }
-//
+$use_days = min($all_durations) ?: $days;
 
 $vrcdateformat = VikRentCar::getDateFormat();
 $nowtf = VikRentCar::getTimeFormat();

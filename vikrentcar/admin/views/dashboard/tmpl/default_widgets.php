@@ -416,7 +416,7 @@ if ($vrc_auth_global) {
 			},
 			function(response) {
 				try {
-					var obj_res = JSON.parse(response);
+					var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 					if (!obj_res.hasOwnProperty('status')) {
 						// request failed
 						console.error('Could not update welcome status', obj_res);
@@ -491,7 +491,7 @@ if ($vrc_auth_global) {
 			saving_request,
 			function(response) {
 				try {
-					var obj_res = JSON.parse(response);
+					var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 					if (!obj_res.status) {
 						// request failed
 						console.error('Could not update the map', obj_res);
@@ -644,7 +644,7 @@ if ($vrc_auth_global) {
 						},
 						function(response) {
 							try {
-								var obj_res = JSON.parse(response);
+								var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 								if (!obj_res.hasOwnProperty(call_method)) {
 									console.error('Unexpected JSON response', obj_res);
 								}
@@ -1071,7 +1071,7 @@ if ($vrc_auth_global) {
 				},
 				function(response) {
 					try {
-						var obj_res = JSON.parse(response);
+						var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 						if (!obj_res.hasOwnProperty(call_method)) {
 							console.error('Unexpected JSON response', obj_res);
 						}
@@ -1116,7 +1116,7 @@ if ($vrc_auth_global) {
 			},
 			function(response) {
 				try {
-					var obj_res = JSON.parse(response);
+					var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 					if (obj_res.hasOwnProperty(call_method)) {
 						// populate new widget content
 						container.find('.vrc-admin-widgets-widget-output').html(obj_res[call_method]);

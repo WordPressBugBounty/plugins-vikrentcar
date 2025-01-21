@@ -22,15 +22,14 @@ class VikrentcarViewUserorders extends JViewVikRentCar {
 		$pconfirmnum = VikRequest::getString('confirmnum', '', 'request');
 		$pitemid = VikRequest::getString('Itemid', '', 'request');
 		if (!empty($pconfirmnum)) {
-			$parts = explode('_', $pconfirmnum);
+			$parts = explode('_', preg_replace('/^([0-9]+)\-([0-9]+)$/', '$1_$2', $pconfirmnum));
 			$sid = $parts[0];
 			$ts = count($parts) > 1 ? $parts[1] : '';
 			if (!empty($sid) && !empty($ts)) {
 				$q = "SELECT `id`,`ts`,`sid` FROM `#__vikrentcar_orders` WHERE `sid`=" . $dbo->quote($sid) . " AND `ts`=" . $dbo->quote($ts) . ";";
 				$dbo->setQuery($q);
-				$dbo->execute();
-				if ($dbo->getNumRows() > 0) {
-					$order = $dbo->loadAssocList();
+				$order = $dbo->loadAssocList();
+				if ($order) {
 					$mainframe->redirect(JRoute::rewrite('index.php?option=com_vikrentcar&view=order&sid='.$order[0]['sid'].'&ts='.$order[0]['ts'].(!empty($pitemid) ? '&Itemid='.$pitemid : ''), false));
 					exit;
 				} else {

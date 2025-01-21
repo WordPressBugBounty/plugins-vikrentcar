@@ -163,17 +163,15 @@ class VikRentCarAdminWidgetVisitorsCounter extends VikRentCarAdminWidget
 
 				// make a silent request to count the visitors
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "exec_admin_widget",
 						widget_id: "<?php echo $this->getIdentifier(); ?>",
 						call: call_method,
 						tmpl: "component"
 					},
 					function(response) {
 						try {
-							var obj_res = JSON.parse(response);
+							var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 							if (!obj_res.hasOwnProperty(call_method)) {
 								console.error('Unexpected JSON response', obj_res);
 								return;

@@ -30,18 +30,27 @@ JText::script('VRC_CSS_EDITING_HELP');
 JText::script('VRC_INSPECTOR_START');
 JText::script('VRC_EDITTPL_FATALERROR');
 
-$rows = array();
 $navbut = "";
 
-$q = "SELECT SQL_CALC_FOUND_ROWS * FROM `#__vikrentcar_condtexts` ORDER BY `#__vikrentcar_condtexts`.`lastupd` DESC";
-$dbo->setQuery($q, $lim0, $lim);
-$dbo->execute();
-if ($dbo->getNumRows() > 0) {
+if (VRCPlatformDetection::isJoomla()) {
+	/**
+	 * @joomlaonly  do not use pagination because ->getPagesLinks()
+	 * 				will still attempt to submit the form via JS.
+	 */
+	$q = "SELECT * FROM `#__vikrentcar_condtexts` ORDER BY `#__vikrentcar_condtexts`.`lastupd` DESC";
+	$dbo->setQuery($q);
 	$rows = $dbo->loadAssocList();
-	$dbo->setQuery('SELECT FOUND_ROWS();');
-	jimport('joomla.html.pagination');
-	$pageNav = new JPagination($dbo->loadResult(), $lim0, $lim);
-	$navbut = "<table align=\"center\"><tr><td>".$pageNav->getPagesLinks()."</td></tr></table>";
+} else {
+	// regular query with pagination through page links
+	$q = "SELECT SQL_CALC_FOUND_ROWS * FROM `#__vikrentcar_condtexts` ORDER BY `#__vikrentcar_condtexts`.`lastupd` DESC";
+	$dbo->setQuery($q, $lim0, $lim);
+	$rows = $dbo->loadAssocList();
+	if ($rows) {
+		$dbo->setQuery('SELECT FOUND_ROWS();');
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination($dbo->loadResult(), $lim0, $lim);
+		$navbut = "<table align=\"center\"><tr><td>".$pageNav->getPagesLinks()."</td></tr></table>";
+	}
 }
 
 ?>

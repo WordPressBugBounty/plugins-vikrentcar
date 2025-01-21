@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.3
+
+*Release date - 21 January 2025*
+
+- Various framework fixes.
+- Multiple security improvements.
+
 ## 1.4.2
 
 *Release date - 27 June 2024*

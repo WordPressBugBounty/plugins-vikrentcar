@@ -186,7 +186,7 @@ class VRCModelBackup extends JObject
 			try
 			{
 				// upload archive
-				$resp = VikRentCar::uploadFileFromRequest((array)$file, $dest, "/application\/[a-zA-Z0-9\-_.]*\bzip\b/");
+				$resp = VikRentCar::uploadFileFromRequest((array)$file, $dest, 'zip');
 			}
 			catch (Exception $e)
 			{

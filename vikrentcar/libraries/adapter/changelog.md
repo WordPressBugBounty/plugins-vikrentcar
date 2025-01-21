@@ -1,5 +1,37 @@
 # Framework Changelog
 
+### 10.1.59
+
+*Release date - 4 December 2024*
+
+##### BUG FIXES
+
+* The site widgets now always use an incremental identifier, since WordPress is no longer able to provide a unique number when publishing them as Gutenberg blocks.
+
+---
+
+### 10.1.58
+
+*Release date - 25 July 2024*
+
+##### ADD
+
+* Implemented the `JDatabaseDriver::getLastError()` method to fetch the last error caught.
+* The `JTable` instance is now able to propagate the error message faced during the database insert/update execution.
+
+---
+
+### 10.1.57
+
+*Release date - 12 July 2024*
+
+##### ADD
+
+* Implemented framework to support remote plugins installation.
+* Implemented Sodium cipher adapter.
+
+---
+
 ### 10.1.56
 
 *Release date - 4 June 2024*

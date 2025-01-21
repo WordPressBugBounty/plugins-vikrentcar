@@ -351,10 +351,8 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 
 						// make a silent request to remove the sticky note
 						vrcDoAjax(
-							'index.php',
+							"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 							{
-								option: "com_vikrentcar",
-								task: "exec_admin_widget",
 								widget_id: "<?php echo $this->getIdentifier(); ?>",
 								call: call_method,
 								note_index_old: vrc_stickynote_initial_pos,
@@ -366,7 +364,7 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 								// unset global note position var
 								vrc_stickynote_initial_pos = null;
 								try {
-									var obj_res = JSON.parse(response);
+									var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 									if (!obj_res.hasOwnProperty(call_method)) {
 										console.error('Unexpected JSON response', obj_res);
 									}
@@ -546,10 +544,8 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 
 					// make a silent request to remove the sticky note
 					vrcDoAjax(
-						'index.php',
+						"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 						{
-							option: "com_vikrentcar",
-							task: "exec_admin_widget",
 							widget_id: "<?php echo $this->getIdentifier(); ?>",
 							call: call_method,
 							note_index: note_index,
@@ -558,7 +554,7 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 						},
 						function(response) {
 							try {
-								var obj_res = JSON.parse(response);
+								var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 								if (!obj_res.hasOwnProperty(call_method)) {
 									console.error('Unexpected JSON response', obj_res);
 								}
@@ -594,10 +590,8 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 
 				// make a silent request to update the sticky note details
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "exec_admin_widget",
 						widget_id: "<?php echo $this->getIdentifier(); ?>",
 						call: call_method,
 						note_txt: note_txt,
@@ -607,7 +601,7 @@ class VikRentCarAdminWidgetStickyNotes extends VikRentCarAdminWidget
 					},
 					function(response) {
 						try {
-							var obj_res = JSON.parse(response);
+							var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 							if (!obj_res.hasOwnProperty(call_method)) {
 								console.error('Unexpected JSON response', obj_res);
 							} else {

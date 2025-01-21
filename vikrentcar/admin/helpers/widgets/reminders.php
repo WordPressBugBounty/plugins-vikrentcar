@@ -593,10 +593,8 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 
 				// make a request to load the reminders
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "exec_admin_widget",
 						widget_id: "<?php echo $this->getIdentifier(); ?>",
 						call: call_method,
 						offset: current_offset,
@@ -607,7 +605,7 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 					},
 					function(response) {
 						try {
-							var obj_res = JSON.parse(response);
+							var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 							if (!obj_res.hasOwnProperty(call_method)) {
 								console.error('Unexpected JSON response', obj_res);
 								return false;
@@ -699,10 +697,8 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 
 				// make a request to watch the reminders
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri(); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "exec_admin_widget",
 						widget_id: "<?php echo $this->getIdentifier(); ?>",
 						call: call_method,
 						latest_id: latest_id,
@@ -710,7 +706,7 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 					},
 					function(response) {
 						try {
-							var obj_res = JSON.parse(response);
+							var obj_res = typeof response === 'string' ? JSON.parse(response) : response;
 							if (!obj_res.hasOwnProperty(call_method)) {
 								console.error('Unexpected JSON response', obj_res);
 								return false;
@@ -782,10 +778,8 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 
 				// make the AJAX request to the controller to add this note to the DB
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri('index.php?option=com_vikrentcar&task=add_cardaynote'); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "add_cardaynote",
 						tmpl: "component",
 						dt: ymd,
 						idcar: carid,
@@ -797,7 +791,7 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 					},
 					function(response) {
 						try {
-							var stored_notes = JSON.parse(response);
+							var stored_notes = typeof response === 'string' ? JSON.parse(response) : response;
 							for (var keyid in stored_notes) {
 								if (!stored_notes.hasOwnProperty(keyid)) {
 									continue;
@@ -844,10 +838,8 @@ class VikRentCarAdminWidgetReminders extends VikRentCarAdminWidget
 				
 				// make the AJAX request to the controller to remove this note from the DB
 				vrcDoAjax(
-					'index.php',
+					"<?php echo $this->getExecWidgetAjaxUri('index.php?option=com_vikrentcar&task=remove_cardaynote'); ?>",
 					{
-						option: "com_vikrentcar",
-						task: "remove_cardaynote",
 						tmpl: "component",
 						dt: day,
 						idcar: idcar,

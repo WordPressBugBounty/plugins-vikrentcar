@@ -37,10 +37,27 @@ class VikRentCarControllerAcl extends JControllerAdmin
 			$return = '';
 		}
 
+		/**
+		 * Added token validation.
+		 *
+		 * @since 1.4.3
+		 */
+		if (!JSession::checkToken())
+		{
+			// back to main list, missing CSRF-proof token
+			$app->enqueueMessage(JText::translate('JINVALID_TOKEN'), 'error');
+			$this->cancel();
+
+			return false;
+		}
+
 		// make sure the user is authorised to change ACL
 		if (!JFactory::getUser()->authorise('core.admin', 'com_vikrentcar'))
 		{
-			$app->redirect($return);
+			$app->enqueueMessage(JText::translate('JERROR_ALERTNOAUTHOR'), 'error');
+			$this->cancel();
+
+			return false;
 		}
 
 		$data = $input->get('acl', array(), 'array');
@@ -59,7 +76,7 @@ class VikRentCarControllerAcl extends JControllerAdmin
 			$return = 'admin.php?option=com_vikrentcar&view=acl&activerole=' . $active . '&return=' . $encoded;
 		}
 
-		$app->redirect($return);
+		$this->setRedirect($return);
 	}
 
 	public function cancel()
@@ -73,6 +90,6 @@ class VikRentCarControllerAcl extends JControllerAdmin
 			$return = base64_decode($return);
 		}
 
-		$app->redirect($return);
+		$this->setRedirect($return);
 	}
 }

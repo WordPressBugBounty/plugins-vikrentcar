@@ -3861,7 +3861,8 @@ a.vrcdialog-overlay-close {
  	}
 	 .vrc-searchf-section-locations .vrcsfentrycont:first-child, .vrc-searchf-section-datetimes .vrcsfentrycont:first-child {
 		margin-right: 0;
-	 }
+		flex-basis: 100%;
+	}
  	.vrc-searchf-section-locations .vrcsfentrycont select {
  		width: 100%;
  	}
@@ -4123,6 +4124,11 @@ a.vrcdialog-overlay-close {
 	}
 	.car_buttons_box .booknow, .car_buttons_box .vrc-goback-block {
 		float: none;
+		width: 100%;
+	}
+	.vrc-search-results-block.vrc-search-results-block-grid {
+		display: flex;
+		flex-wrap: wrap;
 	}
 }
 @media only screen and (max-width : 550px) {
@@ -4168,6 +4174,9 @@ a.vrcdialog-overlay-close {
 	}	
 	.vrc-order-details-car-photo img {
 		max-width: 100%;
+	}
+	.ui-datepicker.ui-widget-content {
+		max-width: 250px;
 	}
 }
 @media screen and (max-width : 505px) {

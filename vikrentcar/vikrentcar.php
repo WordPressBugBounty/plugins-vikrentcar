@@ -3,7 +3,7 @@
 Plugin Name:  VikRentCar
 Plugin URI:   https://vikwp.com/plugin/vikrentcar
 Description:  Robust Car Rental Management Software.
-Version:      1.4.2
+Version:      1.4.3
 Author:       E4J s.r.l.
 Author URI:   https://vikwp.com
 License:      GPL2
@@ -605,32 +605,13 @@ add_filter('vik_plugin_load_language', function($loaded, $domain)
 }, 10, 2);
 
 /**
- * Fixed issue with wptexturize() function, which might convert special characters contained
- * within <script> tags into their corresponding HTML entities (e.g. "&" became "&#038;").
+ * Prevent WordPress Themes from running wptexturize() that may erroneously
+ * detect HTML tags among raw JavaScript code, by encoding ampersand symbols.
  * 
- * @since 	1.3.2
+ * @since 	1.6.9
  */
-add_filter('the_content', function($content)
+add_filter('run_wptexturize', function($run_texturize)
 {
-	// look for any script tags
-	if (preg_match_all("/<script(?:.*?)>(?:.*?)<\/script>/s", $content, $matches))
-	{
-		// scan all the scripts
-		foreach ($matches[0] as $script)
-		{
-			// make sure the script contains "&#038;"
-			if (strpos($script, '&#038;') === false)
-			{
-				continue;
-			}
-
-			// fix the script by reverting the plain "&"
-			$fixedScript = str_replace('&#038;', '&', $script);
-
-			// replace the bugged script from the content with the fixed one
-			$content = str_replace($script, $fixedScript, $content);
-		}
-	}
-
-	return $content;
+	return is_admin() ? $run_texturize : false;
 }, PHP_INT_MAX);
+

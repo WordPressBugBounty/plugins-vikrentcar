@@ -125,6 +125,7 @@ $document->addStyleSheet($baseurl.'modules/mod_vikrentcar_cars/mod_vikrentcar_ca
 			nav : <?php echo $navigation_status; ?>,
 			dots : <?php echo $pagination_status; ?>,
 			lazyLoad : true,
+			loop : true,
 			responsiveClass: true,
 			responsive: {
 			0: {

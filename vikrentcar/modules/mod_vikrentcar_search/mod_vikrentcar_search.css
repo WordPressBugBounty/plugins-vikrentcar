@@ -454,7 +454,7 @@
 	.vrc-searchmod-wrap-horizontal .vrcsfentrycont .vrcsfentrylabsel {
 		flex: 1;
 	}
-	.vrc-searchmod-wrap-horizontal .vrc-searchmod-section-categories {
+	.vrc-searchmod-wrap-horizontal form > .vrc-searchmod-section-categories {
 		flex-basis: 100%;
 		margin-right: 0;
 	}

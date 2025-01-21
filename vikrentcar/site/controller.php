@@ -1585,7 +1585,7 @@ class VikRentCarController extends JControllerVikRentCar
 					}
 					$subject = JText::sprintf('VRCCARREQINFOSUBJ', $car[0]['name']);
 					$msg = JText::translate('VRCCARREQINFONAME').": ".$preqname."\n\n".JText::translate('VRCCARREQINFOEMAIL').": ".$preqemail."\n\n".JText::translate('VRCCARREQINFOMESS').":\n\n".$preqmess;
-					$vrc_app->sendMail($adsendermail, $adsendermail, $to, $preqemail, $subject, $msg, false);
+					$vrc_app->sendMail($adsendermail, (VikRentCar::getFrontTitle() ?: $adsendermail), $to, $preqemail, $subject, $msg, false);
 					$mainframe->enqueueMessage(JText::translate('VRCCARREQINFOSENTOK'));
 					$mainframe->redirect($goto);
 				} else {
@@ -1609,9 +1609,14 @@ class VikRentCarController extends JControllerVikRentCar
 	 */
 	public function order_upload_docs()
 	{
-		$dbo 	= JFactory::getDbo();
-		$app 	= JFactory::getApplication();
-		$input  = $app->input;
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
+		$dbo   = JFactory::getDbo();
+		$app   = JFactory::getApplication();
+		$input = $app->input;
 
 		// get request values
 		$order_sid 	 = $input->getString('sid', '');
@@ -1623,11 +1628,10 @@ class VikRentCarController extends JControllerVikRentCar
 
 		$q = "SELECT * FROM `#__vikrentcar_orders` WHERE `sid`=" . $dbo->quote($order_sid) . " AND `ts`=" . $dbo->quote($order_ts) . " AND `status`='confirmed';";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		if (!$dbo->getNumRows()) {
+		$order = $dbo->loadAssoc();
+		if (!$order) {
 			throw new Exception('Order not found', 404);
 		}
-		$order = $dbo->loadAssoc();
 
 		$cpin = VikRentCar::getCPinIstance();
 		$customer = $cpin->getCustomerFromBooking($order['id']);
@@ -1715,7 +1719,7 @@ class VikRentCarController extends JControllerVikRentCar
 				// always prepend "pre check-in" to the original file name
 				$file['name'] = strtolower($file_prefix . $file['name']);
 				// try to upload the file
-				$result = VikRentCar::uploadFileFromRequest($file, $dirpath . $customer->docsfolder, "/(image\/.+)|(application\/(zip|pdf|msword|vnd.*?))|(text\/(plain|markdown|csv))$/i");
+				$result = VikRentCar::uploadFileFromRequest($file, $dirpath . $customer->docsfolder, 'png,jpg,jpeg,bmp,heic,zip,rar,pdf,doc,docx,rtf,odt,pages,xls,xlsx,csv,ods,numbers,txt,md');
 				// set a valid URL for the uploaded file
 				$result->url = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(VRC_CUSTOMERS_PATH . DIRECTORY_SEPARATOR, VRC_CUSTOMERS_URI, $result->path));
 				// push uploaded file
@@ -1743,6 +1747,11 @@ class VikRentCarController extends JControllerVikRentCar
 	 */
 	public function storedocsupload()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$dbo 	 	 = JFactory::getDbo();
 		$app 	 	 = JFactory::getApplication();
 		$sid 	 	 = VikRequest::getString('sid', '', 'request');
@@ -1752,19 +1761,17 @@ class VikRentCarController extends JControllerVikRentCar
 
 		$q = "SELECT `o`.* FROM `#__vikrentcar_orders` AS `o` WHERE `o`.`sid`=" . $dbo->quote($sid) . " AND `o`.`ts`=" . $dbo->quote($ts) . " AND `o`.`status`='confirmed';";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		if (!$dbo->getNumRows()) {
+		$order = $dbo->loadAssoc();
+		if (!$order) {
 			throw new Exception('Order not found', 404);
 		}
-		$order = $dbo->loadAssoc();
 
 		$q = "SELECT * FROM `#__vikrentcar_customers_orders` WHERE `idorder`=".(int)$order['id'].";";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		if (!$dbo->getNumRows()) {
+		$custorder = $dbo->loadAssoc();
+		if (!$custorder) {
 			throw new Exception('No customer found', 404);
 		}
-		$custorder = $dbo->loadAssoc();
 
 		// booking details page
 		$goto = JRoute::rewrite('index.php?option=com_vikrentcar&view=order&sid=' . $order['sid'] . '&ts=' . $order['ts'] . (!empty($pitemid) ? '&Itemid=' . $pitemid : ''), false);

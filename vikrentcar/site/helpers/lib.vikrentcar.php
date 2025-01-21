@@ -578,9 +578,8 @@ class VikRentCar
 		$dbo = JFactory::getDbo();
 		$q = "SELECT `id`,`attr` FROM `#__vikrentcar_prices` WHERE `id`='" . $idp . "';";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		if ($dbo->getNumRows() == 1) {
-			$n = $dbo->loadAssocList();
+		$n = $dbo->loadAssocList(); 
+		if ($n) { 
 			if (is_object($vrc_tn)) {
 				$vrc_tn->translateContents($n, '#__vikrentcar_prices');
 			}
@@ -1807,6 +1806,44 @@ class VikRentCar
 			}
 
 			// check if the car is fully booked
+			if ($bfound >= $units) {
+				return false;
+			}
+		}
+
+		/**
+		 * Additional availability check by hourly slots.
+		 * 
+		 * @since 	1.15.6 (J) - 1.4.3 (WP)
+		 */
+		foreach (self::getGroupHours($first, $second) as $checkhourts) {
+			$info_hour = getdate($checkhourts);
+			$day_midnight = mktime(0, 0, 0, $info_hour['mon'], $info_hour['mday'], $info_hour['year']);
+			$bfound = 0;
+			foreach ($busy as $bu) {
+				$tmpone = getdate($bu['ritiro']);
+				$ritts = mktime(0, 0, 0, $tmpone['mon'], $tmpone['mday'], $tmpone['year']);
+				$tmptwo = getdate($bu['realback']);
+				$conts = mktime(0, 0, 0, $tmptwo['mon'], $tmptwo['mday'], $tmptwo['year']);
+
+				if ($day_midnight >= $ritts && $day_midnight <= $conts) {
+					if ($bu['stop_sales'] == 1) {
+						$bfound = $units;
+						break;
+					}
+
+					if ($checkhourts >= $bu['ritiro'] && $checkhourts <= $bu['realback']) {
+						if ($picksondrops && !($checkhourts > $bu['ritiro'] && $checkhourts < $bu['realback']) && $checkhourts == $bu['realback']) {
+							// pick ups on drop offs allowed
+							continue;
+						}
+						// unit occupied found
+						$bfound++;
+					}
+				}
+			}
+			
+			// check if the car is fully booked at this hourly slot
 			if ($bfound >= $units) {
 				return false;
 			}
@@ -3262,7 +3299,7 @@ class VikRentCar
 	public static function parsePdfTemplate($tmpl, $bid, $car, $rates, $options, $arrayinfopdf = array(), $total = 0, $link = null)
 	{
 		$dbo = JFactory::getDbo();
-		$vrc_tn = self::getTranslator();
+
 		// get necessary values
 		if (is_array($bid)) {
 			// we got the full order record
@@ -3277,6 +3314,26 @@ class VikRentCar
 				throw new Exception('Order not found', 404);
 			}
 			$order_info = $dbo->loadAssoc();
+		}
+
+		// prepare the translator object
+		$vrc_tn = self::getTranslator();
+		$lang = JFactory::getLanguage();
+		if (!empty($order_info['lang'])) {
+			if ($lang->getTag() != $order_info['lang']) {
+				if (VRCPlatformDetection::isWordPress()) {
+					// wp
+					$lang->load('com_vikrentcar', VIKRENTCAR_LANG, $order_info['lang'], true);
+				} else {
+					// j
+					$lang->load('com_vikrentcar', JPATH_SITE, $order_info['lang'], true);
+					$lang->load('joomla', JPATH_SITE, $order_info['lang'], true);
+				}
+			}
+			if ($vrc_tn->getDefaultLang() != $order_info['lang']) {
+				// force the translation to start because contents should be translated
+				$vrc_tn::$force_tolang = $order_info['lang'];
+			}
 		}
 
 		// values for replacements
@@ -3327,26 +3384,6 @@ class VikRentCar
 
 		// raw HTML content
 		$parsed = $tmpl;
-
-		// prepare the translator object
-		$vrc_tn = self::getTranslator();
-		$lang = JFactory::getLanguage();
-		if (!empty($order_info['lang'])) {
-			if ($lang->getTag() != $order_info['lang']) {
-				if (VRCPlatformDetection::isWordPress()) {
-					// wp
-					$lang->load('com_vikrentcar', VIKRENTCAR_LANG, $order_info['lang'], true);
-				} else {
-					// j
-					$lang->load('com_vikrentcar', JPATH_SITE, $order_info['lang'], true);
-					$lang->load('joomla', JPATH_SITE, $order_info['lang'], true);
-				}
-			}
-			if ($vrc_tn->getDefaultLang() != $order_info['lang']) {
-				// force the translation to start because contents should be translated
-				$vrc_tn::$force_tolang = $order_info['lang'];
-			}
-		}
 
 		/**
 		 * Parse the {contract_text} special tag first, so that the conditional text rules
@@ -4447,6 +4484,26 @@ HTML
 			return false;
 		}
 
+		// prepare the translator object
+		$vrc_tn = self::getTranslator();
+		$lang = JFactory::getLanguage();
+		if (!empty($order_details['lang'])) {
+			if ($lang->getTag() != $order_details['lang']) {
+				if (VRCPlatformDetection::isWordPress()) {
+					// wp
+					$lang->load('com_vikrentcar', VIKRENTCAR_LANG, $order_details['lang'], true);
+				} else {
+					// j
+					$lang->load('com_vikrentcar', JPATH_SITE, $order_details['lang'], true);
+					$lang->load('joomla', JPATH_SITE, $order_details['lang'], true);
+				}
+			}
+			if ($vrc_tn->getDefaultLang() != $order_details['lang']) {
+				// force the translation to start because contents should be translated
+				$vrc_tn::$force_tolang = $order_details['lang'];
+			}
+		}
+
 		$nowtf = self::getTimeFormat();
 		if ($formdate == "%d/%m/%Y") {
 			$df = 'd/m/Y';
@@ -4461,6 +4518,7 @@ HTML
 			$attachlogo = true;
 		}
 		$tlogo = ($attachlogo ? "<img src=\"" . VRC_ADMIN_URI . "resources/" . $sitelogo . "\" alt=\"Logo\"/>\n" : "");
+
 		//vikrentcar 1.5
 		$tcname = $ftitle."\n";
 		$todate = date($df . ' ' . $nowtf, $ts)."\n";
@@ -4477,8 +4535,8 @@ HTML
 		$ttot = $tot."\n";
 		$tlink = $link;
 		$tfootm = $footerordmail;
-		//
-		if ($status == JText::translate('VRCOMPLETED') && file_exists(VRC_SITE_PATH . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "tcpdf" . DIRECTORY_SEPARATOR . 'tcpdf.php')) {
+
+		if (!strcasecmp($order_details['status'], 'confirmed') && file_exists(VRC_SITE_PATH . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "tcpdf" . DIRECTORY_SEPARATOR . 'tcpdf.php')) {
 			list($pdfcont, $pdfparams) = self::loadPdfTemplate($orderid);
 			$pdfhtml = self::parsePdfTemplate($pdfcont, $orderid, array('name' => $carname), $pricestr, $optstr, $arrayinfopdf, $tot, $link);
 			//images with src images/ must be converted into ../images/ for the PDF
@@ -5918,7 +5976,7 @@ HTML
 									$arrvaloverrides[$ovrinfo[0]] = $ovrinfo[1];
 								}
 							}
-							if (array_key_exists($a[0]['days'], $arrvaloverrides)) {
+							if (array_key_exists((int) $a[0]['days'], $arrvaloverrides)) {
 								$pctval = $arrvaloverrides[$a[0]['days']];
 							}
 						}
@@ -5953,7 +6011,7 @@ HTML
 									$arrvaloverrides[$ovrinfo[0]] = $ovrinfo[1];
 								}
 							}
-							if (array_key_exists($a[0]['days'], $arrvaloverrides)) {
+							if (array_key_exists((int) $a[0]['days'], $arrvaloverrides)) {
 								$absval = $arrvaloverrides[$a[0]['days']];
 							}
 						}
@@ -5978,7 +6036,7 @@ HTML
 					}
 					
 					// define the promotion (only if no value overrides set the amount to 0)
-					if (count($promotion) && ((isset($absval) && $absval > 0) || $pctval > 0)) {
+					if (count($promotion) && ((isset($absval) && $absval > 0) || ($pctval ?? 0) > 0)) {
 						/**
 						 * Include the discount information (if any). The cost re-calculated may not be
 						 * precise if multiple special prices were applied over the same dates.
@@ -6197,7 +6255,7 @@ HTML
 									$arrvaloverrides[$ovrinfo[0]] = $ovrinfo[1];
 								}
 							}
-							if (array_key_exists($a[0]['days'], $arrvaloverrides)) {
+							if (array_key_exists((int) $a[0]['days'], $arrvaloverrides)) {
 								$pctval = $arrvaloverrides[$a[0]['days']];
 							}
 						}
@@ -6228,7 +6286,7 @@ HTML
 									$arrvaloverrides[$ovrinfo[0]] = $ovrinfo[1];
 								}
 							}
-							if (array_key_exists($a[0]['days'], $arrvaloverrides)) {
+							if (array_key_exists((int) $a[0]['days'], $arrvaloverrides)) {
 								$absval = $arrvaloverrides[$a[0]['days']];
 							}
 						}
@@ -6705,7 +6763,7 @@ HTML
 					}
 
 					// define the promotion (only if no value overrides set the amount to 0)
-					if (count($promotion) && ((isset($absval) && $absval > 0) || $pctval > 0)) {
+					if (count($promotion) && ((isset($absval) && $absval > 0) || ($pctval ?? 0) > 0)) {
 						/**
 						 * Include the discount information (if any). The cost re-calculated may not be
 						 * precise if multiple special prices were applied over the same dates.
@@ -8930,30 +8988,11 @@ HTML
 
 		$finaldest = $dest . $filename . $j . $fileext;
 
-		if ($filters !== '*')
+		// make sure the file extension is supported
+		if (!self::isFileTypeCompatible(basename($finaldest), $filters))
 		{
-			$ext = $file['type'];
-
-			// check if we have a regex
-			if (preg_match("/^[#\/]/", $filters) && preg_match("/[#\/][a-z]*$/", $filters))
-			{
-				if (!preg_match($filters, $ext))
-				{
-					// extension not supported
-					throw new RuntimeException(sprintf('Extension [%s] is not supported', $ext), 400);
-				}
-			}
-			else
-			{
-				// get all supported types
-				$types = array_map('strtolower', array_filter(explode(',', $filters)));
-
-				if (!in_array($ext, $types))
-				{
-					// extension not supported
-					throw new RuntimeException(sprintf('Extension [%s] is not supported', $ext), 400);
-				}
-			}
+			// extension not supported
+			throw new RuntimeException(sprintf('Extension [%s] is not supported', $fileext), 400);
 		}
 		
 		// try to upload the file
@@ -8969,6 +9008,106 @@ HTML
 		$file->path     = $finaldest;
 		
 		return $file;
+	}
+
+	/**
+	 * Helper method used to check whether the given file name
+	 * supports one of the given filters.
+	 *
+	 * @param   mixed   $file     Either the file name or the uploaded file.
+	 * @param   string  $filters  Either a regex or a comma-separated list of supported extensions.
+	 *                            The regex must be inclusive of delimiters.
+	 *
+	 * @return  bool    True if supported, false otherwise.
+	 * 
+	 * @since   1.4.3 (WP) - 1.15.6 (J)
+	 */
+	public static function isFileTypeCompatible($file, $filters)
+	{
+		// make sure the filters query is not empty
+		if (strlen($filters) == 0)
+		{
+			// cannot assert whether the file could be accepted or not
+			return false;
+		}
+
+		// check whether all the files are accepted
+		if ($filters == '*')
+		{
+			return true;
+		}
+
+		// use the file MIME TYPE in case of array
+		if (is_array($file))
+		{
+			$file = $file['type'];
+		}
+
+		// check if we are dealing with a regex
+		if (static::isRegex($filters))
+		{
+			return (bool) preg_match($filters, $file);
+		}
+		
+		// fallback to comma-separated list
+		$types = array_filter(preg_split("/\s*,\s*/", $filters));
+
+		foreach ($types as $t)
+		{
+			// remove initial dot if specified
+			$t = ltrim($t, '.');
+			// escape slashes to avoid breaking the regex
+			$t = preg_replace("/\//", '\/', $t);
+
+			// check if the file ends with the given extension
+			if (preg_match("/{$t}$/i", $file))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Checks whether the given string is a structured PCRE regex.
+	 * It simply makes sure that the string owns valid delimiters.
+	 * A delimiter can be any non-alphanumeric, non-backslash,
+	 * non-whitespace character.
+	 *
+	 * @param   string   $str  The string to check.
+	 *
+	 * @return  boolean  True if a regex, false otherwise.
+	 *
+	 * @since   1.4.3 (WP) - 1.15.6 (J)
+	 */
+	public static function isRegex($str)
+	{
+		// first of all make sure the first character is a supported delimiter
+		if (!preg_match("/^([!#$%&'*+,.\/:;=?@^_`|~\-(\[{<\"])/", $str, $match))
+		{
+			// no valid delimiter
+			return false;
+		}
+
+		// get delimiter
+		$d = $match[1];
+
+		// lookup used to check if we should take a different ending delimiter
+		$lookup = array(
+			'{' => '}',
+			'[' => ']',
+			'(' => ')',
+			'<' => '>',
+		);
+
+		if (isset($lookup[$d]))
+		{
+			$d = $lookup[$d];
+		}
+
+		// make sure the regex ends with the delimiter found
+		return (bool) preg_match("/\\{$d}[gimsxU]*$/", $str);
 	}
 
 	/**

@@ -778,6 +778,10 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 			return 1;
 		}
 
+		if ($booking['from_ts'] > $from_info[0] && $booking['to_ts'] <= $to_info[0] && !empty($booking['days'])) {
+			return (int) $booking['days'];
+		}
+
 		$checkout_ymd = date('Y-m-d', $booking['consegna']);
 
 		while ($from_info[0] <= $to_info[0]) {
@@ -785,7 +789,7 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 				// range day is inside booking dates
 				if (date('Y-m-d', $from_info[0]) == $checkout_ymd) {
 					// this is the check-out day, so it is not a night booked
-					return 1;
+					return $tot_nights ?: 1;
 				}
 				$tot_nights++;
 			}
@@ -793,7 +797,7 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 			$from_info = getdate(mktime(0, 0, 0, $from_info['mon'], ($from_info['mday'] + 1), $from_info['year']));
 		}
 
-		return $tot_nights > 0 ? $tot_nights : 1;
+		return $tot_nights ?: 1;
 	}
 
 	/**

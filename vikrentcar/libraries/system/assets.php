@@ -70,13 +70,6 @@ class VikRentCarAssets
 			$document->addScript(VIKRENTCAR_ADMIN_ASSETS_URI . 'vrccore.js', $internalFilesOptions, array('id' => 'vrc-core-script'));
 
 			/**
-			 * Always prepare AJAX requests to pass a CSRF token.
-			 * 
-			 * @since 	1.4.0
-			 */
-			JHtml::fetch('vrchtml.scripts.ajaxcsrf');
-
-			/**
 			 * Include the Toast JS class.
 			 * 
 			 * @since 	1.3.0
@@ -127,6 +120,13 @@ JS
 
 			$document->addStyleSheet(VIKRENTCAR_SITE_ASSETS_URI.'vikrentcar_custom.css', $internalFilesOptions, array('id' => 'vrc-custom-style'));
 		}
+
+		/**
+		 * Always prepare AJAX requests to pass a CSRF token.
+		 * 
+		 * @since 	1.4.0
+		 */
+		JHtml::fetch('vrchtml.scripts.ajaxcsrf');
 	}
 
 	/**

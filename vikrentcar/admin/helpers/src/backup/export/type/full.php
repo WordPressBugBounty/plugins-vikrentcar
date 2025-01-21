@@ -206,6 +206,9 @@ class VRCBackupExportTypeFull implements VRCBackupExportType
 			'vikrentcar' => [
 				'update_extra_fields',
 				'backupfolder',
+				'licensekey',
+				'licenseval',
+				'licensehash',
 			],
 		];
 

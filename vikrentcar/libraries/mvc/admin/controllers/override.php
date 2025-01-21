@@ -91,6 +91,13 @@ class VikRentCarControllerOverride extends JControllerAdmin
 		$data['file'] = base64_decode($override);
 		$data['code'] = $app->input->get('code', '', 'raw');
 
+		/**
+		 * Preserve the current status.
+		 * 
+		 * @since 1.4.3
+		 */
+		$data['published'] = $status;
+
 		if (empty($data['code']))
 		{
 			$error = __('No code received', 'vikrentcar');
