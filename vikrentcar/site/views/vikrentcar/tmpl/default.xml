@@ -10,5 +10,21 @@
 		<name>Search</name>
 		<description>VikRentCar Search Form</description>
 	</state>
+	<fields name="request">
+		<fieldset name="request">
+			<field
+				name="category_id"
+				type="sql"
+				label="COM_VIKRENTCAR_CATEGORY_FIELD_FORCE_TITLE"
+				description="COM_VIKRENTCAR_CATEGORY_FIELD_FORCE_TITLE_DESC"
+				query="SELECT `c`.`id`, `c`.`name` FROM `#__vikrentcar_categories` AS `c` ORDER BY `c`.`name` ASC;" 
+				key_field="id"
+				value_field="name"
+				required="false"
+			>
+				<option value="">---</option>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>
 

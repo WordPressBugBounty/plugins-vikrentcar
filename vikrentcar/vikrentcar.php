@@ -3,7 +3,7 @@
 Plugin Name:  VikRentCar
 Plugin URI:   https://vikwp.com/plugin/vikrentcar
 Description:  Robust Car Rental Management Software.
-Version:      1.4.3
+Version:      1.4.4
 Author:       E4J s.r.l.
 Author URI:   https://vikwp.com
 License:      GPL2
@@ -102,13 +102,6 @@ add_action('plugins_loaded', function()
 	// installer class will check the update status
 	VikRentCarInstaller::update();
 
-	/**
-	 * Init language when plugins have been loaded to not interfere with third party plugins.
-	 * 
-	 * @since 	1.1.9
-	 */
-	VikRentCarBuilder::loadLanguage();
-
 	global $pagenow;
 
 	$app   = JFactory::getApplication(); 
@@ -152,6 +145,13 @@ add_action('plugins_loaded', function()
 // process the request and obtain the response
 add_action('init', function()
 {
+	/**
+	 * Language files should no longer be loaded during 'plugins_loaded'.
+	 * 
+	 * @since 1.4.4
+	 */
+	VikRentCarBuilder::loadLanguage();
+
 	$app 	= JFactory::getApplication();
 	$input 	= $app->input;
 

@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_cronjobs` (
   `last_exec` int(11) DEFAULT NULL,
   `logs` text DEFAULT NULL,
   `flag_int` int(11) NOT NULL DEFAULT 0,
-  `flag_char` varchar(512) DEFAULT NULL,
+  `flag_char` text DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

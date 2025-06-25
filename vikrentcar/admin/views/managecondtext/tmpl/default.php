@@ -39,7 +39,7 @@ JText::script('VRC_CONDTEXT_RULE_RMCONF');
 						<div class="vrc-param-container">
 							<div class="vrc-param-label"><?php echo JText::translate('VRC_CONDTEXT_NAME'); ?></div>
 							<div class="vrc-param-setting">
-								<input type="text" id="condtextname" name="condtextname" value="<?php echo count($this->condtext) ? JHtml::fetch('esc_attr', $this->condtext['name']) : ''; ?>" size="30" onkeyup="vrcComposeToken(this.value);" required />
+								<input type="text" id="condtextname" name="condtextname" value="<?php echo count($this->condtext) ? JHtml::fetch('esc_attr', $this->condtext['name']) : ''; ?>" size="30" onkeyup="vrcComposeToken(this.value);" autocomplete="off" required />
 							</div>
 						</div>
 					</div>

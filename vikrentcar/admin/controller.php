@@ -709,6 +709,7 @@ class VikRentCarController extends JControllerVikRentCar
 		$presizeto = VikRequest::getString('resizeto', '', 'request');
 		$pidcars = VikRequest::getVar('idcars', array());
 		if (!empty($pcaratname)) {
+			$picon = "";
 			if (intval($_FILES['caraticon']['error']) == 0 && VikRentCar::caniWrite(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR) && trim($_FILES['caraticon']['name'])!="") {
 				jimport('joomla.filesystem.file');
 				if (@is_uploaded_file($_FILES['caraticon']['tmp_name'])) {
@@ -723,11 +724,9 @@ class VikRentCarController extends JControllerVikRentCar
 						$j = "";
 						$pwhere = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
 					}
-					VikRentCar::uploadFile($_FILES['caraticon']['tmp_name'], $pwhere);
-					if (!getimagesize($pwhere)) {
+					if (!getimagesize($_FILES['caraticon']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 						@unlink($pwhere);
-						$picon = "";
-					} else {
+					} elseif (VikRentCar::uploadFile($_FILES['caraticon']['tmp_name'], $pwhere)) {
 						@chmod($pwhere, 0644);
 						$picon = $j.$safename;
 						if ($pautoresize == "1" && !empty($presizeto)) {
@@ -739,11 +738,7 @@ class VikRentCarController extends JControllerVikRentCar
 							}
 						}
 					}
-				} else {
-					$picon = "";
 				}
-			} else {
-				$picon = "";
 			}
 			$dbo = JFactory::getDbo();
 			$q = "SELECT `ordering` FROM `#__vikrentcar_caratteristiche` ORDER BY `#__vikrentcar_caratteristiche`.`ordering` DESC LIMIT 1;";
@@ -847,6 +842,7 @@ class VikRentCarController extends JControllerVikRentCar
 		$pidcars = VikRequest::getVar('idcars', array());
 		$pordering = VikRequest::getInt('ordering', 1, 'request');
 		if (!empty($pcaratname)) {
+			$picon = '';
 			if (intval($_FILES['caraticon']['error']) == 0 && VikRentCar::caniWrite(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR) && trim($_FILES['caraticon']['name'])!="") {
 				jimport('joomla.filesystem.file');
 				if (@is_uploaded_file($_FILES['caraticon']['tmp_name'])) {
@@ -861,11 +857,9 @@ class VikRentCarController extends JControllerVikRentCar
 						$j = "";
 						$pwhere = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
 					}
-					VikRentCar::uploadFile($_FILES['caraticon']['tmp_name'], $pwhere);
-					if (!getimagesize($pwhere)) {
+					if (!getimagesize($_FILES['caraticon']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 						@unlink($pwhere);
-						$picon = "";
-					} else {
+					} elseif (VikRentCar::uploadFile($_FILES['caraticon']['tmp_name'], $pwhere)) {
 						@chmod($pwhere, 0644);
 						$picon = $j.$safename;
 						if ($pautoresize == "1" && !empty($presizeto)) {
@@ -877,11 +871,7 @@ class VikRentCarController extends JControllerVikRentCar
 							}
 						}
 					}
-				} else {
-					$picon = "";
 				}
-			} else {
-				$picon = "";
 			}
 			$dbo = JFactory::getDbo();
 			$q = "UPDATE `#__vikrentcar_caratteristiche` SET `name`=".$dbo->quote($pcaratname).",".(strlen($picon) > 0 ? "`icon`='".$picon."'," : "")."`align`=".$dbo->quote($pcaratmix).",`textimg`=".$dbo->quote($pcarattextimg).",`ordering`={$pordering} WHERE `id`=".$dbo->quote($pwhereup).";";
@@ -1052,6 +1042,7 @@ class VikRentCarController extends JControllerVikRentCar
 			$strforceval = "";
 		}
 		if (!empty($poptname)) {
+			$picon = '';
 			/**
 			 * In order to avoid issues with the calculation of the taxes for the options,
 			 * the name should not contain the semi-colon (:) or the currency name.
@@ -1074,11 +1065,10 @@ class VikRentCarController extends JControllerVikRentCar
 						$j = "";
 						$pwhere = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
 					}
-					VikRentCar::uploadFile($_FILES['optimg']['tmp_name'], $pwhere);
-					if (!getimagesize($pwhere)) {
+
+					if (!getimagesize($_FILES['optimg']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 						@unlink($pwhere);
-						$picon = "";
-					} else {
+					} elseif (VikRentCar::uploadFile($_FILES['optimg']['tmp_name'], $pwhere)) {
 						@chmod($pwhere, 0644);
 						$picon = $j.$safename;
 						if ($pautoresize == "1" && !empty($presizeto)) {
@@ -1090,11 +1080,7 @@ class VikRentCarController extends JControllerVikRentCar
 							}
 						}
 					}
-				} else {
-					$picon = "";
 				}
-			} else {
-				$picon = "";
 			}
 			$poptperday = ($poptperday == "each" ? "1" : "0");
 			($popthmany == "yes" ? $popthmany = "1" : $popthmany = "0");
@@ -1214,6 +1200,7 @@ class VikRentCarController extends JControllerVikRentCar
 			$strforceval = "";
 		}
 		if (!empty($poptname)) {
+			$picon = '';
 			/**
 			 * In order to avoid issues with the calculation of the taxes for the options,
 			 * the name should not contain the semi-colon (:) or the currency name.
@@ -1236,11 +1223,9 @@ class VikRentCarController extends JControllerVikRentCar
 						$j = "";
 						$pwhere = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
 					}
-					VikRentCar::uploadFile($_FILES['optimg']['tmp_name'], $pwhere);
-					if (!getimagesize($pwhere)) {
+					if (!getimagesize($_FILES['optimg']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 						@unlink($pwhere);
-						$picon = "";
-					} else {
+					} elseif (VikRentCar::uploadFile($_FILES['optimg']['tmp_name'], $pwhere)) {
 						@chmod($pwhere, 0644);
 						$picon = $j.$safename;
 						if ($pautoresize == "1" && !empty($presizeto)) {
@@ -1252,11 +1237,7 @@ class VikRentCarController extends JControllerVikRentCar
 							}
 						}
 					}
-				} else {
-					$picon = "";
 				}
-			} else {
-				$picon = "";
 			}
 			($poptperday == "each" ? $poptperday="1" : $poptperday="0");
 			($popthmany == "yes" ? $popthmany="1" : $popthmany="0");
@@ -1451,6 +1432,7 @@ class VikRentCarController extends JControllerVikRentCar
 		$psefalias = empty($psefalias) ? JFilterOutput::stringURLSafe($pcname) : JFilterOutput::stringURLSafe($psefalias);
 
 		jimport('joomla.filesystem.file');
+		$updpath = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
 
 		if (empty($pcname)) {
 			$mainframe->redirect("index.php?option=com_vikrentcar&task=cars");
@@ -1458,54 +1440,48 @@ class VikRentCarController extends JControllerVikRentCar
 		}
 
 		$picon = "";
-		if (intval($_FILES['cimg']['error']) == 0 && VikRentCar::caniWrite(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR) && trim($_FILES['cimg']['name'])!="") {
-			if (@is_uploaded_file($_FILES['cimg']['tmp_name'])) {
-				$safename=JFile::makeSafe(str_replace(" ", "_", strtolower($_FILES['cimg']['name'])));
-				if (file_exists(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename)) {
-					$j=1;
-					while (file_exists(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$j.$safename)) {
-						$j++;
-					}
-					$pwhere=VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$j.$safename;
-				} else {
-					$j="";
-					$pwhere=VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
+		if (($_FILES['cimg'] ?? null) && !intval($_FILES['cimg']['error']) && VikRentCar::caniWrite($updpath) && strlen(trim($_FILES['cimg']['name'])) && @is_uploaded_file($_FILES['cimg']['tmp_name'])) {
+			$safename=JFile::makeSafe(str_replace(" ", "_", strtolower($_FILES['cimg']['name'])));
+			if (file_exists($updpath.$safename)) {
+				$j=1;
+				while (file_exists($updpath.$j.$safename)) {
+					$j++;
 				}
-				VikRentCar::uploadFile($_FILES['cimg']['tmp_name'], $pwhere);
-				if (!($mainimginfo = getimagesize($pwhere))) {
-					@unlink($pwhere);
-					$picon="";
-				} else {
-					@chmod($pwhere, 0644);
-					$picon=$j.$safename;
-					if ($pautoresize=="1" && !empty($presizeto)) {
-						$eforj = new VikResizer();
-						$origmod = $eforj->proportionalImage($pwhere, VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'r_'.$j.$safename, $presizeto, $presizeto);
-						if ($origmod) {
-							@unlink($pwhere);
-							$picon='r_'.$j.$safename;
-						}
+				$pwhere=$updpath.$j.$safename;
+			} else {
+				$j="";
+				$pwhere=$updpath.$safename;
+			}
+			if (!getimagesize($_FILES['cimg']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
+				@unlink($pwhere);
+			} elseif (VikRentCar::uploadFile($_FILES['cimg']['tmp_name'], $pwhere)) {
+				$picon = $j . $safename;
+				if ((int) $pautoresize && !empty($presizeto)) {
+					$origmod = (new VikResizer)->proportionalImage($pwhere, $updpath . 'r_' . $j . $safename, $presizeto, $presizeto);
+					if ($origmod) {
+						@unlink($pwhere);
+						$picon = 'r_' . $j . $safename;
 					}
-					/**
-					 * We statically use a value of 600px for a better CSS forcing result for
-					 * the thumbnail of the car's main image to be used mainly in the Carslist.
-					 * The method VikRentCar::getThumbnailsWidth() is now used to get the max
-					 * size of the thumbnails for the Cardetails (extra images). It was previously
-					 * used to calculate the max thumb size for the car's main image in the Carslist.
-					 * 
-					 * @since 	1.13
-					 */
-					$thumbs_width = 600;
-					if ($mainimginfo[0] > $thumbs_width) {
-						$eforj = new VikResizer();
-						$eforj->proportionalImage(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$picon, VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'vthumb_'.$picon, $thumbs_width, $thumbs_width);
-					}
-					//
+				}
+				/**
+				 * We statically use a value of 600px for a better CSS forcing result for
+				 * the thumbnail of the car's main image to be used mainly in the Carslist.
+				 * The method VikRentCar::getThumbnailsWidth() is now used to get the max
+				 * size of the thumbnails for the Cardetails (extra images). It was previously
+				 * used to calculate the max thumb size for the car's main image in the Carslist.
+				 * 
+				 * @since 	1.13
+				 */
+				$thumbs_width = 600;
+				if ($mainimginfo[0] > $thumbs_width) {
+					$eforj = new VikResizer();
+					(new VikResizer)->proportionalImage($updpath.$picon, $updpath.'vthumb_'.$picon, $thumbs_width, $thumbs_width);
 				}
 			}
 		}
 
-		//more images
+		// more images
+		$arrimgs = [];
 		$creativik = new VikResizer();
 		$bigsdest = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
 		$thumbsdest = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
@@ -1516,47 +1492,45 @@ class VikRentCarController extends JControllerVikRentCar
 				$arrimgs[] = $kk;
 			}
 		}
-		if (isset($arrimgs) && count($arrimgs)) {
-			foreach ($arrimgs as $imgk) {
-				if (strlen(trim($pimages['name'][$imgk]))) {
-					$filename = JFile::makeSafe(str_replace(" ", "_", strtolower($pimages['name'][$imgk])));
-					$src = $pimages['tmp_name'][$imgk];
-					$j="";
-					if (file_exists($dest.$filename)) {
-						$j=rand(171, 1717);
-						while (file_exists($dest.$j.$filename)) {
-							$j++;
-						}
+		foreach ($arrimgs as $imgk) {
+			if (strlen(trim($pimages['name'][$imgk]))) {
+				$filename = JFile::makeSafe(str_replace(" ", "_", strtolower($pimages['name'][$imgk])));
+				$src = $pimages['tmp_name'][$imgk];
+				$j="";
+				if (file_exists($dest.$filename)) {
+					$j=rand(171, 1717);
+					while (file_exists($dest.$j.$filename)) {
+						$j++;
 					}
-					$finaldest = $dest.$j.$filename;
-					$check = !empty($pimages['tmp_name'][$imgk]) ? getimagesize($pimages['tmp_name'][$imgk]) : [];
-					if ($check[2] & imagetypes()) {
-						if (VikRentCar::uploadFile($src, $finaldest)) {
-							$gimg=$j.$filename;
-							//orig img
-							$origmod = true;
-							if ($pautoresizemore == "1" && !empty($presizetomore)) {
-								$origmod = $creativik->proportionalImage($finaldest, $bigsdest.'big_'.$j.$filename, $presizetomore, $presizetomore);
-							} else {
-								VikRentCar::uploadFile($finaldest, $bigsdest.'big_'.$j.$filename, true);
-							}
-							//thumb
-							$thumbs_size = VikRentCar::getThumbnailsWidth();
-							$thumb = $creativik->proportionalImage($finaldest, $thumbsdest.'thumb_'.$j.$filename, $thumbs_size, $thumbs_size);
-							if (!$thumb || !$origmod) {
-								if (file_exists($bigsdest.'big_'.$j.$filename)) @unlink($bigsdest.'big_'.$j.$filename);
-								if (file_exists($thumbsdest.'thumb_'.$j.$filename)) @unlink($thumbsdest.'thumb_'.$j.$filename);
-								VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
-							} else {
-								$moreimagestr.=$j.$filename.";;";
-							}
-							@unlink($finaldest);
+				}
+				$finaldest = $dest.$j.$filename;
+				$check = !empty($pimages['tmp_name'][$imgk]) ? getimagesize($pimages['tmp_name'][$imgk]) : [];
+				if (($check[2] & imagetypes()) && preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $filename)) {
+					if (VikRentCar::uploadFile($src, $finaldest)) {
+						$gimg=$j.$filename;
+						//orig img
+						$origmod = true;
+						if ($pautoresizemore == "1" && !empty($presizetomore)) {
+							$origmod = $creativik->proportionalImage($finaldest, $bigsdest.'big_'.$j.$filename, $presizetomore, $presizetomore);
 						} else {
-							VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
+							VikRentCar::uploadFile($finaldest, $bigsdest.'big_'.$j.$filename, true);
 						}
+						//thumb
+						$thumbs_size = VikRentCar::getThumbnailsWidth();
+						$thumb = $creativik->proportionalImage($finaldest, $thumbsdest.'thumb_'.$j.$filename, $thumbs_size, $thumbs_size);
+						if (!$thumb || !$origmod) {
+							if (file_exists($bigsdest.'big_'.$j.$filename)) @unlink($bigsdest.'big_'.$j.$filename);
+							if (file_exists($thumbsdest.'thumb_'.$j.$filename)) @unlink($thumbsdest.'thumb_'.$j.$filename);
+							VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
+						} else {
+							$moreimagestr.=$j.$filename.";;";
+						}
+						@unlink($finaldest);
 					} else {
 						VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
 					}
+				} else {
+					VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
 				}
 			}
 		}
@@ -1731,6 +1705,7 @@ class VikRentCarController extends JControllerVikRentCar
 		$pimgsorting = VikRequest::getVar('imgsorting', array());
 
 		jimport('joomla.filesystem.file');
+		$updpath = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
 
 		if (empty($pcname)) {
 			$mainframe->redirect("index.php?option=com_vikrentcar&task=cars");
@@ -1738,54 +1713,48 @@ class VikRentCarController extends JControllerVikRentCar
 		}
 
 		$picon = "";
-		if (intval($_FILES['cimg']['error']) == 0 && VikRentCar::caniWrite(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR) && trim($_FILES['cimg']['name'])!="") {
-			if (@is_uploaded_file($_FILES['cimg']['tmp_name'])) {
-				$safename=JFile::makeSafe(str_replace(" ", "_", strtolower($_FILES['cimg']['name'])));
-				if (file_exists(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename)) {
-					$j=1;
-					while (file_exists(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$j.$safename)) {
-						$j++;
-					}
-					$pwhere=VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$j.$safename;
-				} else {
-					$j="";
-					$pwhere=VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
+		if (($_FILES['cimg'] ?? null) && !intval($_FILES['cimg']['error']) && VikRentCar::caniWrite($updpath) && strlen(trim($_FILES['cimg']['name'])) && @is_uploaded_file($_FILES['cimg']['tmp_name'])) {
+			$safename=JFile::makeSafe(str_replace(" ", "_", strtolower($_FILES['cimg']['name'])));
+			if (file_exists($updpath.$safename)) {
+				$j=1;
+				while (file_exists($updpath.$j.$safename)) {
+					$j++;
 				}
-				VikRentCar::uploadFile($_FILES['cimg']['tmp_name'], $pwhere);
-				if (!($mainimginfo = getimagesize($pwhere))) {
-					@unlink($pwhere);
-					$picon="";
-				} else {
-					@chmod($pwhere, 0644);
-					$picon=$j.$safename;
-					if ($pautoresize=="1" && !empty($presizeto)) {
-						$eforj = new VikResizer();
-						$origmod = $eforj->proportionalImage($pwhere, VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'r_'.$j.$safename, $presizeto, $presizeto);
-						if ($origmod) {
-							@unlink($pwhere);
-							$picon='r_'.$j.$safename;
-						}
+				$pwhere=$updpath.$j.$safename;
+			} else {
+				$j="";
+				$pwhere=$updpath.$safename;
+			}
+			if (!getimagesize($_FILES['cimg']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
+				@unlink($pwhere);
+			} elseif (VikRentCar::uploadFile($_FILES['cimg']['tmp_name'], $pwhere)) {
+				$picon = $j . $safename;
+				if ((int) $pautoresize && !empty($presizeto)) {
+					$origmod = (new VikResizer)->proportionalImage($pwhere, $updpath . 'r_' . $j . $safename, $presizeto, $presizeto);
+					if ($origmod) {
+						@unlink($pwhere);
+						$picon = 'r_' . $j . $safename;
 					}
-					/**
-					 * We statically use a value of 600px for a better CSS forcing result for
-					 * the thumbnail of the car's main image to be used mainly in the Carslist.
-					 * The method VikRentCar::getThumbnailsWidth() is now used to get the max
-					 * size of the thumbnails for the Cardetails (extra images). It was previously
-					 * used to calculate the max thumb size for the car's main image in the Carslist.
-					 * 
-					 * @since 	1.13
-					 */
-					$thumbs_width = 600;
-					if ($mainimginfo[0] > $thumbs_width) {
-						$eforj = new VikResizer();
-						$eforj->proportionalImage(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$picon, VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'vthumb_'.$picon, $thumbs_width, $thumbs_width);
-					}
-					//
+				}
+				/**
+				 * We statically use a value of 600px for a better CSS forcing result for
+				 * the thumbnail of the car's main image to be used mainly in the Carslist.
+				 * The method VikRentCar::getThumbnailsWidth() is now used to get the max
+				 * size of the thumbnails for the Cardetails (extra images). It was previously
+				 * used to calculate the max thumb size for the car's main image in the Carslist.
+				 * 
+				 * @since 	1.13
+				 */
+				$thumbs_width = 600;
+				if ($mainimginfo[0] > $thumbs_width) {
+					$eforj = new VikResizer();
+					(new VikResizer)->proportionalImage($updpath.$picon, $updpath.'vthumb_'.$picon, $thumbs_width, $thumbs_width);
 				}
 			}
 		}
 
-		//more images
+		// more images
+		$arrimgs = [];
 		$creativik = new VikResizer();
 		$bigsdest = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
 		$thumbsdest = VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR;
@@ -1796,47 +1765,45 @@ class VikRentCarController extends JControllerVikRentCar
 				$arrimgs[] = $kk;
 			}
 		}
-		if (isset($arrimgs) && count($arrimgs)) {
-			foreach ($arrimgs as $imgk) {
-				if (strlen(trim($pimages['name'][$imgk]))) {
-					$filename = JFile::makeSafe(str_replace(" ", "_", strtolower($pimages['name'][$imgk])));
-					$src = $pimages['tmp_name'][$imgk];
-					$j="";
-					if (file_exists($dest.$filename)) {
-						$j=rand(171, 1717);
-						while (file_exists($dest.$j.$filename)) {
-							$j++;
-						}
+		foreach ($arrimgs as $imgk) {
+			if (strlen(trim($pimages['name'][$imgk]))) {
+				$filename = JFile::makeSafe(str_replace(" ", "_", strtolower($pimages['name'][$imgk])));
+				$src = $pimages['tmp_name'][$imgk];
+				$j="";
+				if (file_exists($dest.$filename)) {
+					$j=rand(171, 1717);
+					while (file_exists($dest.$j.$filename)) {
+						$j++;
 					}
-					$finaldest = $dest.$j.$filename;
-					$check = !empty($pimages['tmp_name'][$imgk]) ? getimagesize($pimages['tmp_name'][$imgk]) : [];
-					if ($check[2] & imagetypes()) {
-						if (VikRentCar::uploadFile($src, $finaldest)) {
-							$gimg=$j.$filename;
-							//orig img
-							$origmod = true;
-							if ($pautoresizemore == "1" && !empty($presizetomore)) {
-								$origmod = $creativik->proportionalImage($finaldest, $bigsdest.'big_'.$j.$filename, $presizetomore, $presizetomore);
-							} else {
-								VikRentCar::uploadFile($finaldest, $bigsdest.'big_'.$j.$filename, true);
-							}
-							//thumb
-							$thumbs_size = VikRentCar::getThumbnailsWidth();
-							$thumb = $creativik->proportionalImage($finaldest, $thumbsdest.'thumb_'.$j.$filename, $thumbs_size, $thumbs_size);
-							if (!$thumb || !$origmod) {
-								if (file_exists($bigsdest.'big_'.$j.$filename)) @unlink($bigsdest.'big_'.$j.$filename);
-								if (file_exists($thumbsdest.'thumb_'.$j.$filename)) @unlink($thumbsdest.'thumb_'.$j.$filename);
-								VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
-							} else {
-								$moreimagestr.=$j.$filename.";;";
-							}
-							@unlink($finaldest);
+				}
+				$finaldest = $dest.$j.$filename;
+				$check = !empty($pimages['tmp_name'][$imgk]) ? getimagesize($pimages['tmp_name'][$imgk]) : [];
+				if (($check[2] & imagetypes()) && preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $filename)) {
+					if (VikRentCar::uploadFile($src, $finaldest)) {
+						$gimg=$j.$filename;
+						//orig img
+						$origmod = true;
+						if ($pautoresizemore == "1" && !empty($presizetomore)) {
+							$origmod = $creativik->proportionalImage($finaldest, $bigsdest.'big_'.$j.$filename, $presizetomore, $presizetomore);
 						} else {
-							VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
+							VikRentCar::uploadFile($finaldest, $bigsdest.'big_'.$j.$filename, true);
 						}
+						//thumb
+						$thumbs_size = VikRentCar::getThumbnailsWidth();
+						$thumb = $creativik->proportionalImage($finaldest, $thumbsdest.'thumb_'.$j.$filename, $thumbs_size, $thumbs_size);
+						if (!$thumb || !$origmod) {
+							if (file_exists($bigsdest.'big_'.$j.$filename)) @unlink($bigsdest.'big_'.$j.$filename);
+							if (file_exists($thumbsdest.'thumb_'.$j.$filename)) @unlink($thumbsdest.'thumb_'.$j.$filename);
+							VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
+						} else {
+							$moreimagestr.=$j.$filename.";;";
+						}
+						@unlink($finaldest);
 					} else {
 						VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
 					}
+				} else {
+					VikError::raiseWarning('', 'Error While Uploading the File: '.$pimages['name'][$imgk]);
 				}
 			}
 		}
@@ -2418,11 +2385,9 @@ class VikRentCarController extends JControllerVikRentCar
 					$j="";
 					$pwhere=VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$safename;
 				}
-				VikRentCar::uploadFile($_FILES['sitelogo']['tmp_name'], $pwhere);
-				if (!getimagesize($pwhere)) {
+				if (!getimagesize($_FILES['sitelogo']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 					@unlink($pwhere);
-					$picon="";
-				} else {
+				} elseif (VikRentCar::uploadFile($_FILES['sitelogo']['tmp_name'], $pwhere)) {
 					@chmod($pwhere, 0644);
 					$picon=$j.$safename;
 				}
@@ -2446,11 +2411,9 @@ class VikRentCarController extends JControllerVikRentCar
 					$j="";
 					$pwhere=$res_backend_path.$safename;
 				}
-				if (!getimagesize($_FILES['backlogo']['tmp_name'])) {
+				if (!getimagesize($_FILES['backlogo']['tmp_name']) || !preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $safename)) {
 					@unlink($pwhere);
-					$pbackicon="";
-				} else {
-					VikRentCar::uploadFile($_FILES['backlogo']['tmp_name'], $pwhere);
+				} elseif (VikRentCar::uploadFile($_FILES['backlogo']['tmp_name'], $pwhere)) {
 					@chmod($pwhere, 0644);
 					$pbackicon=$j.$safename;
 				}
@@ -5451,7 +5414,7 @@ class VikRentCarController extends JControllerVikRentCar
 			//send mail
 			$ftitle = VikRentCar::getFrontTitle();
 			$nowts = $order[0]['ts'];
-			$carinfo = VikRentCar::getCarInfo($order[0]['idcar']);
+			$carinfo = VikRentCar::getCarInfo($order[0]['idcar'], $vrc_tn);
 			$viklink = VikRentCar::externalroute("index.php?option=com_vikrentcar&view=order&sid=" . $order[0]['sid'] . "&ts=" . $order[0]['ts'] . (!empty($order[0]['lang']) ? '&lang=' . $order[0]['lang'] : ''), false);
 			//
 			$is_cust_cost = (!empty($order[0]['cust_cost']) && $order[0]['cust_cost'] > 0);
@@ -5549,11 +5512,11 @@ class VikRentCarController extends JControllerVikRentCar
 				}
 			}
 			//
-			$ritplace = (!empty($order[0]['idplace']) ? VikRentCar::getPlaceName($order[0]['idplace']) : "");
-			$consegnaplace = (!empty($order[0]['idreturnplace']) ? VikRentCar::getPlaceName($order[0]['idreturnplace']) : "");
+			$ritplace = (!empty($order[0]['idplace']) ? VikRentCar::getPlaceName($order[0]['idplace'], $vrc_tn) : "");
+			$consegnaplace = (!empty($order[0]['idreturnplace']) ? VikRentCar::getPlaceName($order[0]['idreturnplace'], $vrc_tn) : "");
 			$costplusiva = $is_cust_cost ? VikRentCar::sayCustCostPlusIva($tar[0]['cost'], $order[0]['cust_idiva']) : VikRentCar::sayCostPlusIva($tar[0]['cost'], $tar[0]['idprice'], $order[0]);
 			$costminusiva = $is_cust_cost ? VikRentCar::sayCustCostMinusIva($tar[0]['cost'], $order[0]['cust_idiva']) : VikRentCar::sayCostMinusIva($tar[0]['cost'], $tar[0]['idprice'], $order[0]);
-			$pricestr = ($is_cust_cost ? JText::translate('VRCRENTCUSTRATEPLAN').": ".$costplusiva : VikRentCar::getPriceName($tar[0]['idprice'])).": ".$costplusiva.(!empty($tar[0]['attrdata']) ? "\n".VikRentCar::getPriceAttr($tar[0]['idprice']).": ".$tar[0]['attrdata'] : "");
+			$pricestr = ($is_cust_cost ? JText::translate('VRCRENTCUSTRATEPLAN').": ".$costplusiva : VikRentCar::getPriceName($tar[0]['idprice'], $vrc_tn)).": ".$costplusiva.(!empty($tar[0]['attrdata']) ? "\n".VikRentCar::getPriceAttr($tar[0]['idprice'], $vrc_tn).": ".$tar[0]['attrdata'] : "");
 			$isdue = $is_cust_cost ? $tar[0]['cost'] : VikRentCar::sayCostPlusIva($tar[0]['cost'], $tar[0]['idprice'], $order[0]);
 			$optstr = "";
 			$optarrtaxnet = array();
@@ -5564,9 +5527,9 @@ class VikRentCarController extends JControllerVikRentCar
 						$stept = explode(":", $oo);
 						$q = "SELECT `id`,`name`,`cost`,`perday`,`hmany`,`idiva`,`maxprice` FROM `#__vikrentcar_optionals` WHERE `id`=".$dbo->quote($stept[0]).";";
 						$dbo->setQuery($q);
-						$dbo->execute();
-						if ($dbo->getNumRows() == 1) {
-							$actopt = $dbo->loadAssocList();
+						$actopt = $dbo->loadAssocList();
+						if ($actopt) {
+							$vrc_tn->translateContents($actopt, '#__vikrentcar_optionals');
 							$realcost = intval($actopt[0]['perday']) == 1 ? ($actopt[0]['cost'] * $order[0]['days'] * $stept[1]) : ($actopt[0]['cost'] * $stept[1]);
 							$basequancost = intval($actopt[0]['perday']) == 1 ? ($actopt[0]['cost'] * $order[0]['days']) : $actopt[0]['cost'];
 							if (!empty($actopt[0]['maxprice']) && $actopt[0]['maxprice'] > 0 && $basequancost > $actopt[0]['maxprice']) {
@@ -7094,7 +7057,7 @@ class VikRentCarController extends JControllerVikRentCar
 					}
 					$finaldest = $dest.$j.$filename;
 					$check = !empty($pimg['tmp_name']) ? getimagesize($pimg['tmp_name']) : [];
-					if ($check[2] & imagetypes()) {
+					if (($check[2] & imagetypes()) && preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $filename)) {
 						if (VikRentCar::uploadFile($src, $finaldest)) {
 							$gimg = $j.$filename;
 						} else {
@@ -7226,7 +7189,7 @@ class VikRentCarController extends JControllerVikRentCar
 					}
 					$finaldest = $dest.$j.$filename;
 					$check = !empty($pimg['tmp_name']) ? getimagesize($pimg['tmp_name']) : [];
-					if ($check[2] & imagetypes()) {
+					if (($check[2] & imagetypes()) && preg_match("/\.(a?png|jpe?g|bmp|gif|ico|webp)\z/i", $filename)) {
 						if (VikRentCar::uploadFile($src, $finaldest)) {
 							$gimg = $j.$filename;
 						} else {

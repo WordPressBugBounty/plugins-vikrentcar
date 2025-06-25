@@ -1201,15 +1201,17 @@ jQuery(function() {
 				//
 			}
 		} elseif (intval($params->get('category_id')) > 0) {
-			$q = "SELECT * FROM `#__vikrentcar_categories` WHERE `id`=".(int)$params->get('category_id').";";
-			$dbo->setQuery($q);
-			$categories = $dbo->loadAssocList();
-			if ($categories) {
-				$vrc_tn->translateContents($categories, '#__vikrentcar_categories');
+			/**
+			 * We need to pass also the hidden value "category_id" in order
+			 * to allow the back-nav ("change dates" or "step-bar") to keep
+			 * the requested category filter.
+			 * 
+			 * @since 	1.2.11
+			 */
 				?>
-				<input type="hidden" name="categories" value="<?php echo $categories[0]['id']; ?>" />
+				<input type="hidden" name="categories" value="<?php echo (int)$params->get('category_id'); ?>" />
+				<input type="hidden" name="category_id" value="<?php echo (int)$params->get('category_id'); ?>" />
 				<?php
-			}
 		}
     } elseif (intval($params->get('showcat')) == 1) {
     	$q = "SELECT * FROM `#__vikrentcar_categories` ORDER BY `#__vikrentcar_categories`.`ordering` ASC, `#__vikrentcar_categories`.`name` ASC;";
@@ -1231,15 +1233,17 @@ jQuery(function() {
 			//
 		}
     } elseif (intval($params->get('category_id')) > 0) {
-		$q = "SELECT * FROM `#__vikrentcar_categories` WHERE `id`=".(int)$params->get('category_id').";";
-		$dbo->setQuery($q);
-		$categories = $dbo->loadAssocList();
-		if ($categories) {
-			$vrc_tn->translateContents($categories, '#__vikrentcar_categories');
+		/**
+		 * We need to pass also the hidden value "category_id" in order
+		 * to allow the back-nav ("change dates" or "step-bar") to keep
+		 * the requested category filter.
+		 * 
+		 * @since 	1.2.11
+		 */
 			?>
-			<input type="hidden" name="categories" value="<?php echo $categories[0]['id']; ?>" />
+			<input type="hidden" name="categories" value="<?php echo (int)$params->get('category_id'); ?>" />
+			<input type="hidden" name="category_id" value="<?php echo (int)$params->get('category_id'); ?>" />
 			<?php
-		}
 	}
     echo $vrcats;
     

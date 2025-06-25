@@ -90,9 +90,9 @@ $wiva = "<select name=\"praliq\">\n";
 $wiva .= "<option value=\"\"> ------ </option>\n";
 $q = "SELECT * FROM `#__vikrentcar_iva`;";
 $dbo->setQuery($q);
-$dbo->execute();
-if ($dbo->getNumRows() > 0) {
-	$ivas = $dbo->loadAssocList();
+// $dbo->execute();
+$ivas = $dbo->loadAssocList();
+if ($ivas) {
 	foreach ($ivas as $iv) {
 		$wiva .= "<option value=\"".$iv['id']."\"".(count($row) && $row['idiva'] == $iv['id'] ? " selected=\"selected\"" : "").">".(empty($iv['name']) ? $iv['aliq']."%" : $iv['name']."-".$iv['aliq']."%")."</option>\n";
 	}

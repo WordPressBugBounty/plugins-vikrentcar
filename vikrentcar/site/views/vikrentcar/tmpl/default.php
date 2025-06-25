@@ -1021,7 +1021,8 @@ jQuery(function() {
 		$selform .= "</div>\n";
 	}
 
-	if (VikRentCar::showCategoriesFront()) {
+	$pcategory_id = VikRequest::getInt('category_id', 0, 'request');
+	if (empty($pcategory_id) && VikRentCar::showCategoriesFront()) {
 		$q = "SELECT * FROM `#__vikrentcar_categories` ORDER BY `#__vikrentcar_categories`.`ordering` ASC, `#__vikrentcar_categories`.`name` ASC;";
 		$dbo->setQuery($q);
 		$categories = $dbo->loadAssocList();
@@ -1040,7 +1041,16 @@ jQuery(function() {
 			$selform .= "</div>";
 			//
 		}
+	} elseif ($pcategory_id > 0) {
+		/**
+		 * Force hidden category because requested from View params.
+		 *
+		 * @since 	1.13
+		 */
+		$selform .= '<input type="hidden" name="categories" value="' . $pcategory_id . '" />';
+		$selform .= '<input type="hidden" name="category_id" value="' . $pcategory_id . '" />';
 	}
+	
 	// start submit part
 	$selform .= "<div class=\"vrc-searchf-section-sbmt\">";
 	//

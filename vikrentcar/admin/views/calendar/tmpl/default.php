@@ -989,6 +989,9 @@ jQuery(document).on("click", ".vrc-custsearchres-entry", function() {
 		jQuery.each(customers_search_vals[custid], function(cfid, cfval) {
 			var fill_field = jQuery("#cfield"+cfid);
 			if (fill_field.length) {
+				if (fill_field.attr('data-isemail') == '1' && custemail && custemail != cfval) {
+					cfval = custemail;
+				}
 				fill_field.val(cfval);
 			}
 		});

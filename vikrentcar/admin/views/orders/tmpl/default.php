@@ -491,7 +491,7 @@ $filters_set = false;
 			//vikrentcar 1.6 coupon
 			$usedcoupon = false;
 			$origisdue = $isdue;
-			if (strlen($row['coupon']) > 0) {
+			if (!empty($row['coupon'])) {
 				$usedcoupon = true;
 				$expcoupon = explode(";", $row['coupon']);
 				$isdue = $isdue - $expcoupon[1];

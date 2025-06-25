@@ -483,6 +483,12 @@ class VikRentCarLanguageAdminSys implements JLanguageHandler
 			case 'VRC_SC_ADDTOPAGE_OK':
 				$result = __('The Shortcode was successfully added to a new page of your website. Visit the new page in the front site to see the content (if any).', 'vikrentcar');
 				break;
+			case 'COM_VIKRENTCAR_CATEGORY_FIELD_FORCE_TITLE':
+				$result = __('Force Category', 'vikrentcar');
+				break;
+			case 'COM_VIKRENTCAR_CATEGORY_FIELD_FORCE_TITLE_DESC':
+				$result = __('If you would like the results to be taken only from a specific category, set this filter to an existing category where some of the rooms should be assigned.', 'vikrentcar');
+				break;
 
 			/**
 			 * @wponly - Sample Data texts

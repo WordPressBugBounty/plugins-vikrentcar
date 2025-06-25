@@ -498,20 +498,29 @@ class VikrentcarViewSearch extends JViewVikRentCar {
 												// pagination
 												$lim = $mainframe->getUserStateFromRequest("com_vikrentcar.limit", 'limit', (int)$mainframe->get('list_limit'), 'int'); //results limit
 												$lim0 = VikRequest::getVar('limitstart', 0, '', 'int');
+
 												jimport('joomla.html.pagination');
 												$pageNav = new JPagination(count($arrtar), $lim0, $lim);
 
 												/**
-												 * @wponly 	forms in WP use POST values, so we need to set additional URL params to the navigation links of the pages
+												 * For recent CMS versions we need to set the additional URL params
+												 * in order for the pagination links to contain all values. This applies
+												 * to both POST and GET form values, so setting the URL params is needed.
 												 */
-												$req_vals_diff = array_diff(JFactory::getApplication()->input->post->getArray(), JFactory::getApplication()->input->get->getArray());
+												if (VRCPlatformDetection::isWordPress()) {
+													// form is submitted via POST
+													$req_vals_diff = array_diff(JFactory::getApplication()->input->post->getArray(), JFactory::getApplication()->input->get->getArray());
+												} else {
+													// form is submitted via GET
+													$req_vals_diff = JFactory::getApplication()->input->get->getArray();
+												}
 												foreach ($req_vals_diff as $pkey => $pval) {
 													$pageNav->setAdditionalUrlParam($pkey, $pval);
 												}
-												//
-												
+
 												$navig = $pageNav->getPagesLinks();
 												$this->navig = $navig;
+
 												$tot_res = count($arrtar);
 												$arrtar = array_slice($arrtar, $lim0, $lim, true);
 												//

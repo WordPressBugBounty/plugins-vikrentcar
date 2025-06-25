@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.4
+
+*Release date - 25 June 2025*
+
+- Added new option to Search Form shortcode for forcing a category. 
+- Core framework updated.
+- Multiple back-end security improvements.
+
 ## 1.4.3
 
 *Release date - 21 January 2025*

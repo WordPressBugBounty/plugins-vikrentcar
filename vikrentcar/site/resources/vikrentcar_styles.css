@@ -4024,6 +4024,10 @@ a.vrcdialog-overlay-close {
 	.vrc-oconfirm-summary-total-row .vrc-oconfirm-summary-car-cell-days {
 		display: none;
 	}
+	.offline-cc-overlay-inner {
+		width: 90%;
+		height: 80%;
+	}
 }
 @media screen and (max-width : 580px) {
 	.vrc-tableopt-td-name {

@@ -9904,7 +9904,7 @@ div.modal.in .modal-header + div.modal-body-wrapper {
 		padding-bottom: 10px;
 	}
 }
-@media screen and (max-width: 1380px) {
+@media screen and (max-width: 1390px) {
 	.vrc-menu-ul .vrc-menu-parent-li > span {
 		padding: 13px 18px;
 	}

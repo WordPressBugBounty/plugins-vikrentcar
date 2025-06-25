@@ -231,7 +231,8 @@ foreach ($res as $k => $r) {
 								 * 
 								 * @since 	1.14
 								 */
-								$prev_amount = $car_cost * 100 / (100 - $r[0]['promotion']['discount']['amount']);
+								$proportional_cost = (100 - $r[0]['promotion']['discount']['amount']) == 0 ? 1 : 100 - $r[0]['promotion']['discount']['amount'];
+								$prev_amount = $car_cost * 100 / $proportional_cost;
 							} else {
 								$prev_amount = $car_cost + $r[0]['promotion']['discount']['amount'];
 							}
