@@ -246,7 +246,7 @@ $nowts = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		?>
 		<div class="vrc-cdetails-cost vrc-pref-color-text">
 			<span class="vrcliststartfrom"><?php echo JText::translate('VRCLISTSFROM'); ?></span>
-			<span class="car_cost"><span class="vrc_currency"><?php echo $currencysymb; ?></span> <span class="vrc_price"><?php echo strlen($car['startfrom']) > 0 ? VikRentCar::numberFormat($car['startfrom']) : VikRentCar::numberFormat($car['cost']); ?></span></span>
+			<span class="car_cost"><span class="vrc_currency"><?php echo $currencysymb; ?></span> <span class="vrc_price"><?php echo strlen((string) $car['startfrom']) ? VikRentCar::numberFormat($car['startfrom']) : VikRentCar::numberFormat($car['cost']); ?></span></span>
 		</div>
 		<?php
 		}

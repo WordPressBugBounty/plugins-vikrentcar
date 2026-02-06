@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.5
+
+*Release date - 26 November 2025*
+
+- New date format for rental orders history.
+- Core framework updated.
+- Various back-end security improvements.
+
 ## 1.4.4
 
 *Release date - 25 June 2025*

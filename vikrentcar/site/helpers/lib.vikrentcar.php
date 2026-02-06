@@ -3468,8 +3468,9 @@ class VikRentCar
 			foreach ($expopts as $kexpopt => $optinfo) {
 				if (!empty($optinfo)) {
 					$splitopt = explode(":", $optinfo);
-					$optprice = trim(str_replace($currencyname, "", $splitopt[1]));
-					$orderdetails .= '<tr><td align="left" style="border: 1px solid #DDDDDD;">'.$splitopt[0].'</td><td align="center" style="border: 1px solid #DDDDDD;">'.$arrayinfopdf['days'].'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat($arrayinfopdf['opttaxnet'][$kexpopt]).'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat(($optprice - $arrayinfopdf['opttaxnet'][$kexpopt])).'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat($optprice).'</td></tr>';
+					$optprice = trim(str_replace($currencyname, "", $splitopt[count($splitopt) - 1]));
+					unset($splitopt[count($splitopt) - 1]);
+					$orderdetails .= '<tr><td align="left" style="border: 1px solid #DDDDDD;">'.implode(':', $splitopt).'</td><td align="center" style="border: 1px solid #DDDDDD;">'.$arrayinfopdf['days'].'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat($arrayinfopdf['opttaxnet'][$kexpopt]).'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat(($optprice - $arrayinfopdf['opttaxnet'][$kexpopt])).'</td><td align="left" style="border: 1px solid #DDDDDD;">'.$currencyname.' '.self::numberFormat($optprice).'</td></tr>';
 					$totalnet += $arrayinfopdf['opttaxnet'][$kexpopt];
 					$totaltax += ($optprice - $arrayinfopdf['opttaxnet'][$kexpopt]);
 				}
@@ -3797,9 +3798,10 @@ HTML
 					 * Apply proper rounding with gratuity period.
 					 * 
 					 * @since 	1.15.1 (J) - 1.3.2 (WP)
+					 * @since	1.15.8 (J) - 1.4.5 (WP)
 					 */
 					$ehours_float = ($newdiff - $maxhmore) / 3600;
-					$ehours = intval(round($ehours_float));
+					$ehours = intval(ceil($ehours_float));
 					$ehours = !$ehours && $ehours_float > 0 && $maxhmore > 0 ? 1 : $ehours;
 					$checkhourscharges = $ehours;
 					if ($checkhourscharges > 0) {
@@ -4354,14 +4356,14 @@ HTML
 		$parsed = str_replace("{car_damages_image}", '<img src="'.$damage_png.'"/>', $parsed);
 
 		// car distinctive features replace
-		preg_match_all("/\{carfeature ([a-z0-9 ]+)\}/i", $parsed, $matches);
+		preg_match_all("/\{carfeature (.+?)\}/i", $parsed, $matches);
 		if (is_array($matches[1]) && $matches[1]) {
 			$docheck = (bool)(count($distinctive_features) > 0);
 			foreach ($matches[1] as $reqf) {
 				$feature_found = false;
 				if ($docheck) {
 					foreach ($distinctive_features as $dfk => $dfv) {
-						if (stripos($dfk, $reqf) !== false || (strtoupper($reqf) == $reqf && stripos($dfk, JText::translate($reqf)) !== false)) {
+						if (stripos($dfk, $reqf) !== false || (strtoupper($reqf) == $reqf && stripos($dfk, JText::translate($reqf)) !== false) || preg_replace('/[^a-z0-9]/i', '', $dfk) == preg_replace('/[^a-z0-9]/i', '', $reqf)) {
 							$feature_found = $dfk;
 							if (strlen(trim($dfk)) == strlen(trim($reqf))) {
 								break;

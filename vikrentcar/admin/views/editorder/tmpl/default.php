@@ -105,9 +105,10 @@ if (!empty($row['idtar']) || $is_cust_cost) {
 				 * Apply proper rounding with gratuity period.
 				 * 
 				 * @since 	1.15.1 (J) - 1.3.2 (WP)
+				 * @since	1.15.8 (J) - 1.4.5 (WP)
 				 */
 				$ehours_float = ($newdiff - $maxhmore) / 3600;
-				$ehours = intval(round($ehours_float));
+				$ehours = intval(ceil($ehours_float));
 				$ehours = !$ehours && $ehours_float > 0 && $maxhmore > 0 ? 1 : $ehours;
 				$checkhourscharges = $ehours;
 				if ($checkhourscharges > 0) {
@@ -1058,7 +1059,7 @@ function toggleDiscount(elem) {
 											<td><?php echo $history_obj->validType($hist['type'], true); ?></td>
 											<td>
 											<?php
-											echo JHtml::fetch('date', $hist['dt']);
+											echo JHtml::fetch('date', $hist['dt'], 'Y-m-d H:i:s');
 											?>
 											</td>
 											<td><?php echo $hdescr; ?></td>

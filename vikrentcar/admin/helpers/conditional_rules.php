@@ -895,13 +895,18 @@ class VikRentCarHelperConditionalRules
 	 */
 	public static function addTagByComparingSources($tag, $file, $html_code, $php_code)
 	{
+		// replace the PHP tags to avoid potential parsing issues
+		// with newer version of 'libxml'. 
+		$php_code = str_replace('<?php', '__PHP_OPEN__', $php_code);
+		$php_code = str_replace('?>', '__PHP_CLOSE__', $php_code);
+
 		if (!class_exists('DOMDocument') || !class_exists('DOMXpath')) {
 			// this sucks, we just append the tag to the end of the file
 			$php_code .= "\n{$tag}\n";
-			
+
 			// log the case
 			self::setEditingLog("Classes DOMDocument or DOMXpath are not available (" . __LINE__ . ")");
-
+			
 			return $php_code;
 		}
 
@@ -913,8 +918,7 @@ class VikRentCarHelperConditionalRules
 		 * starting from PHP 5.4 and Libxml >= 2.7.8.
 		 */
 		$libxml_updated = defined('LIBXML_HTML_NOIMPLIED') && defined('LIBXML_HTML_NODEFDTD');
-		//
-
+		
 		// log data
 		self::setEditingLog("Libxml support: " . (int)$libxml_updated);
 
@@ -923,7 +927,6 @@ class VikRentCarHelperConditionalRules
 		 * Errors could be retrieved by using print_r(libxml_get_errors(), true).
 		 */
 		libxml_use_internal_errors(true);
-		//
 
 		// load HTML source code
 		$html_dom = new DOMDocument();
@@ -932,7 +935,7 @@ class VikRentCarHelperConditionalRules
 		} else {
 			$html_dom->loadHTML('<div>' . $html_code . '</div>');
 		}
-		
+
 		// get DOMXPath instance of the html DOM Document
 		$html_xpath = new DOMXpath($html_dom);
 		// find DOMNodeList from given tag (there should be just one tag)
@@ -941,7 +944,7 @@ class VikRentCarHelperConditionalRules
 		if (!$found_nodelist || !$found_nodelist->length) {
 			// log the case
 			self::setEditingLog("tag not found in html source code (" . __LINE__ . ")");
-
+			
 			// tag not found in html source code
 			return $php_code;
 		}
@@ -982,18 +985,23 @@ class VikRentCarHelperConditionalRules
 		if (!$found_nodelist || !$found_nodelist->length) {
 			// log the case
 			self::setEditingLog("Node Path to tag not found in php source code: {$tag_path} must be invalid (" . __LINE__ . ")");
-
+			
 			// path not found in php source code: $tag_path must be invalid
 			return $php_code;
 		}
 
 		// create a text node with the special tag string
 		$tag_element = $php_dom->createTextNode($tag);
+		
 		// append the tag string to the first (and only) path found
 		$found_nodelist->item(0)->appendChild($tag_element);
 
 		// obtain the new php source code
 		$php_code = $php_dom->saveHTML();
+
+		// restore PHP tags from placeholders
+		$php_code = str_replace('__PHP_OPEN__', '<?php', $php_code);
+		$php_code = str_replace('__PHP_CLOSE__', '?>', $php_code);
 
 		// log data
 		self::setEditingLog("Tag appended to the given path. New template source code before cleaning:\n\n" . $php_code);

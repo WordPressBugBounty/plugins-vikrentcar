@@ -362,9 +362,10 @@ class VikRentCarController extends JControllerVikRentCar
 					 * Apply proper rounding with gratuity period.
 					 * 
 					 * @since 	1.15.1 (J) - 1.3.2 (WP)
+					 * @since	1.15.8 (J) - 1.4.5 (WP)
 					 */
 					$ehours_float = ($newdiff - $maxhmore) / 3600;
-					$ehours = intval(round($ehours_float));
+					$ehours = intval(ceil($ehours_float));
 					$ehours = !$ehours && $ehours_float > 0 && $maxhmore > 0 ? 1 : $ehours;
 					$checkhourscharges = $ehours;
 					if ($checkhourscharges > 0) {
@@ -839,6 +840,11 @@ class VikRentCarController extends JControllerVikRentCar
 
 	public function validatepin()
 	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$ppin = VikRequest::getString('pin', '', 'request');
 		$cpin = VikRentCar::getCPinIstance();
 		$response = array();
@@ -1014,9 +1020,10 @@ class VikRentCarController extends JControllerVikRentCar
 									 * Apply proper rounding with gratuity period.
 									 * 
 									 * @since 	1.15.1 (J) - 1.3.2 (WP)
+									 * @since	1.15.8 (J) - 1.4.5 (WP)
 									 */
 									$ehours_float = ($newdiff - $maxhmore) / 3600;
-									$ehours = intval(round($ehours_float));
+									$ehours = intval(ceil($ehours_float));
 									$ehours = !$ehours && $ehours_float > 0 && $maxhmore > 0 ? 1 : $ehours;
 									$checkhourscharges = $ehours;
 									if ($checkhourscharges > 0) {

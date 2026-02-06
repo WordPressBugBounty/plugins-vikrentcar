@@ -370,17 +370,40 @@ function registerHoveringTooltip(that) {
 		celldata.push(elem.parent('tr').attr('data-subcarid'));
 		celldata.push(elem.attr('data-day'));
 	}
-	hovtimer = setTimeout(function() {
+	hovtimer = setTimeout(() => {
+		// turn flag on
 		hovtip = true;
-		jQuery(
-			"<div class=\"vrc-overview-tipblock\">"+
-				"<div class=\"vrc-overview-tipinner\"><span class=\"vrc-overview-tiploading\">"+vrcMessages.loadingTip+"</span></div>"+
-			"</div>"
-		).appendTo(elem);
-		jQuery(".vrc-overview-tipblock").css("bottom", "+="+cellheight);
+
+		// calculate cell-element position
+		let pos_top = elem.offset().top;
+		let pos_left = elem.offset().left;
+		let elem_height = elem.outerHeight();
+		let screen_width = window?.screen?.width || 0;
+
+		// build tooltip block element
+		let tooltip_block = jQuery('<div></div>');
+		tooltip_block.addClass('vrc-overview-tipblock');
+		tooltip_block.append("<div class=\"vrc-overview-tipinner\"><span class=\"vrc-overview-tiploading\">" + Joomla.JText._('VIKLOADING') + "</span></div>");
+		tooltip_block.append("<div class=\"vrc-overview-tipexpander\" style=\"display: none;\"><div class=\"vrc-overview-expandtoggle\"><i class=\"<?php echo VikRentCarIcons::i('expand'); ?>\"></i></div></div>");
+
+		// calculate block position
+		tooltip_block.css('top', (pos_top + elem_height - 16) + 'px');
+		if (screen_width > 600 && (pos_left + 400) > screen_width) {
+			// place the tooltip starting from right
+			tooltip_block.css('left', (pos_left - (400 - elem.outerWidth())) + 'px');
+		} else {
+			// regular placing starting from left
+			tooltip_block.css('left', (pos_left - 6) + 'px');
+		}
+
+		// append block to body
+		tooltip_block.appendTo(jQuery('body'));
+
+		// load tooltip bookings
 		loadTooltipBookings(elem.attr('data-bids'), celldata);
-	}, 900);
+	}, 1500);
 }
+
 function unregisterHoveringTooltip() {
 	clearTimeout(hovtimer);
 	hovtimer = null;

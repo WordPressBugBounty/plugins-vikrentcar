@@ -654,7 +654,7 @@ class VrcCurrencyConverter
 	protected function loadFloatRatesDotComRates($currency = '')
 	{
 		$feed_name 	 = empty($currency) ? 'eur' : substr(strtolower($currency), 0, 3);
-		$rates_doc 	 = "http://www.floatrates.com/daily/{$feed_name}.xml";
+		$rates_doc 	 = "https://www.floatrates.com/daily/{$feed_name}.xml";
 		$cache_rates = dirname(__FILE__) . DIRECTORY_SEPARATOR . date('Y-m-d') . "{$feed_name}" . '_floatrates.xml';
 		$xml_data  	 = '';
 
