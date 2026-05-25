@@ -7275,7 +7275,7 @@ class VikRentCarController extends JControllerVikRentCar
 				$cust_old_fields = array();
 				$cstring_search = '<div class="vrc-custsearchres-inner">' . "\n";
 				foreach ($customers as $k => $v) {
-					$cstring_search .= '<div class="vrc-custsearchres-entry" data-custid="'.$v['id'].'" data-email="'.$v['email'].'" data-phone="'.addslashes($v['phone']).'" data-country="'.$v['country'].'" data-pin="'.$v['pin'].'" data-firstname="'.addslashes($v['first_name']).'" data-lastname="'.addslashes($v['last_name']).'">'."\n";
+					$cstring_search .= '<div class="vrc-custsearchres-entry" data-custid="' . (int) $v['id'] . '" data-email="' . htmlspecialchars($v['email']) . '" data-phone="' . htmlspecialchars($v['phone']) . '" data-country="' . htmlspecialchars($v['country']) . '" data-pin="' . htmlspecialchars($v['pin']) . '" data-firstname="' . htmlspecialchars($v['first_name']) . '" data-lastname="' . htmlspecialchars($v['last_name']) . '">'."\n";
 					$cstring_search .= '<span class="vrc-custsearchres-cflag">';
 					if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'countries'.DIRECTORY_SEPARATOR.$v['country'].'.png')) {
 						$cstring_search .= '<img src="'.VRC_ADMIN_URI.'resources/countries/'.$v['country'].'.png'.'" title="'.$v['country'].'" class="vrc-country-flag"/>'."\n";
@@ -7283,7 +7283,7 @@ class VikRentCarController extends JControllerVikRentCar
 						$cstring_search .= '<i class="' . VikRentCarIcons::i('globe') . '"></i>';
 					}
 					$cstring_search .= '</span>';
-					$cstring_search .= '<span class="vrc-custsearchres-name" title="'.$v['email'].'">'.$v['first_name'].' '.$v['last_name'].'</span>'."\n";
+					$cstring_search .= '<span class="vrc-custsearchres-name" title="' . htmlspecialchars($v['email']) . '">'.$v['first_name'].' '.$v['last_name'].'</span>'."\n";
 					if (!($nopin > 0)) {
 						$cstring_search .= '<span class="vrc-custsearchres-pin">'.$v['pin'].'</span>'."\n";
 					}
@@ -8514,6 +8514,165 @@ class VikRentCarController extends JControllerVikRentCar
 				$dbo->execute();
 			}
 		}
+	}
+
+	/**
+	 * Hidden task to scan all database tables of VikRentCar to ensure the column `id` is
+	 * defined as a primary key and got an auto-increment extra flag properly defined and set.
+	 * We've noticed that some third-party plugins used to migrate WP sites may break the
+	 * primary keys, and so new records won't get an ID.
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function fix_autoincrement_tables()
+	{
+		if (!JFactory::getUser()->authorise('core.admin', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$dbo = JFactory::getDbo();
+
+		// load all the installed database tables
+		$tables = $dbo->getTableList();
+
+	    // get current database prefix
+		$prefix = $dbo->getPrefix();
+
+		// replace prefix with placeholder
+		$tables = array_map(function($table) use ($prefix)
+		{
+			return preg_replace("/^{$prefix}/", '#__', $table);
+		}, $tables);
+
+		// remove all the tables that do not belong to VikRentCar
+		$tables = array_values(array_filter($tables, function($table)
+		{
+			if (preg_match("/^#__vikrentcar_config$/", $table))
+			{
+				// exclude the configuration table, which will be handled in a different way
+				return false;
+			}
+
+			return preg_match("/^#__vikrentcar_/", $table);
+		}));
+		
+		foreach ($tables as $table) {
+			$columns = $dbo->getTableColumns($table, false);
+			if (!isset($columns['id']) || empty($columns['id']->Type) || !empty($columns['id']->Extra)) {
+				continue;
+			}
+			
+			echo 'Fixing ' . $table. ' for missing auto-increment<br/><pre>' . print_r($columns['id'], true) . '</pre><br/>';
+			
+			// set auto-increment and primary key
+			$dbo->setQuery("ALTER TABLE `{$table}` MODIFY `id` " . $columns['id']->Type . " NOT NULL AUTO_INCREMENT PRIMARY KEY;");
+			$dbo->execute();
+			
+			// count next auto-increment
+			$dbo->setQuery("SELECT MAX(`id`) FROM `{$table}`");
+			$next_ai = (int) $dbo->loadResult() + 1;
+			
+			// update next auto-increment value
+			$dbo->setQuery("ALTER TABLE `{$table}` AUTO_INCREMENT = {$next_ai}");
+			$dbo->execute();
+		}
+	}
+
+	/**
+	 * Hidden task to (re-)run the update queries from a given plugin version.
+	 * Useful to ensure the database structure is up-to-date and no update queries went lost.
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function run_update_queries()
+	{
+		$app = JFactory::getApplication();
+		$dbo = JFactory::getDbo();
+
+		if (!JFactory::getUser()->authorise('core.admin', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance($app)->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$from_version = $app->input->getString('from_version');
+
+		if (empty($from_version)) {
+			VRCHttpDocument::getInstance()->close(400, 'Missing from version value.');
+		}
+
+		// determine the SQL updates directory path
+		$sql_updates_path = '';
+		if (VRCPlatformDetection::isWordPress()) {
+			$sql_updates_path = implode(DIRECTORY_SEPARATOR, [VIKRENTCAR_BASE, 'sql', 'update', 'mysql']);
+		} else {
+			$sql_updates_path = implode(DIRECTORY_SEPARATOR, [VRC_ADMIN_PATH, 'sql', 'updates', 'mysql']);
+		}
+
+		if (!$sql_updates_path || !is_dir($sql_updates_path)) {
+			VRCHttpDocument::getInstance()->close(500, 'Could not find SQL updates path.');
+		}
+
+		// read all SQL update files
+		$sql_update_files = JFolder::files($sql_updates_path, '\.sql', $recurse = false, $full = true);
+
+		// filter SQL files with just the valid ones
+		$sql_update_files = array_filter($sql_update_files, function($sql_update_file) use ($from_version) {
+			$file_version = basename($sql_update_file, '.sql');
+			return version_compare($file_version, $from_version, '>=');
+		});
+
+		// sort files by version ascending
+		usort($sql_update_files, function($a, $b) {
+			return version_compare(basename($a, '.sql'), basename($b, '.sql'));
+		});
+
+		if (!$sql_update_files) {
+			VRCHttpDocument::getInstance()->close(500, sprintf('Could not find any suitable SQL update file from version %s.', $from_version));
+		}
+
+		$success_queries = 0;
+
+		foreach ($sql_update_files as $file) {
+			$handle = fopen($file, 'r');
+
+			$bytes = '';
+			while (!feof($handle)) {
+				$bytes .= fread($handle, 8192);
+			}
+
+			fclose($handle);
+
+			if (VRCPlatformDetection::isWordPress()) {
+				$queries_list = JDatabaseHelper::splitSql($bytes);
+			} else {
+				try {
+					$queries_list = Joomla\Database\DatabaseDriver::splitSql($bytes);
+				} catch(Throwable $e) {
+					$app->enqueueMessage(sprintf('Error splitting queries: %s', $e->getMessage()), 'error');
+					$queries_list = [];
+				}
+			}
+
+			foreach ($queries_list as $q) {
+				try {
+					$dbo->setQuery($q);
+					$result = $dbo->execute();
+				} catch (Exception $e) {
+					$result = false;
+					$app->enqueueMessage(sprintf('Error executing query: %s', $e->getMessage()), 'warning');
+				}
+
+				if ($result) {
+					$success_queries++;
+				}
+			}
+		}
+
+		if ($success_queries) {
+			$app->enqueueMessage(sprintf('Successful queries: %d', $success_queries), 'success');
+		}
+
+		// send response to output
+		echo '<pre>'.print_r($sql_update_files, true).'</pre><br/>';
 	}
 
 	/**

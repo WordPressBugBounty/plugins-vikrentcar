@@ -12,8 +12,8 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 jimport('joomla.application.component.view');
 
-class VikrentcarViewSearch extends JViewVikRentCar {
-
+class VikrentcarViewSearch extends JViewVikRentCar
+{
 	/**
 	 * Response array for the request.
 	 * 
@@ -229,7 +229,7 @@ class VikrentcarViewSearch extends JViewVikRentCar {
 											}
 											if (!empty($restr['ctdd'])) {
 												$ctdrestrictions = explode(',', $restr['ctdd']);
-												if (in_array('-'.$restrcheckout['wday'].'-', $ctdrestrictions)) {
+												if (in_array('-'.$restrcheckout['wday'].'-', $ctdrestrictions) && $restrcheckout[0] <= $restr['dto']) {
 													$restrictionsvalid = false;
 													$restrictionerrmsg = JText::sprintf('VRRESTRERRWDAYCTDRANGE', VikRentCar::sayWeekDay($restrcheckout['wday']));
 												}
@@ -248,11 +248,23 @@ class VikrentcarViewSearch extends JViewVikRentCar {
 										if ($restrictionsvalid == false) {
 											break;
 										}
+									} elseif ($restr['dfrom'] <= $restrcheckout[0] && ($restr['dto'] + 82799) >= $restrcheckout[0] && !empty($restr['ctdd'])) {
+										/**
+										 * We validate the CTD restrictions depending on the check-out date.
+										 * 
+										 * @since 	1.15.9 (J) - 1.4.6 (WP)
+										 */
+										$ctdrestrictions = explode(',', $restr['ctdd']);
+										if (in_array('-'.$restrcheckout['wday'].'-', $ctdrestrictions)) {
+											$restrictions_affcount++;
+											$restrictionsvalid = false;
+											$restrictionerrmsg = JText::sprintf('VRRESTRERRWDAYCTDRANGE', VikBooking::sayWeekDay($restrcheckout['wday']));
+										}
 									}
 								}
 							}
 						}
-						if (!(count($restrictions) > 0) || $restrictions_affcount <= 0) {
+						if (!$restrictions || $restrictions_affcount <= 0) {
 							//Check global MinLOS (only in case there are no restrictions affecting these dates or no restrictions at all)
 							$globminlos = (int)VikRentCar::setDropDatePlus();
 							if ($globminlos > 1 && $daysdiff < $globminlos) {
@@ -479,7 +491,7 @@ class VikrentcarViewSearch extends JViewVikRentCar {
 											VikRentCar::getTracker()->pushCars($pcardetail)->closeTrack();
 											//
 											$returnplace = VikRequest::getInt('returnplace', '', 'request');
-											$mainframe->redirect(JRoute::rewrite("index.php?option=com_vikrentcar&task=showprc&caropt=" . $pcardetail . "&days=" . $daysdiff . "&pickup=" . $first . "&release=" . $second . "&place=" . $pplace . "&returnplace=" . $returnplace . "&fid=" . $pcardetail . (!empty($pitemid) ? "&Itemid=" . $pitemid : ""), false));
+											$mainframe->redirect(JRoute::rewrite("index.php?option=com_vikrentcar&task=showprc&caropt=" . $pcardetail . "&days=" . $daysdiff . "&pickup=" . $first . "&release=" . $second . "&place=" . $pplace . "&returnplace=" . $returnplace . "&fid=" . $pcardetail . (!empty($pitemid) ? "&Itemid=" . $pitemid : "&view=vikrentcar"), false));
 										} else {
 											if (!$getjson && !empty($pcardetail)) {
 												$q="SELECT `id`,`name` FROM `#__vikrentcar_cars` WHERE `id`=".$dbo->quote($pcardetail).";";

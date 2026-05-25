@@ -1522,8 +1522,30 @@ class VikRentCarController extends JControllerVikRentCar
 					// Event End Date set to Pick up Date
 					$icalstr .= "DTEND;TZID={$system_tz}:".date('Ymd\THis', $r['ritiro'])."\n";
 				}
-				//
-				$icalstr .= "UID:".$r['id'].'_'.$r['sid']."\n";
+
+				/**
+				 * Keep "event" UID if this was a previously imported reservation from an iCal calendar.
+				 * 
+				 * @since 	1.15.9 (J) - 1.4.6 (WP)
+				 */
+				if (!empty($r['id_ical']) && !empty($r['idorder_ical'])) {
+					// use the previous UID
+					$icalstr .= "UID:" . $r['idorder_ical'] . "\n";
+				} else {
+					// build the proper UID syntax for this site
+					$icalstr .= "UID:" . $r['id'] . '_' . $r['sid'] . "\n";
+				}
+
+				/**
+				 * Check if the rental order has got multiple history events for modifications.
+				 * 
+				 * @since 	1.15.9 (J) - 1.4.6 (WP)
+				 */
+				$book_history  = VikRentCar::getOrderHistoryInstance()->setBid($r['id'])->loadHistory();
+				if (count($book_history) > 1) {
+					$icalstr .= "LAST-MODIFIED;TZID={$system_tz}:".date('Ymd\THis', strtotime(JHtml::fetch('date', $book_history[0]['dt'])))."\n";
+				}
+
 				$icalstr .= "DTSTAMP:".date('Ymd\THis\Z')."\n";
 				$icalstr .= "LOCATION:".preg_replace('/([\,;])/','\\\$1', $pickloc)."\n";
 				$icalstr .= ((strlen($description) > 0 ) ? "DESCRIPTION:".preg_replace('/([\,;])/','\\\$1', $description)."\n" : "");

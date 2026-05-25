@@ -84,6 +84,8 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 
 		$this->debug = (VikRequest::getInt('e4j_debug', 0, 'request') > 0);
 
+		$this->registerExportCSVFileName();
+
 		parent::__construct();
 	}
 
@@ -893,11 +895,11 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 	 * needs to access the Chart data rendered by this report.
 	 * Defines some properties and accepts instructions through the arg.
 	 * 
-	 * @param 	mixed 	$data 	null or mixed for requested Chart data.
+	 * @param 	?array 	$data 	null or mixed for requested Chart data.
 	 *
 	 * @return 	string 	the HTML of the canvas element.
 	 */
-	public function getChart($data = null)
+	public function getChart(?array $data = null)
 	{
 		if (!count($this->rows) && !$this->getReportData()) {
 			return '';
@@ -973,7 +975,7 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 
 		// the canvas element ID and tag
 		$canvas_id 	 = 'vrc-report-chart-canvas';
-		$canvas_html = '<canvas id="' . $canvas_id . '"></canvas>';
+		$canvas_html = '<canvas id="' . $canvas_id . '" class="vrc-report-chart-canvas"></canvas>';
 
 		// additional Chart properties
 		$chart_type = is_array($data) && !empty($data['type']) ? $data['type'] : 'line';
@@ -1023,6 +1025,7 @@ class VikRentCarReportOccupancyRanking extends VikRentCarReport
 		}
 
 		// prepare the necessary script to render the Chart
+		$this->chartScript .= 'jQuery(function() {' . "\n";
 		$this->chartScript .= 'var vrc_report_ctx = document.getElementById("' . $canvas_id . '").getContext("2d");' . "\n";
 		$this->chartScript .= '
 var vrcReportType = "' . $chart_type . '";
@@ -1035,7 +1038,8 @@ var vrcReportLineData = {
 		data: ' . json_encode($this->chartJsData) . ',
 	}],
 };
-var vrcReportPieData = {
+// since we are inside a callback, the var vrcReportPieData must declared globally
+window[\'vrcReportPieData\'] = {
 	labels: ' . json_encode($this->chartJsLabels) . ',
 	datasets: [{
 		label: "' . addslashes($this->chartJsDataSetLabel) . '",
@@ -1046,59 +1050,52 @@ var vrcReportPieData = {
 };
 var vrcReportLineOptions = {
 	responsive: true,
-	plugins: {
-		legend: {
-			display: true,
-			position: "bottom",
-		},
-		legendCallback: function (chart) {
-			// Return the HTML string here.
-			var text = [];
-			text.push("<ul class=\"chart-line-legend\">");
-			for (var i = 0; i < chart.data.datasets.length; i++) {
-				text.push("<li>");
-				text.push("<span class=\"legend-entry\" style=\"background-color: " + chart.data.datasets[i].backgroundColor + "\"></span>");
-				text.push("<span class=\"legend-label\">" + chart.data.datasets[i].label + "</span>");
-				text.push("</li>");
-			}
-			text.push("</ul>");
-			return text.join("");
-		},
+	legend: {
+		display: false,
+	},
+	legendCallback: function (chart) {
+		// Return the HTML string here.
+		var text = [];
+		text.push("<ul class=\"chart-line-legend\">");
+		for (var i = 0; i < chart.data.datasets.length; i++) {
+			text.push("<li>");
+			text.push("<span class=\"legend-entry\" style=\"background-color: " + chart.data.datasets[i].backgroundColor + "\"></span>");
+			text.push("<span class=\"legend-label\">" + chart.data.datasets[i].label + "</span>");
+			text.push("</li>");
+		}
+		text.push("</ul>");
+		return text.join("");
 	},
 };
 var vrcReportPieOptions = {
 	responsive: true,
-	plugins: {
-		legend: {
-			display: true,
-			position: "bottom",
-		},
-		legendCallback: function (chart) {
-			// Return the HTML string here.
-			var text = [];
-			text.push("<ul class=\"chart-line-legend chart-pie-legend\">");
-			for (var i = 0; i < chart.data.labels.length; i++) {
-				text.push("<li>");
-				text.push("<span class=\"legend-entry\" style=\"background-color: " + chart.data.datasets[0].backgroundColor[i] + "\"></span>");
-				text.push("<span class=\"legend-label\">" + chart.data.labels[i] + "</span>");
-				text.push("</li>");
-			}
-			text.push("</ul>");
-			return text.join("");
-		},
-		tooltip: {
-			callbacks: {
-				// format the tooltip text displayed when hovering a point
-				label: function(context) {
-					// keep default label
-					var label = context.label || "";
-					if (label) {
-						label += ": ";
-					}
-					var parsed = context.parsed || "";
-					label += parsed' . $pie_tooltip_format . ';
-					return " " + label;
-				},
+	legend: {
+		display: false,
+	},
+	legendCallback: function (chart) {
+		// Return the HTML string here.
+		var text = [];
+		text.push("<ul class=\"chart-line-legend chart-pie-legend\">");
+		for (var i = 0; i < chart.data.labels.length; i++) {
+			text.push("<li>");
+			text.push("<span class=\"legend-entry\" style=\"background-color: " + chart.data.datasets[0].backgroundColor[i] + "\"></span>");
+			text.push("<span class=\"legend-label\">" + chart.data.labels[i] + "</span>");
+			text.push("</li>");
+		}
+		text.push("</ul>");
+		return text.join("");
+	},
+	tooltips: {
+		callbacks: {
+			// format the tooltip text displayed when hovering a point
+			label: function(tooltipItem, data) {
+				// keep default label
+				var label = data.labels[tooltipItem.index] || "";
+				if (label) {
+					label += ": ";
+				}
+				label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]' . $pie_tooltip_format . ';
+				return " " + label;
 			},
 		},
 	},
@@ -1108,10 +1105,13 @@ var vrcReportChart = new Chart(vrc_report_ctx, {
 	data: (vrcReportType == "line" ? vrcReportLineData : vrcReportPieData),
 	options: (vrcReportType == "line" ? vrcReportLineOptions : vrcReportPieOptions),
 });
+jQuery("#' . $canvas_id . '").parent().append(vrcReportChart.generateLegend());
 jQuery("#' . $canvas_id . '").on("vrc_update_report_chart", function() {
 	jQuery(".chart-line-legend").remove();
 	vrcReportChart.update();
+	jQuery("#' . $canvas_id . '").parent().append(vrcReportChart.generateLegend());
 });';
+		$this->chartScript .= '});' . "\n";
 
 		// set the necessary script
 		$this->setScript($this->chartScript);
@@ -1280,6 +1280,21 @@ jQuery("#' . $canvas_id . '").on("vrc_update_report_chart", function() {
 			'right'  => $meta_right,
 			'bottom' => $meta_bottom,
 		);
+	}
+
+	/**
+	 * Registers the name to give to the CSV file being exported.
+	 * 
+	 * @return 	void
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	private function registerExportCSVFileName()
+	{
+		$pfromdate = VikRequest::getString('fromdate', '', 'request');
+		$ptodate = VikRequest::getString('todate', '', 'request');
+
+		$this->setExportCSVFileName($this->reportName . '-' . str_replace('/', '_', $pfromdate) . '-' . str_replace('/', '_', $ptodate) . '.csv');
 	}
 
 }

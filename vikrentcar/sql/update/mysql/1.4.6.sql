@@ -1,0 +1,1 @@
+ALTER TABLE `#__vikrentcar_customers` CHANGE `pin` `pin` varchar(16) NOT NULL DEFAULT '0';

@@ -3846,8 +3846,35 @@ class VikRentCarLanguageAdmin implements JLanguageHandler
 			case 'VRCREPORTSERRNORESERV':
 				$result = __('No orders found with the parameters specified.', 'vikrentcar');
 				break;
+			case 'VRC_EXPORT_AS':
+				$result = __('Export as', 'vikrentcar');
+				break;
+			case 'VRC_COPY':
+				$result = __('Copy', 'vikrentcar');
+				break;
 			case 'VRCREPORTCSVEXPORT':
 				$result = __('Export as CSV', 'vikrentcar');
+				break;
+			case 'VRC_AUTO_EXPORT':
+				$result = __('Auto-Export', 'vikrentcar');
+				break;
+			case 'VRC_AUTO_EXPORT_JSON_HELP':
+				$result = __('The JSON Payload will automatically set dynamic and required variables for the Report to generate the file to export.', 'vikrentcar');
+				break;
+			case 'VRC_REMOVE_LOCAL_FILE':
+				$result = __('Remove local file', 'vikrentcar');
+				break;
+			case 'VRC_AUTO_EXPORT_RMFILE_HELP':
+				$result = __('If you are sending the exported file to an email address, then after testing you can choose not to keep the file locally and have it removed automatically.', 'vikrentcar');
+				break;
+			case 'VRC_EXAMPLES':
+				$result = __('Examples', 'vikrentcar');
+				break;
+			case 'VRC_REPORT_EXPORT_FORMAT':
+				$result = __('Choose the export format or the action to execute.', 'vikrentcar');
+				break;
+			case 'VRC_REPORT_EXPORT_PAYLOAD_HELP':
+				$result = __('The payload is needed to let the report export dynamic information every day.', 'vikrentcar');
 				break;
 			case 'VRCREPORTREVENUEDAY':
 				$result = __('Date', 'vikrentcar');
@@ -4847,6 +4874,88 @@ class VikRentCarLanguageAdmin implements JLanguageHandler
 				break;
 			case 'VRC_OVERV_MODE_SCROLL':
 				$result = __('Scroll', 'vikrentcar');
+				break;
+				// @since 1.4.6(WP) - 1.15.9(J)
+			case 'VRCPRINT':
+				$result = __('Print', 'vikrentcar');
+				break;
+			case 'VRC_LISTINGS':
+				$result = __('Cars', 'vikrentcar');
+				break;
+			case 'VRC_PROFILE_SETTINGS':
+				$result = __('Profile settings', 'vikrentcar');
+				break;
+			case 'VRC_PROFILE_SETTINGS_HELP':
+				$result = __('This report supports multiple profiles with different settings.', 'vikrentcar');
+				break;
+			case 'VRC_PROFILE_NAME':
+				$result = __('Profile name', 'vikrentcar');
+				break;
+			case 'VRC_PROFILE_NEW':
+				$result = __('New profile', 'vikrentcar');
+				break;
+			case 'VRCFILTEISROPTIONAL':
+				$result = __('optional', 'vikrentcar');
+				break;
+			case 'VRC_EMPTY_DATA':
+				$result = __('Empty data', 'vikrentcar');
+				break;
+			case 'VRYES':
+				$result = __('Yes', 'vikrentcar');
+				break;
+			case 'VRNO':
+				$result = __('No', 'vikrentcar');
+				break;
+			case 'VRCINSIGHT':
+				$result = __('Insight', 'vikrentcar');
+				break;
+			case 'VRCSEVLOWOCC':
+				$result = __('Your occupancy is particularly low on these dates.', 'vikrentcar');
+				break;
+			case 'VRCSEVMEDOCC':
+				$result = __('You\'ve got a medium occupancy on these dates.', 'vikrentcar');
+				break;
+			case 'VRCSEVHIGHOCC':
+				$result = __('Your occupancy is pretty high on these dates.', 'vikrentcar');
+				break;
+			case 'VRCSEVLOWINDAYS':
+				$result = __('Since these dates are very near, you could create a last-minute promotion to offer a discount to max out your occupancy', 'vikrentcar');
+				break;
+			case 'VRCSEVMEDINDAYS':
+				$result = __('Since these dates are not so close and not so far, you could create a basic promotion to attract more guests.', 'vikrentcar');
+				break;
+			case 'VRCSEVHIGHINDAYS':
+				$result = __('Since these dates are pretty far ahead, you could create an early-booker promotion to fill your occupancy earlier.', 'vikrentcar');
+				break;
+			case 'VRCONFIGSEARCHPSMARTSEARCHAUTO':
+				$result = __('Automatic', 'vikrentcar');
+				break;
+			case 'VRCNEXTWEEKND':
+				$result = __('Next Weekend', 'vikrentcar');
+				break;
+			case 'VRCWEEKND':
+				$result = __('Weekend', 'vikrentcar');
+				break;
+			case 'VRADMINNOTESUPD':
+				$result = __('Updated', 'vikrentcar');
+				break;
+			case 'VRCSUGGCREATEPROMOOCC':
+				$result = __('Create promotion', 'vikrentcar');
+				break;
+			case 'VRPICKUPROOM':
+				$result = __('Check-in date', 'vikrentcar');
+				break;
+			case 'VRRETURNROOM':
+				$result = __('Check-out date', 'vikrentcar');
+				break;
+			case 'VRC_MIN_STAY_NIGHTS':
+				$result = __('Minimum rental period: %d days', 'vikrentcar');
+				break;
+			case 'VRC_CLEAR_DATES':
+				$result = __('Clear dates', 'vikrentcar');
+				break;
+			case 'VRC_CLOSE':
+				$result = __('Close', 'vikrentcar');
 				break;
 		}
 

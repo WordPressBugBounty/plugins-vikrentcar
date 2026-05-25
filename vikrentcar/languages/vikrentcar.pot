@@ -1,20 +1,21 @@
-# Copyright (C) 2024 E4J s.r.l.
+# Copyright (C) 2026 E4J s.r.l.
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: VikRentCar 1.4.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/vikrentcar\n"
+"Project-Id-Version: VikRentCar 1.4.6\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/VikRentCar\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-28T23:08:01+01:00\n"
+"POT-Creation-Date: 2026-05-25T12:26:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: vikrentcar\n"
 
 #. Plugin Name of the plugin
+#: vikrentcar.php
 #: libraries/language/admin.php:1372
 #: libraries/language/adminsys.php:52
 #: modules/mod_vikrentcar_cars/widget.php:44
@@ -24,22 +25,26 @@ msgid "VikRentCar"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: vikrentcar.php
 msgid "https://vikwp.com/plugin/vikrentcar"
 msgstr ""
 
 #. Description of the plugin
+#: vikrentcar.php
 msgid "Robust Car Rental Management Software."
 msgstr ""
 
 #. Author of the plugin
+#: vikrentcar.php
 msgid "E4J s.r.l."
 msgstr ""
 
 #. Author URI of the plugin
+#: vikrentcar.php
 msgid "https://vikwp.com"
 msgstr ""
 
-#: admin/payments/paypal.php:301
+#: admin/payments/paypal.php:151
 msgid "Transaction completed. The page will be refreshed automatically in a few seconds."
 msgstr ""
 
@@ -80,6 +85,7 @@ msgid "I couldn't understand how to get it working"
 msgstr ""
 
 #: libraries/html/feedback/thickbox.php:71
+#, php-format
 msgid "Did you read the plugin documentation? You can find it <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr ""
 
@@ -96,6 +102,7 @@ msgid "I'm not able to deactivate this plugin!"
 msgstr ""
 
 #: libraries/html/feedback/thickbox.php:87
+#, php-format
 msgid "In case you are experiencing some issues with the deactivation of this plugin, try to relaunch the page by appending <code>&feedback=0</code> to the URL. Otherwise just click <a href=\"%s\">HERE</a>."
 msgstr ""
 
@@ -857,8 +864,8 @@ msgstr ""
 #: libraries/language/admin.php:487
 #: libraries/language/admin.php:1768
 #: libraries/language/admin.php:2305
-#: libraries/language/admin.php:3853
-#: libraries/language/admin.php:4027
+#: libraries/language/admin.php:3880
+#: libraries/language/admin.php:4054
 #: libraries/language/site.php:42
 #: libraries/language/site.php:720
 msgid "Date"
@@ -894,7 +901,7 @@ msgstr ""
 #: libraries/language/admin.php:1960
 #: libraries/language/admin.php:2335
 #: libraries/language/admin.php:3340
-#: libraries/language/admin.php:3883
+#: libraries/language/admin.php:3910
 #: libraries/language/site.php:249
 #: libraries/language/site.php:372
 #: libraries/language/site.php:639
@@ -964,7 +971,7 @@ msgstr ""
 
 #: libraries/language/admin.php:556
 #: libraries/language/admin.php:1243
-#: libraries/language/admin.php:4591
+#: libraries/language/admin.php:4618
 msgid "Text"
 msgstr ""
 
@@ -986,7 +993,7 @@ msgstr ""
 #: libraries/language/admin.php:1477
 #: libraries/language/admin.php:1480
 #: libraries/language/admin.php:2320
-#: libraries/language/admin.php:4030
+#: libraries/language/admin.php:4057
 msgid "Description"
 msgstr ""
 
@@ -1414,6 +1421,7 @@ msgstr ""
 
 #: libraries/language/admin.php:931
 #: libraries/language/admin.php:1201
+#: libraries/language/admin.php:4904
 #: libraries/language/site.php:891
 #: modules/mod_vikrentcar_cars/language/handler.php:62
 #: modules/mod_vikrentcar_currencyconverter/language/handler.php:62
@@ -1423,6 +1431,7 @@ msgstr ""
 
 #: libraries/language/admin.php:934
 #: libraries/language/admin.php:1204
+#: libraries/language/admin.php:4907
 #: libraries/language/site.php:894
 #: modules/mod_vikrentcar_cars/language/handler.php:59
 #: modules/mod_vikrentcar_currencyconverter/language/handler.php:59
@@ -1464,6 +1473,7 @@ msgstr ""
 
 #: libraries/language/admin.php:955
 #: libraries/language/admin.php:1159
+#: libraries/language/admin.php:4940
 msgid "Updated"
 msgstr ""
 
@@ -1656,6 +1666,7 @@ msgstr ""
 #: libraries/language/admin.php:2158
 #: libraries/language/admin.php:2548
 #: libraries/language/admin.php:3172
+#: libraries/language/admin.php:4883
 #: libraries/language/site.php:918
 msgid "Cars"
 msgstr ""
@@ -1912,7 +1923,7 @@ msgstr ""
 #: libraries/language/admin.php:1360
 #: libraries/language/admin.php:2071
 #: libraries/language/admin.php:2887
-#: libraries/language/admin.php:3889
+#: libraries/language/admin.php:3916
 #: libraries/language/site.php:459
 #: libraries/language/site.php:675
 msgid "Country"
@@ -2235,7 +2246,7 @@ msgstr ""
 
 #: libraries/language/admin.php:1603
 #: libraries/language/system.php:286
-#: admin/resources/js/gutenberg-shortcodes.js:364
+#: admin/resources/js/gutenberg-shortcodes.js:370
 msgid "All"
 msgstr ""
 
@@ -2368,6 +2379,7 @@ msgid "Re-Send eMail"
 msgstr ""
 
 #: libraries/language/admin.php:1747
+#, php-format
 msgid "Order eMail re-sent to %s"
 msgstr ""
 
@@ -2453,6 +2465,7 @@ msgstr ""
 
 #: libraries/language/admin.php:1831
 #: libraries/language/site.php:783
+#, php-format
 msgid "This agreement between %s %s and %s was made on the %s and is valid until the %s."
 msgstr ""
 
@@ -2566,7 +2579,7 @@ msgid "To Date"
 msgstr ""
 
 #: libraries/language/admin.php:1909
-#: libraries/language/admin.php:4600
+#: libraries/language/admin.php:4627
 msgid "Export Type"
 msgstr ""
 
@@ -2599,12 +2612,13 @@ msgid "Error, no records to export..."
 msgstr ""
 
 #: libraries/language/admin.php:1963
-#: libraries/language/admin.php:4033
+#: libraries/language/admin.php:4060
 msgid "Total Paid"
 msgstr ""
 
 #: libraries/language/admin.php:1969
 #: libraries/language/site.php:858
+#, php-format
 msgid "Rental @ %s"
 msgstr ""
 
@@ -2619,6 +2633,7 @@ msgid "Loading..."
 msgstr ""
 
 #: libraries/language/admin.php:1978
+#, php-format
 msgid "VikRent Car v.%s - Powered by"
 msgstr ""
 
@@ -2748,6 +2763,7 @@ msgid "View in front site"
 msgstr ""
 
 #: libraries/language/admin.php:2086
+#, php-format
 msgid "Total with current pricing would be %s"
 msgstr ""
 
@@ -2780,6 +2796,7 @@ msgid "Apply"
 msgstr ""
 
 #: libraries/language/admin.php:2107
+#, php-format
 msgid "Orders to Export: %d"
 msgstr ""
 
@@ -2865,6 +2882,7 @@ msgstr ""
 
 #: libraries/language/admin.php:2200
 #: libraries/language/site.php:843
+#, php-format
 msgid "Out of Hours Fee<br/>(%s)"
 msgstr ""
 
@@ -3016,6 +3034,7 @@ msgid "Send Invoices to the customers via email"
 msgstr ""
 
 #: libraries/language/admin.php:2314
+#, php-format
 msgid "%d invoice(s) will be generated"
 msgstr ""
 
@@ -3040,6 +3059,7 @@ msgid "Company Legal Information"
 msgstr ""
 
 #: libraries/language/admin.php:2347
+#, php-format
 msgid "Rental Order for %s - Pickup Date: %s"
 msgstr ""
 
@@ -3068,6 +3088,7 @@ msgid "Dear customer,<br/><br/>attahced to this message you will find the invoic
 msgstr ""
 
 #: libraries/language/admin.php:2368
+#, php-format
 msgid "Invoices Generated: %d"
 msgstr ""
 
@@ -3395,6 +3416,7 @@ msgid "Total Sales"
 msgstr ""
 
 #: libraries/language/admin.php:2659
+#, php-format
 msgid "Total days booked: %d"
 msgstr ""
 
@@ -3407,6 +3429,7 @@ msgid "Days Booked"
 msgstr ""
 
 #: libraries/language/admin.php:2668
+#, php-format
 msgid "Occupancy Rate: %s%%"
 msgstr ""
 
@@ -3467,11 +3490,12 @@ msgid "No confirmed orders found for these dates. Reports cannot be generated."
 msgstr ""
 
 #: libraries/language/admin.php:2719
+#, php-format
 msgid "%d Confirmed Orders over %d days"
 msgstr ""
 
 #: libraries/language/admin.php:2722
-#: libraries/language/admin.php:3886
+#: libraries/language/admin.php:3913
 msgid "Top Countries"
 msgstr ""
 
@@ -3570,6 +3594,7 @@ msgid "Administration"
 msgstr ""
 
 #: libraries/language/admin.php:2815
+#, php-format
 msgid "Order created by User ID %s"
 msgstr ""
 
@@ -3579,7 +3604,7 @@ msgstr ""
 
 #: libraries/language/admin.php:2824
 #: libraries/language/system.php:319
-#: admin/resources/js/gutenberg-shortcodes.js:359
+#: admin/resources/js/gutenberg-shortcodes.js:365
 msgid "Language"
 msgstr ""
 
@@ -3635,7 +3660,7 @@ msgid "The car of this reservation has no rates defined. Make sure to set a rate
 msgstr ""
 
 #: libraries/language/admin.php:2866
-#: libraries/language/admin.php:4657
+#: libraries/language/admin.php:4684
 #: libraries/language/adminsys.php:187
 msgid "Management"
 msgstr ""
@@ -3708,6 +3733,7 @@ msgid "-- Any Country --"
 msgstr ""
 
 #: libraries/language/admin.php:2935
+#, php-format
 msgid "Export Information about %d selected Customers"
 msgstr ""
 
@@ -4058,10 +4084,12 @@ msgid "per day"
 msgstr ""
 
 #: libraries/language/admin.php:3289
+#, php-format
 msgid "%d Day"
 msgstr ""
 
 #: libraries/language/admin.php:3292
+#, php-format
 msgid "%d Days"
 msgstr ""
 
@@ -4118,10 +4146,12 @@ msgid "Error while modifying rate plans. Missing data"
 msgstr ""
 
 #: libraries/language/admin.php:3334
+#, php-format
 msgid "Special Price rule #%d"
 msgstr ""
 
 #: libraries/language/admin.php:3337
+#, php-format
 msgid "The Car is not available or has no Rates from %s to %s."
 msgstr ""
 
@@ -4406,6 +4436,7 @@ msgid "Settings"
 msgstr ""
 
 #: libraries/language/admin.php:3556
+#, php-format
 msgid "Repeat restriction every %s"
 msgstr ""
 
@@ -4418,6 +4449,7 @@ msgid "Cars Assigned"
 msgstr ""
 
 #: libraries/language/admin.php:3565
+#, php-format
 msgid "This option is assigned to %d cars over %d."
 msgstr ""
 
@@ -4515,6 +4547,7 @@ msgstr ""
 
 #: libraries/language/admin.php:3637
 #: libraries/language/site.php:1071
+#, php-format
 msgid "Your reservation at %s"
 msgstr ""
 
@@ -4532,6 +4565,7 @@ msgstr ""
 
 #: libraries/language/admin.php:3652
 #: libraries/language/site.php:1074
+#, php-format
 msgid "New Order #%s"
 msgstr ""
 
@@ -4743,7 +4777,7 @@ msgid "Load Report Data"
 msgstr ""
 
 #: libraries/language/admin.php:3832
-#: libraries/language/admin.php:3880
+#: libraries/language/admin.php:3907
 msgid "Revenue"
 msgstr ""
 
@@ -4768,455 +4802,495 @@ msgid "No orders found with the parameters specified."
 msgstr ""
 
 #: libraries/language/admin.php:3850
-msgid "Export as CSV"
+msgid "Export as"
+msgstr ""
+
+#: libraries/language/admin.php:3853
+msgid "Copy"
 msgstr ""
 
 #: libraries/language/admin.php:3856
-msgid "Cars Sold"
+msgid "Export as CSV"
 msgstr ""
 
 #: libraries/language/admin.php:3859
-msgid "Total Orders"
+msgid "Auto-Export"
 msgstr ""
 
 #: libraries/language/admin.php:3862
-msgid "% Occupancy"
+msgid "The JSON Payload will automatically set dynamic and required variables for the Report to generate the file to export."
 msgstr ""
 
 #: libraries/language/admin.php:3865
-msgid "ADR"
+msgid "Remove local file"
 msgstr ""
 
 #: libraries/language/admin.php:3868
-msgid "The &quot;Average Daily Rate&quot; is calculated by dividing the Total Revenue by the number of Cars Sold."
+msgid "If you are sending the exported file to an email address, then after testing you can choose not to keep the file locally and have it removed automatically."
 msgstr ""
 
 #: libraries/language/admin.php:3871
-msgid "RevPAC"
+msgid "Examples"
 msgstr ""
 
 #: libraries/language/admin.php:3874
-msgid "The &quot;Revenue Per Available Car&quot; is calculated by dividing the Total Revenue by the total number of Cars Available."
+msgid "Choose the export format or the action to execute."
 msgstr ""
 
 #: libraries/language/admin.php:3877
-msgid "Taxes/Fees"
+msgid "The payload is needed to let the report export dynamic information every day."
+msgstr ""
+
+#: libraries/language/admin.php:3883
+msgid "Cars Sold"
+msgstr ""
+
+#: libraries/language/admin.php:3886
+msgid "Total Orders"
+msgstr ""
+
+#: libraries/language/admin.php:3889
+msgid "% Occupancy"
 msgstr ""
 
 #: libraries/language/admin.php:3892
-msgid "Unknown"
+msgid "ADR"
 msgstr ""
 
 #: libraries/language/admin.php:3895
-msgid "Sheet + Chart"
+msgid "The &quot;Average Daily Rate&quot; is calculated by dividing the Total Revenue by the number of Cars Sold."
 msgstr ""
 
 #: libraries/language/admin.php:3898
-msgid "Sheet"
+msgid "RevPAC"
 msgstr ""
 
 #: libraries/language/admin.php:3901
-msgid "Chart"
+msgid "The &quot;Revenue Per Available Car&quot; is calculated by dividing the Total Revenue by the total number of Cars Available."
 msgstr ""
 
 #: libraries/language/admin.php:3904
-msgid "Website Rates"
-msgstr ""
-
-#: libraries/language/admin.php:3907
-msgid "Total sellable cars: %d"
-msgstr ""
-
-#: libraries/language/admin.php:3910
-msgid "Cars Occupancy"
-msgstr ""
-
-#: libraries/language/admin.php:3913
-msgid "Cars Unsold"
-msgstr ""
-
-#: libraries/language/admin.php:3916
-msgid "Occupancy Ranking"
+msgid "Taxes/Fees"
 msgstr ""
 
 #: libraries/language/admin.php:3919
-msgid "Rate Plans Revenue"
+msgid "Unknown"
 msgstr ""
 
 #: libraries/language/admin.php:3922
-msgid "Options/Extras"
+msgid "Sheet + Chart"
 msgstr ""
 
 #: libraries/language/admin.php:3925
-msgid "The values for the Options/Extras are tax included. The amount is calculated by subtracting the amount of Car Costs from the Order Total. It's the sum of all costs excluding the costs of the vehicles. It may include out of hours or location fees."
+msgid "Sheet"
 msgstr ""
 
 #: libraries/language/admin.php:3928
-msgid "Ordering position"
+msgid "Chart"
 msgstr ""
 
 #: libraries/language/admin.php:3931
-msgid "Leave this field empty for letting the system calculate the ordering position automatically"
+msgid "Website Rates"
 msgstr ""
 
 #: libraries/language/admin.php:3934
-msgid "Previous amount paid %s"
+#, php-format
+msgid "Total sellable cars: %d"
 msgstr ""
 
 #: libraries/language/admin.php:3937
-msgid "New Confirmed Booking"
+msgid "Cars Occupancy"
 msgstr ""
 
 #: libraries/language/admin.php:3940
-msgid "Booking Modified by Customer"
+msgid "Cars Unsold"
 msgstr ""
 
 #: libraries/language/admin.php:3943
-msgid "Administrator Booking Modification"
+msgid "Occupancy Ranking"
 msgstr ""
 
 #: libraries/language/admin.php:3946
-msgid "Booking Created by Administrator"
+msgid "Rate Plans Revenue"
 msgstr ""
 
 #: libraries/language/admin.php:3949
-msgid "New Stand-by Booking"
+msgid "Options/Extras"
 msgstr ""
 
 #: libraries/language/admin.php:3952
-msgid "Payment Received"
+msgid "The values for the Options/Extras are tax included. The amount is calculated by subtracting the amount of Car Costs from the Order Total. It's the sum of all costs excluding the costs of the vehicles. It may include out of hours or location fees."
 msgstr ""
 
 #: libraries/language/admin.php:3955
-msgid "Other Payment Received"
+msgid "Ordering position"
 msgstr ""
 
 #: libraries/language/admin.php:3958
-msgid "Customer Request"
+msgid "Leave this field empty for letting the system calculate the ordering position automatically"
 msgstr ""
 
 #: libraries/language/admin.php:3961
-msgid "Booking Cancelled by Customer"
+#, php-format
+msgid "Previous amount paid %s"
 msgstr ""
 
 #: libraries/language/admin.php:3964
-msgid "Booking Auto Cancellation"
+msgid "New Confirmed Booking"
 msgstr ""
 
 #: libraries/language/admin.php:3967
-msgid "Administrator Booking Cancellation"
+msgid "Booking Modified by Customer"
 msgstr ""
 
 #: libraries/language/admin.php:3970
-msgid "Booking Receipt Issued"
+msgid "Administrator Booking Modification"
 msgstr ""
 
 #: libraries/language/admin.php:3973
-msgid "Booking Invoice Issued"
+msgid "Booking Created by Administrator"
 msgstr ""
 
 #: libraries/language/admin.php:3976
-msgid "Cancel Booking Registration"
+msgid "New Stand-by Booking"
 msgstr ""
 
 #: libraries/language/admin.php:3979
-msgid "Check-in"
+msgid "Payment Received"
 msgstr ""
 
 #: libraries/language/admin.php:3982
-msgid "Check-out"
+msgid "Other Payment Received"
 msgstr ""
 
 #: libraries/language/admin.php:3985
-msgid "No-Show"
+msgid "Customer Request"
 msgstr ""
 
 #: libraries/language/admin.php:3988
-msgid "Administrator Booking Confirmation"
+msgid "Booking Cancelled by Customer"
 msgstr ""
 
 #: libraries/language/admin.php:3991
-msgid "Reporting"
+msgid "Booking Auto Cancellation"
 msgstr ""
 
 #: libraries/language/admin.php:3994
-msgid "Email to Client"
+msgid "Administrator Booking Cancellation"
 msgstr ""
 
 #: libraries/language/admin.php:3997
-msgid "SMS to Client"
+msgid "Booking Receipt Issued"
 msgstr ""
 
 #: libraries/language/admin.php:4000
-msgid "New amount paid"
+msgid "Booking Invoice Issued"
 msgstr ""
 
 #: libraries/language/admin.php:4003
-msgid "New extras booked"
+msgid "Cancel Booking Registration"
 msgstr ""
 
 #: libraries/language/admin.php:4006
-msgid "Cancellation Email Sent"
+msgid "Check-in"
 msgstr ""
 
 #: libraries/language/admin.php:4009
-msgid "Refund transaction"
+msgid "Check-out"
 msgstr ""
 
 #: libraries/language/admin.php:4012
-msgid "Refunded amount updated"
+msgid "No-Show"
 msgstr ""
 
 #: libraries/language/admin.php:4015
-#: libraries/language/admin.php:4330
-msgid "Payable amount updated"
+msgid "Administrator Booking Confirmation"
 msgstr ""
 
 #: libraries/language/admin.php:4018
-msgid "Order modified on %s.\\nPrevious rental dates: %s.\\nPrevious car booked: %s.\\nPrevious Total: %s."
+msgid "Reporting"
 msgstr ""
 
 #: libraries/language/admin.php:4021
-msgid "Order History"
+msgid "Email to Client"
 msgstr ""
 
 #: libraries/language/admin.php:4024
-msgid "Event"
+msgid "SMS to Client"
+msgstr ""
+
+#: libraries/language/admin.php:4027
+msgid "New amount paid"
+msgstr ""
+
+#: libraries/language/admin.php:4030
+msgid "New extras booked"
+msgstr ""
+
+#: libraries/language/admin.php:4033
+msgid "Cancellation Email Sent"
 msgstr ""
 
 #: libraries/language/admin.php:4036
-msgid "Order Total"
+msgid "Refund transaction"
 msgstr ""
 
 #: libraries/language/admin.php:4039
-msgid "Sub-unit changed for %s from %s to %s"
+msgid "Refunded amount updated"
 msgstr ""
 
 #: libraries/language/admin.php:4042
-msgid "Click this button to force the availability, even if this may generate overbooking."
+#: libraries/language/admin.php:4357
+msgid "Payable amount updated"
 msgstr ""
 
 #: libraries/language/admin.php:4045
-msgid "Force availability"
+#, php-format
+msgid "Order modified on %s.\\nPrevious rental dates: %s.\\nPrevious car booked: %s.\\nPrevious Total: %s."
 msgstr ""
 
 #: libraries/language/admin.php:4048
-msgid "Order was forced due to non-availability"
+msgid "Order History"
 msgstr ""
 
 #: libraries/language/admin.php:4051
-msgid "Add new note for today"
-msgstr ""
-
-#: libraries/language/admin.php:4054
-msgid "Consecutive days"
-msgstr ""
-
-#: libraries/language/admin.php:4057
-msgid "Initial Setup"
-msgstr ""
-
-#: libraries/language/admin.php:4060
-msgid "Complete the configuration of the following tasks to get started."
+msgid "Event"
 msgstr ""
 
 #: libraries/language/admin.php:4063
-msgid "The types of price are the rate plans that clients can choose for renting a vehicle. They identify the insurance, the cancellation policies or the services included."
+msgid "Order Total"
 msgstr ""
 
 #: libraries/language/admin.php:4066
-msgid "Create some vehicles to enable the booking process. Your cars will have their own calendars for the availability and rates, and your guests will be booking the vehicles you have set up."
+#, php-format
+msgid "Sub-unit changed for %s from %s to %s"
 msgstr ""
 
 #: libraries/language/admin.php:4069
-msgid "It is necessary to define the base rental costs for each vehicle for the various rate plans you have created. Other seasonal rates can be set up later from the page Rates Overview."
+msgid "Click this button to force the availability, even if this may generate overbooking."
 msgstr ""
 
 #: libraries/language/admin.php:4072
-msgid "Admin Widgets Customizer"
+msgid "Force availability"
 msgstr ""
 
 #: libraries/language/admin.php:4075
-msgid "<strong>Welcome to the Admin Widgets Customizer!</strong><br/>This interface will let you manage all the elements displayed in your Dashboard through <b>Sections</b>, <b>Containers</b> and <b>Widgets</b>."
+msgid "Order was forced due to non-availability"
 msgstr ""
 
 #: libraries/language/admin.php:4078
-msgid "Add new <b>Sections</b> to better organize your elements, and arrange their position with drag and drop actions. Add new <b>Containers</b> with a proper size to contain your <b>widgets</b>.<br/>Four sizes are available for the containers:<ul><li><b>Full Width</b> gives a <u>100%</u> width to the container. Only one container of this type will fit in one row.</li><li><b>Large</b> gives the container a <u>75%</u> width. Another small container could fit in the same row next to this size.</li><li><b>Medium</b> gives the container a <u>50%</u> width. Another medium container could fit next to it, or even two small containers.</li><li><b>Small</b> gives the container a width of <u>25%</u>. One row could fit up to 4 containers of this size.</li></ul>"
+msgid "Add new note for today"
 msgstr ""
 
 #: libraries/language/admin.php:4081
-msgid "Customize Widgets"
+msgid "Consecutive days"
 msgstr ""
 
 #: libraries/language/admin.php:4084
-msgid "Changes will be saved automatically"
+msgid "Initial Setup"
 msgstr ""
 
 #: libraries/language/admin.php:4087
-msgid "Restore"
+msgid "Complete the configuration of the following tasks to get started."
 msgstr ""
 
 #: libraries/language/admin.php:4090
-msgid "Restore Default Widgets Configuration"
+msgid "The types of price are the rate plans that clients can choose for renting a vehicle. They identify the insurance, the cancellation policies or the services included."
 msgstr ""
 
 #: libraries/language/admin.php:4093
-msgid "Container Size"
+msgid "Create some vehicles to enable the booking process. Your cars will have their own calendars for the availability and rates, and your guests will be booking the vehicles you have set up."
 msgstr ""
 
 #: libraries/language/admin.php:4096
-msgid "Full Width"
+msgid "It is necessary to define the base rental costs for each vehicle for the various rate plans you have created. Other seasonal rates can be set up later from the page Rates Overview."
 msgstr ""
 
 #: libraries/language/admin.php:4099
-msgid "Large"
+msgid "Admin Widgets Customizer"
 msgstr ""
 
 #: libraries/language/admin.php:4102
-msgid "Medium"
+msgid "<strong>Welcome to the Admin Widgets Customizer!</strong><br/>This interface will let you manage all the elements displayed in your Dashboard through <b>Sections</b>, <b>Containers</b> and <b>Widgets</b>."
 msgstr ""
 
 #: libraries/language/admin.php:4105
-msgid "Small"
+msgid "Add new <b>Sections</b> to better organize your elements, and arrange their position with drag and drop actions. Add new <b>Containers</b> with a proper size to contain your <b>widgets</b>.<br/>Four sizes are available for the containers:<ul><li><b>Full Width</b> gives a <u>100%</u> width to the container. Only one container of this type will fit in one row.</li><li><b>Large</b> gives the container a <u>75%</u> width. Another small container could fit in the same row next to this size.</li><li><b>Medium</b> gives the container a <u>50%</u> width. Another medium container could fit next to it, or even two small containers.</li><li><b>Small</b> gives the container a width of <u>25%</u>. One row could fit up to 4 containers of this size.</li></ul>"
 msgstr ""
 
 #: libraries/language/admin.php:4108
-msgid "Add Widgets Container"
+msgid "Customize Widgets"
 msgstr ""
 
 #: libraries/language/admin.php:4111
-msgid "Choose one widget to add"
+msgid "Changes will be saved automatically"
 msgstr ""
 
 #: libraries/language/admin.php:4114
-msgid "Add New Widget"
+msgid "Restore"
 msgstr ""
 
 #: libraries/language/admin.php:4117
-msgid "Saving the widgets map"
+msgid "Restore Default Widgets Configuration"
 msgstr ""
 
 #: libraries/language/admin.php:4120
-msgid "Could not update the map. Please try again"
+msgid "Container Size"
 msgstr ""
 
 #: libraries/language/admin.php:4123
-msgid "Last update"
+msgid "Full Width"
 msgstr ""
 
 #: libraries/language/admin.php:4126
-msgid "Please enter a name for the section"
+msgid "Large"
 msgstr ""
 
 #: libraries/language/admin.php:4129
-msgid "New Section"
+msgid "Medium"
 msgstr ""
 
 #: libraries/language/admin.php:4132
-msgid "The selected element will be removed. Proceed?"
+msgid "Small"
 msgstr ""
 
 #: libraries/language/admin.php:4135
-msgid "Please select the size of the container"
+msgid "Add Widgets Container"
 msgstr ""
 
 #: libraries/language/admin.php:4138
-msgid "Update Widgets Container"
+msgid "Choose one widget to add"
 msgstr ""
 
 #: libraries/language/admin.php:4141
-msgid "Edit Widgets Container"
+msgid "Add New Widget"
 msgstr ""
 
 #: libraries/language/admin.php:4144
-msgid "Could not display the widget. Try reloading the page"
+msgid "Saving the widgets map"
 msgstr ""
 
 #: libraries/language/admin.php:4147
-msgid "Sticky Notes"
+msgid "Could not update the map. Please try again"
 msgstr ""
 
 #: libraries/language/admin.php:4150
-msgid "Write down something important for all your colleagues."
+msgid "Last update"
 msgstr ""
 
 #: libraries/language/admin.php:4153
-msgid "Note Title"
+msgid "Please enter a name for the section"
 msgstr ""
 
 #: libraries/language/admin.php:4156
-msgid "Write here the text of the note."
+msgid "New Section"
 msgstr ""
 
 #: libraries/language/admin.php:4159
-msgid "Use <b>shortcuts</b> to <u>format</u> the <i>text</i>."
+msgid "The selected element will be removed. Proceed?"
 msgstr ""
 
 #: libraries/language/admin.php:4162
-msgid "Enter a custom URI for the link"
+msgid "Please select the size of the container"
 msgstr ""
 
 #: libraries/language/admin.php:4165
-msgid "Notes text formatting"
+msgid "Update Widgets Container"
 msgstr ""
 
 #: libraries/language/admin.php:4168
-msgid "You can use the following keyboard shortcuts while typing the text of your note:<br/><br/><b>Ctrl + B</b>: makes the text selection bold.<br/><b>Ctrl + I</b>: makes the text selection italic.<br/><b>Ctrl + U</b>: underlines the text selection.<br/><b>Ctrl + S</b>: strike-through the text selection.<br/><b>Ctrl + H/T</b>: makes the current block a title/heading.<br/><b>Ctrl + P</b>: makes the current block a paragraph.<br/><b>Ctrl + L</b>: adds a new bullet list, or converts the text selection to a link.<br/><b>Ctrl + O/N</b>: adds a new numbered list.<br/><b>Ctrl + A</b>: makes the whole text selected.<br/><b>Ctrl + M</b>: converts the markup text selection to HTML."
+msgid "Edit Widgets Container"
 msgstr ""
 
 #: libraries/language/admin.php:4171
-msgid "You can use the following keyboard shortcuts while typing the text of your note:<br/><br/><b>&#8984; + B</b>: makes the text selection bold.<br/><b>&#8984; + I</b>: makes the text selection italic.<br/><b>&#8984; + U</b>: underlines the text selection.<br/><b>&#8984; + S</b>: strike-through the text selection.<br/><b>&#8984; + H/T</b>: makes the current block a title/heading.<br/><b>&#8984; + P</b>: makes the current block a paragraph.<br/><b>&#8984; + L</b>: adds a new bullet list, or converts the text selection to a link.<br/><b>&#8984; + O/N</b>: adds a new numbered list.<br/><b>&#8984; + A</b>: makes the whole text selected.<br/><b>Ctrl + M</b>: converts the markup text selection to HTML.<br/><br/>Some commands may also be executed by holding <kbd>Ctrl</kbd> rather than <kbd>&#8984;</kbd>."
+msgid "Could not display the widget. Try reloading the page"
 msgstr ""
 
 #: libraries/language/admin.php:4174
-msgid "Visitors Counter"
+msgid "Sticky Notes"
 msgstr ""
 
 #: libraries/language/admin.php:4177
-msgid "Counts the daily visitors that looked for a vehicle from your website"
+msgid "Write down something important for all your colleagues."
 msgstr ""
 
 #: libraries/language/admin.php:4180
-msgid "Visitors today"
+msgid "Note Title"
 msgstr ""
 
 #: libraries/language/admin.php:4183
-msgid "Visitors this month"
+msgid "Write here the text of the note."
 msgstr ""
 
 #: libraries/language/admin.php:4186
-msgid "Visitors last month"
+msgid "Use <b>shortcuts</b> to <u>format</u> the <i>text</i>."
 msgstr ""
 
 #: libraries/language/admin.php:4189
-msgid "Turnout"
+msgid "Enter a custom URI for the link"
 msgstr ""
 
 #: libraries/language/admin.php:4192
-msgid "Okay, keep reminding."
+msgid "Notes text formatting"
 msgstr ""
 
 #: libraries/language/admin.php:4195
-msgid "Okay, do not remind again."
+msgid "You can use the following keyboard shortcuts while typing the text of your note:<br/><br/><b>Ctrl + B</b>: makes the text selection bold.<br/><b>Ctrl + I</b>: makes the text selection italic.<br/><b>Ctrl + U</b>: underlines the text selection.<br/><b>Ctrl + S</b>: strike-through the text selection.<br/><b>Ctrl + H/T</b>: makes the current block a title/heading.<br/><b>Ctrl + P</b>: makes the current block a paragraph.<br/><b>Ctrl + L</b>: adds a new bullet list, or converts the text selection to a link.<br/><b>Ctrl + O/N</b>: adds a new numbered list.<br/><b>Ctrl + A</b>: makes the whole text selected.<br/><b>Ctrl + M</b>: converts the markup text selection to HTML."
 msgstr ""
 
 #: libraries/language/admin.php:4198
-msgid "A list of rental orders starting today"
+msgid "You can use the following keyboard shortcuts while typing the text of your note:<br/><br/><b>&#8984; + B</b>: makes the text selection bold.<br/><b>&#8984; + I</b>: makes the text selection italic.<br/><b>&#8984; + U</b>: underlines the text selection.<br/><b>&#8984; + S</b>: strike-through the text selection.<br/><b>&#8984; + H/T</b>: makes the current block a title/heading.<br/><b>&#8984; + P</b>: makes the current block a paragraph.<br/><b>&#8984; + L</b>: adds a new bullet list, or converts the text selection to a link.<br/><b>&#8984; + O/N</b>: adds a new numbered list.<br/><b>&#8984; + A</b>: makes the whole text selected.<br/><b>Ctrl + M</b>: converts the markup text selection to HTML.<br/><br/>Some commands may also be executed by holding <kbd>Ctrl</kbd> rather than <kbd>&#8984;</kbd>."
 msgstr ""
 
 #: libraries/language/admin.php:4201
-msgid "A list of rental orders ending today"
+msgid "Visitors Counter"
 msgstr ""
 
 #: libraries/language/admin.php:4204
-msgid "No pickup for today."
+msgid "Counts the daily visitors that looked for a vehicle from your website"
 msgstr ""
 
 #: libraries/language/admin.php:4207
-msgid "No drop off for today."
+msgid "Visitors today"
 msgstr ""
 
 #: libraries/language/admin.php:4210
+msgid "Visitors this month"
+msgstr ""
+
+#: libraries/language/admin.php:4213
+msgid "Visitors last month"
+msgstr ""
+
+#: libraries/language/admin.php:4216
+msgid "Turnout"
+msgstr ""
+
+#: libraries/language/admin.php:4219
+msgid "Okay, keep reminding."
+msgstr ""
+
+#: libraries/language/admin.php:4222
+msgid "Okay, do not remind again."
+msgstr ""
+
+#: libraries/language/admin.php:4225
+msgid "A list of rental orders starting today"
+msgstr ""
+
+#: libraries/language/admin.php:4228
+msgid "A list of rental orders ending today"
+msgstr ""
+
+#: libraries/language/admin.php:4231
+msgid "No pickup for today."
+msgstr ""
+
+#: libraries/language/admin.php:4234
+msgid "No drop off for today."
+msgstr ""
+
+#: libraries/language/admin.php:4237
 #: libraries/language/site.php:861
 #: libraries/language/system.php:249
 #: modules/mod_vikrentcar_search/language/handler.php:101
@@ -5224,849 +5298,954 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: libraries/language/admin.php:4213
+#: libraries/language/admin.php:4240
 msgid "The upcoming rental orders"
 msgstr ""
 
-#: libraries/language/admin.php:4216
+#: libraries/language/admin.php:4243
 msgid "Cars Locked"
 msgstr ""
 
-#: libraries/language/admin.php:4219
+#: libraries/language/admin.php:4246
 msgid "A list of unconfirmed orders currently blocking some vehicles"
 msgstr ""
 
-#: libraries/language/admin.php:4222
+#: libraries/language/admin.php:4249
 msgid "Reminders"
 msgstr ""
 
-#: libraries/language/admin.php:4225
+#: libraries/language/admin.php:4252
 msgid "List of notes defined for certain vehicles and dates"
 msgstr ""
 
-#: libraries/language/admin.php:4228
+#: libraries/language/admin.php:4255
 msgid "Use <i>#hashtags</i> to categorize the note."
 msgstr ""
 
-#: libraries/language/admin.php:4231
+#: libraries/language/admin.php:4258
 msgid "Add New"
 msgstr ""
 
-#: libraries/language/admin.php:4234
+#: libraries/language/admin.php:4261
 msgid "New Reminder"
 msgstr ""
 
-#: libraries/language/admin.php:4237
+#: libraries/language/admin.php:4264
 msgid "Until"
 msgstr ""
 
-#: libraries/language/admin.php:4240
+#: libraries/language/admin.php:4267
 msgid "Missing required fields"
 msgstr ""
 
-#: libraries/language/admin.php:4243
+#: libraries/language/admin.php:4270
 msgid "A snapshot of the future and past rental orders"
 msgstr ""
 
-#: libraries/language/admin.php:4246
+#: libraries/language/admin.php:4273
 msgid "Rentals last month"
 msgstr ""
 
-#: libraries/language/admin.php:4249
+#: libraries/language/admin.php:4276
 msgid "Rentals this month"
 msgstr ""
 
-#: libraries/language/admin.php:4252
+#: libraries/language/admin.php:4279
 msgid "Suggest solutions when no availability"
 msgstr ""
 
-#: libraries/language/admin.php:4255
+#: libraries/language/admin.php:4282
 msgid "Preferred Colors"
 msgstr ""
 
-#: libraries/language/admin.php:4258
+#: libraries/language/admin.php:4285
 msgid "Select your preferred colors to adjust the default front-end styles. This way, the look of the elements (titles, buttons, font color and backgrounds) of the various pages of the booking process can match with your Theme or Company design."
 msgstr ""
 
-#: libraries/language/admin.php:4261
+#: libraries/language/admin.php:4288
 msgid "Titles and Headings"
 msgstr ""
 
-#: libraries/language/admin.php:4264
+#: libraries/language/admin.php:4291
 msgid "Elements with backgrounds"
 msgstr ""
 
-#: libraries/language/admin.php:4267
+#: libraries/language/admin.php:4294
 msgid "Hovered elements"
 msgstr ""
 
-#: libraries/language/admin.php:4270
+#: libraries/language/admin.php:4297
 msgid "Background color"
 msgstr ""
 
-#: libraries/language/admin.php:4273
+#: libraries/language/admin.php:4300
 msgid "Font color"
 msgstr ""
 
-#: libraries/language/admin.php:4276
+#: libraries/language/admin.php:4303
 msgid "Styles examples"
 msgstr ""
 
-#: libraries/language/admin.php:4279
+#: libraries/language/admin.php:4306
 msgid "Registration"
 msgstr ""
 
-#: libraries/language/admin.php:4282
+#: libraries/language/admin.php:4309
 msgid "None"
 msgstr ""
 
-#: libraries/language/admin.php:4285
+#: libraries/language/admin.php:4312
 msgid "Started"
 msgstr ""
 
-#: libraries/language/admin.php:4288
+#: libraries/language/admin.php:4315
 msgid "Terminated"
 msgstr ""
 
-#: libraries/language/admin.php:4291
+#: libraries/language/admin.php:4318
 msgid "No show"
 msgstr ""
 
-#: libraries/language/admin.php:4294
+#: libraries/language/admin.php:4321
 msgid "Total duration"
 msgstr ""
 
-#: libraries/language/admin.php:4297
+#: libraries/language/admin.php:4324
 msgid "Payment &quot;button&quot; position"
 msgstr ""
 
-#: libraries/language/admin.php:4300
+#: libraries/language/admin.php:4327
 msgid "Top"
 msgstr ""
 
-#: libraries/language/admin.php:4303
+#: libraries/language/admin.php:4330
 msgid "Middle"
 msgstr ""
 
-#: libraries/language/admin.php:4306
+#: libraries/language/admin.php:4333
 msgid "Bottom"
 msgstr ""
 
-#: libraries/language/admin.php:4309
+#: libraries/language/admin.php:4336
 msgid "Custom logo"
 msgstr ""
 
-#: libraries/language/admin.php:4312
+#: libraries/language/admin.php:4339
 msgid "Allow multiple payments for the same order"
 msgstr ""
 
-#: libraries/language/admin.php:4315
+#: libraries/language/admin.php:4342
 msgid "If enabled, confirmed rental orders with an amount paid greater than zero and less than the order total amount, will allow to pay the remaining balance. If disabled, confirmed rental orders will not allow any additional payment."
 msgstr ""
 
-#: libraries/language/admin.php:4318
+#: libraries/language/admin.php:4345
 msgid "Amount Payable"
 msgstr ""
 
-#: libraries/language/admin.php:4321
+#: libraries/language/admin.php:4348
 msgid "Request Payment"
 msgstr ""
 
-#: libraries/language/admin.php:4324
+#: libraries/language/admin.php:4351
 msgid "The reservation will allow the payment to be made via front-end. Make sure to inform the customer by using the re-send email button."
 msgstr ""
 
-#: libraries/language/admin.php:4327
+#: libraries/language/admin.php:4354
+#, php-format
 msgid "Reservation amount payable changed to %s"
 msgstr ""
 
-#: libraries/language/admin.php:4333
+#: libraries/language/admin.php:4360
 msgid "Make payable from front site"
 msgstr ""
 
-#: libraries/language/admin.php:4336
+#: libraries/language/admin.php:4363
 msgid "Customer Documents"
 msgstr ""
 
-#: libraries/language/admin.php:4339
+#: libraries/language/admin.php:4366
 msgid "Upload File"
 msgstr ""
 
-#: libraries/language/admin.php:4342
+#: libraries/language/admin.php:4369
 msgid "or DRAG FILES HERE"
 msgstr ""
 
-#: libraries/language/admin.php:4345
+#: libraries/language/admin.php:4372
 msgid "Press ESC from keyboard to stop deleting the files"
 msgstr ""
 
-#: libraries/language/admin.php:4348
+#: libraries/language/admin.php:4375
 msgid "Drag & drop some documents here to upload them. It is possible to remove the documents by keeping them pressed.<br />You do not need to hit the \"Save\" button to keep the uploaded files."
 msgstr ""
 
-#: libraries/language/admin.php:4351
+#: libraries/language/admin.php:4378
 msgid "Allow Documents Upload"
 msgstr ""
 
-#: libraries/language/admin.php:4354
+#: libraries/language/admin.php:4381
 msgid "If enabled, confirmed orders with a pick up date in the future will allow the user to upload documents via front-end, like their driver license or a photo of the personal ID."
 msgstr ""
 
-#: libraries/language/admin.php:4357
+#: libraries/language/admin.php:4384
 msgid "Upload instructions"
 msgstr ""
 
-#: libraries/language/admin.php:4360
+#: libraries/language/admin.php:4387
 msgid "This text will be displayed on the page where the users will be able to upload their own documents. These instructions should help the users understand what documents they should upload and what information they should provide."
 msgstr ""
 
-#: libraries/language/admin.php:4363
+#: libraries/language/admin.php:4390
 msgid "Documents uploaded by client"
 msgstr ""
 
-#: libraries/language/admin.php:4366
+#: libraries/language/admin.php:4393
 msgid "Reminder - Email"
 msgstr ""
 
-#: libraries/language/admin.php:4369
+#: libraries/language/admin.php:4396
 msgid "Backup - Creator"
 msgstr ""
 
-#: libraries/language/admin.php:4372
+#: libraries/language/admin.php:4399
 msgid "Webhook Notification"
 msgstr ""
 
-#: libraries/language/admin.php:4375
+#: libraries/language/admin.php:4402
 msgid "This cron job allows to set up automated actions whenever new events related to orders take place. This is useful to post the changes to remote URLs or to pass the data to third party plugins."
 msgstr ""
 
-#: libraries/language/admin.php:4378
+#: libraries/language/admin.php:4405
 msgid "Notification type"
 msgstr ""
 
-#: libraries/language/admin.php:4381
+#: libraries/language/admin.php:4408
 msgid "Choose the type of webhook notification to trigger:<br/><ul><li><strong>URL</strong> POST request with a JSON payload to a remote URL.</li><li><strong>PHP Callback</strong> Invoke a custom PHP function or a class method.</li><li><strong>WordPress Action</strong> Calls a custom event (hook) by passing the payload to the action.</li></ul>"
 msgstr ""
 
-#: libraries/language/admin.php:4384
+#: libraries/language/admin.php:4411
 msgid "URL"
 msgstr ""
 
-#: libraries/language/admin.php:4387
+#: libraries/language/admin.php:4414
 msgid "PHP Callback"
 msgstr ""
 
-#: libraries/language/admin.php:4390
+#: libraries/language/admin.php:4417
 msgid "WordPress Action"
 msgstr ""
 
-#: libraries/language/admin.php:4393
+#: libraries/language/admin.php:4420
 msgid "Handler"
 msgstr ""
 
-#: libraries/language/admin.php:4396
+#: libraries/language/admin.php:4423
 msgid "Depending on the type of webhook notification, enter the endpoint URL, the PHP callback (syntax: <code>function_name</code> or <code>object,method</code>) or the name of the WordPress hook."
 msgstr ""
 
-#: libraries/language/admin.php:4399
+#: libraries/language/admin.php:4426
 msgid "Vik Rent Car - Conditional Text"
 msgstr ""
 
-#: libraries/language/admin.php:4402
+#: libraries/language/admin.php:4429
 msgid "Conditional Texts"
 msgstr ""
 
-#: libraries/language/admin.php:4405
+#: libraries/language/admin.php:4432
 msgid "Conditional Text Rules"
 msgstr ""
 
-#: libraries/language/admin.php:4408
+#: libraries/language/admin.php:4435
 msgid "New Conditional Text"
 msgstr ""
 
-#: libraries/language/admin.php:4411
+#: libraries/language/admin.php:4438
 msgid "Conditional Text Name"
 msgstr ""
 
-#: libraries/language/admin.php:4414
+#: libraries/language/admin.php:4441
 msgid "Special Tag"
 msgstr ""
 
-#: libraries/language/admin.php:4417
+#: libraries/language/admin.php:4444
 msgid "The special tag (token) is generated automatically from the name of the conditional text. You can use it on most messages to execute all rules."
 msgstr ""
 
-#: libraries/language/admin.php:4420
+#: libraries/language/admin.php:4447
 msgid "Add Rule"
 msgstr ""
 
-#: libraries/language/admin.php:4423
+#: libraries/language/admin.php:4450
 msgid "Conditional Message"
 msgstr ""
 
-#: libraries/language/admin.php:4426
+#: libraries/language/admin.php:4453
 msgid "If you would like these conditional rules to produce a message, enter it here. Leave it empty otherwise."
 msgstr ""
 
-#: libraries/language/admin.php:4429
+#: libraries/language/admin.php:4456
 msgid "This rule is already being used"
 msgstr ""
 
-#: libraries/language/admin.php:4432
+#: libraries/language/admin.php:4459
 msgid "Please select one rule to add"
 msgstr ""
 
-#: libraries/language/admin.php:4435
+#: libraries/language/admin.php:4462
 msgid "Do you want to remove this rule?"
 msgstr ""
 
-#: libraries/language/admin.php:4438
+#: libraries/language/admin.php:4465
 msgid "No rules defined to restrict the conditional text"
 msgstr ""
 
-#: libraries/language/admin.php:4441
+#: libraries/language/admin.php:4468
 msgid "You can separate multiple email addresses with the comma"
 msgstr ""
 
-#: libraries/language/admin.php:4444
+#: libraries/language/admin.php:4471
 msgid "Set as BCC"
 msgstr ""
 
-#: libraries/language/admin.php:4447
+#: libraries/language/admin.php:4474
 msgid "Debug Rules"
 msgstr ""
 
-#: libraries/language/admin.php:4450
+#: libraries/language/admin.php:4477
 msgid "If enabled, the special tags will debug the execution of the rules. Use it only for testing."
 msgstr ""
 
-#: libraries/language/admin.php:4453
+#: libraries/language/admin.php:4480
 #: libraries/language/site.php:1110
+#, php-format
 msgid "[Rule %s was not compliant. Special tag %s was not applied.]"
 msgstr ""
 
-#: libraries/language/admin.php:4456
+#: libraries/language/admin.php:4483
 msgid "Expand"
 msgstr ""
 
-#: libraries/language/admin.php:4459
+#: libraries/language/admin.php:4486
 msgid "Collapse"
 msgstr ""
 
-#: libraries/language/admin.php:4462
+#: libraries/language/admin.php:4489
 msgid "Template Files"
 msgstr ""
 
-#: libraries/language/admin.php:4465
+#: libraries/language/admin.php:4492
+#, php-format
 msgid "Select the position in the template file where you would like to add the special tag %s"
 msgstr ""
 
-#: libraries/language/admin.php:4468
+#: libraries/language/admin.php:4495
+#, php-format
 msgid "Do you want to remove this tag from the template file %s? You will then be able to add it again to a different position."
 msgstr ""
 
-#: libraries/language/admin.php:4471
+#: libraries/language/admin.php:4498
 msgid "Click the various elements on the template to edit their CSS styling properties."
 msgstr ""
 
-#: libraries/language/admin.php:4474
+#: libraries/language/admin.php:4501
 msgid "Customize colors and styles"
 msgstr ""
 
-#: libraries/language/admin.php:4477
+#: libraries/language/admin.php:4504
 msgid "Font Color"
 msgstr ""
 
-#: libraries/language/admin.php:4480
+#: libraries/language/admin.php:4507
 msgid "Background Color"
 msgstr ""
 
-#: libraries/language/admin.php:4483
+#: libraries/language/admin.php:4510
 msgid "HTML Tag"
 msgstr ""
 
-#: libraries/language/admin.php:4486
+#: libraries/language/admin.php:4513
 msgid "Border"
 msgstr ""
 
-#: libraries/language/admin.php:4489
+#: libraries/language/admin.php:4516
 msgid "Border Width"
 msgstr ""
 
-#: libraries/language/admin.php:4492
+#: libraries/language/admin.php:4519
 msgid "Border Color"
 msgstr ""
 
-#: libraries/language/admin.php:4495
+#: libraries/language/admin.php:4522
 msgid "Media Manager"
 msgstr ""
 
-#: libraries/language/admin.php:4498
+#: libraries/language/admin.php:4525
 msgid "Full Path"
 msgstr ""
 
-#: libraries/language/admin.php:4501
+#: libraries/language/admin.php:4528
+#, php-format
 msgid "Enter the full path to the local file starting with %s"
 msgstr ""
 
-#: libraries/language/admin.php:4504
+#: libraries/language/admin.php:4531
 msgid "Returning Customer"
 msgstr ""
 
-#: libraries/language/admin.php:4507
+#: libraries/language/admin.php:4534
 msgid "Days to arrival"
 msgstr ""
 
-#: libraries/language/admin.php:4510
+#: libraries/language/admin.php:4537
 msgid "Countries"
 msgstr ""
 
-#: libraries/language/admin.php:4513
+#: libraries/language/admin.php:4540
 msgid "Attach Files"
 msgstr ""
 
-#: libraries/language/admin.php:4516
+#: libraries/language/admin.php:4543
 msgid "Add file attachments to the email message"
 msgstr ""
 
-#: libraries/language/admin.php:4519
+#: libraries/language/admin.php:4546
 msgid "Booking Dates"
 msgstr ""
 
-#: libraries/language/admin.php:4522
+#: libraries/language/admin.php:4549
 msgid "Restriction applied to certain booking dates"
 msgstr ""
 
-#: libraries/language/admin.php:4525
+#: libraries/language/admin.php:4552
 msgid "Filter by reservation statuses"
 msgstr ""
 
-#: libraries/language/admin.php:4528
+#: libraries/language/admin.php:4555
 msgid "Filter the reservations by source of provenience"
 msgstr ""
 
-#: libraries/language/admin.php:4531
+#: libraries/language/admin.php:4558
 msgid "Restriction applied to certain countries"
 msgstr ""
 
-#: libraries/language/admin.php:4534
+#: libraries/language/admin.php:4561
 msgid "Restriction for minimum days offset to arrival"
 msgstr ""
 
-#: libraries/language/admin.php:4537
+#: libraries/language/admin.php:4564
 msgid "Extra Email"
 msgstr ""
 
-#: libraries/language/admin.php:4540
+#: libraries/language/admin.php:4567
 msgid "Add one or more email recipient addresses"
 msgstr ""
 
-#: libraries/language/admin.php:4543
+#: libraries/language/admin.php:4570
 msgid "Restriction for specific booking languages"
 msgstr ""
 
-#: libraries/language/admin.php:4546
+#: libraries/language/admin.php:4573
 msgid "Filter by number of days"
 msgstr ""
 
-#: libraries/language/admin.php:4549
+#: libraries/language/admin.php:4576
 msgid "Restriction applied to certain options/extras"
 msgstr ""
 
-#: libraries/language/admin.php:4552
+#: libraries/language/admin.php:4579
 msgid "Filter by payment method"
 msgstr ""
 
-#: libraries/language/admin.php:4555
+#: libraries/language/admin.php:4582
 msgid "Restriction applied to certain rate plans"
 msgstr ""
 
-#: libraries/language/admin.php:4558
+#: libraries/language/admin.php:4585
 msgid "The same customer must have placed other reservations before"
 msgstr ""
 
-#: libraries/language/admin.php:4561
+#: libraries/language/admin.php:4588
 msgid "Restriction for specific cars booked"
 msgstr ""
 
-#: libraries/language/admin.php:4564
+#: libraries/language/admin.php:4591
 msgid "Restriction applied to certain dates of rent"
 msgstr ""
 
-#: libraries/language/admin.php:4567
+#: libraries/language/admin.php:4594
 msgid "Filter by pick up or drop off week day."
 msgstr ""
 
-#: libraries/language/admin.php:4570
+#: libraries/language/admin.php:4597
 msgid "Filter by amount paid less than booking total."
 msgstr ""
 
-#: libraries/language/admin.php:4573
+#: libraries/language/admin.php:4600
 msgid "Your PHP version may not support these functions, or the source code of the template may not be compatible. Please edit the template file manually, any changes will be restored."
 msgstr ""
 
-#: libraries/language/admin.php:4576
+#: libraries/language/admin.php:4603
 msgid "Insert content wrapper"
 msgstr ""
 
-#: libraries/language/admin.php:4579
+#: libraries/language/admin.php:4606
 msgid "Content Wrapper"
 msgstr ""
 
-#: libraries/language/admin.php:4582
+#: libraries/language/admin.php:4609
 msgid "When you insert a content wrapper to the body of the message, this will wrap your text within the default HTML layout. It is needed to beautify some contents of your email message."
 msgstr ""
 
-#: libraries/language/admin.php:4585
+#: libraries/language/admin.php:4612
 msgid "Text/HTML"
 msgstr ""
 
-#: libraries/language/admin.php:4588
+#: libraries/language/admin.php:4615
 msgid "Visual"
 msgstr ""
 
-#: libraries/language/admin.php:4594
+#: libraries/language/admin.php:4621
 msgid "Copy original translation"
 msgstr ""
 
-#: libraries/language/admin.php:4597
+#: libraries/language/admin.php:4624
 msgid "Backup"
 msgstr ""
 
-#: libraries/language/admin.php:4603
+#: libraries/language/admin.php:4630
 msgid "Folder Path"
 msgstr ""
 
-#: libraries/language/admin.php:4606
+#: libraries/language/admin.php:4633
+#, php-format
 msgid "Enter here the path used to store the backup archives created by Vik Rent Car. In case the folder does not exist, the system will attempt to create it. Installation base path: %s"
 msgstr ""
 
-#: libraries/language/admin.php:4609
+#: libraries/language/admin.php:4636
 msgid "Manage Backups"
 msgstr ""
 
-#: libraries/language/admin.php:4612
+#: libraries/language/admin.php:4639
 msgid "Vik Rent Car - Backup Archives"
 msgstr ""
 
-#: libraries/language/admin.php:4615
+#: libraries/language/admin.php:4642
 msgid "Vik Rent Car - New Backup"
 msgstr ""
 
-#: libraries/language/admin.php:4618
+#: libraries/language/admin.php:4645
 msgid "File Size"
 msgstr ""
 
-#: libraries/language/admin.php:4621
+#: libraries/language/admin.php:4648
 msgid "Download"
 msgstr ""
 
-#: libraries/language/admin.php:4624
+#: libraries/language/admin.php:4651
 msgid "Do you want to restore the program data with the selected backup?"
 msgstr ""
 
-#: libraries/language/admin.php:4627
+#: libraries/language/admin.php:4654
 msgid "Confirm that you want to proceed one last time. This action cannot be undone."
 msgstr ""
 
-#: libraries/language/admin.php:4630
+#: libraries/language/admin.php:4657
 msgid "The backup has been restored successfully!"
 msgstr ""
 
-#: libraries/language/admin.php:4633
+#: libraries/language/admin.php:4660
 #: libraries/language/system.php:157
 msgid "Action"
 msgstr ""
 
-#: libraries/language/admin.php:4636
+#: libraries/language/admin.php:4663
 msgid "Create New"
 msgstr ""
 
-#: libraries/language/admin.php:4639
+#: libraries/language/admin.php:4666
 msgid "Upload Existing"
 msgstr ""
 
-#: libraries/language/admin.php:4642
+#: libraries/language/admin.php:4669
 msgid "Periodically creates a backup of the contents created through Vik Rent Car."
 msgstr ""
 
-#: libraries/language/admin.php:4645
+#: libraries/language/admin.php:4672
 msgid "Maximum Archives"
 msgstr ""
 
-#: libraries/language/admin.php:4648
+#: libraries/language/admin.php:4675
 msgid "Choose the maximum number of backup archives that can be created. When the specified threshold is reached, the system will automatically delete the oldest backup to allow the creation of a new one."
 msgstr ""
 
-#: libraries/language/admin.php:4651
+#: libraries/language/admin.php:4678
 msgid "Full"
 msgstr ""
 
-#: libraries/language/admin.php:4654
+#: libraries/language/admin.php:4681
 msgid "The backup will export all the contents created through Vik Rent Car."
 msgstr ""
 
-#: libraries/language/admin.php:4660
+#: libraries/language/admin.php:4687
 msgid "The backup will export only the contents used to set up the program. The records related to the customers, such as the bookings, will be completely ignored. This is useful to copy the configuration of this website into a new one."
 msgstr ""
 
-#: libraries/language/admin.php:4663
+#: libraries/language/admin.php:4690
 msgid "Include less days"
 msgstr ""
 
-#: libraries/language/admin.php:4666
+#: libraries/language/admin.php:4693
 msgid "If type = Pickup and Days in advance greater than 1, by turning on this option the Cron Job will also include the reservations with a number of days to collection (from the booking date) lower than the option days in advance. For example, if days in advance is set to 7, but a last-minute reservation is made 2 days before the pickup, with this setting enabled this reservation will be notified."
 msgstr ""
 
-#: libraries/language/admin.php:4669
+#: libraries/language/admin.php:4696
 msgid "Fully paid"
 msgstr ""
 
-#: libraries/language/admin.php:4672
+#: libraries/language/admin.php:4699
 msgid "Import Calendars"
 msgstr ""
 
-#: libraries/language/admin.php:4675
+#: libraries/language/admin.php:4702
 msgid "It is possible to import remote iCal calendars containing reservations to sync the availability for this vehicle."
 msgstr ""
 
-#: libraries/language/admin.php:4678
+#: libraries/language/admin.php:4705
 msgid "Availability calendars to import"
 msgstr ""
 
-#: libraries/language/admin.php:4681
+#: libraries/language/admin.php:4708
 msgid "Add calendar"
 msgstr ""
 
-#: libraries/language/admin.php:4684
+#: libraries/language/admin.php:4711
 msgid "Calendar name"
 msgstr ""
 
-#: libraries/language/admin.php:4687
+#: libraries/language/admin.php:4714
 msgid "Calendar URL"
 msgstr ""
 
-#: libraries/language/admin.php:4690
+#: libraries/language/admin.php:4717
 msgid "iCal Calendars Importer"
 msgstr ""
 
-#: libraries/language/admin.php:4693
+#: libraries/language/admin.php:4720
 msgid "Allow cancellations"
 msgstr ""
 
-#: libraries/language/admin.php:4696
+#: libraries/language/admin.php:4723
 msgid "If enabled, the active reservations previously downloaded, and no longer available on the iCal calendars, will be set to cancelled."
 msgstr ""
 
-#: libraries/language/admin.php:4699
+#: libraries/language/admin.php:4726
 msgid "If enabled, no reservations will actually be downloaded, modified or cancelled."
 msgstr ""
 
-#: libraries/language/admin.php:4702
+#: libraries/language/admin.php:4729
 msgid "New order from iCal"
 msgstr ""
 
-#: libraries/language/admin.php:4705
+#: libraries/language/admin.php:4732
 msgid "Order modified from iCal"
 msgstr ""
 
-#: libraries/language/admin.php:4708
+#: libraries/language/admin.php:4735
 msgid "Order cancelled from iCal"
 msgstr ""
 
-#: libraries/language/admin.php:4711
+#: libraries/language/admin.php:4738
 msgid "Filter by calendar"
 msgstr ""
 
-#: libraries/language/admin.php:4714
+#: libraries/language/admin.php:4741
 msgid "Force Pickup/Drop Off Time"
 msgstr ""
 
-#: libraries/language/admin.php:4717
+#: libraries/language/admin.php:4744
 msgid "Forced pickup time"
 msgstr ""
 
-#: libraries/language/admin.php:4720
+#: libraries/language/admin.php:4747
 msgid "Forced drop off time"
 msgstr ""
 
-#: libraries/language/admin.php:4723
+#: libraries/language/admin.php:4750
 msgid "Save as copy"
 msgstr ""
 
-#: libraries/language/admin.php:4726
+#: libraries/language/admin.php:4753
 msgid "Reset distinctive features automatically?"
 msgstr ""
 
-#: libraries/language/admin.php:4729
+#: libraries/language/admin.php:4756
 msgid "Send cancellation email"
 msgstr ""
 
-#: libraries/language/admin.php:4732
+#: libraries/language/admin.php:4759
+#, php-format
 msgid "Cancellation email sent to %s"
 msgstr ""
 
-#: libraries/language/admin.php:4735
+#: libraries/language/admin.php:4762
 msgid "Custom image car status"
 msgstr ""
 
-#: libraries/language/admin.php:4738
+#: libraries/language/admin.php:4765
 msgid "An optional custom image (PNG) for this vehicle to display the damages and status of each unit"
 msgstr ""
 
-#: libraries/language/admin.php:4741
+#: libraries/language/admin.php:4768
 msgid "Filter by certain pickup/drop off locations."
 msgstr ""
 
-#: libraries/language/admin.php:4744
+#: libraries/language/admin.php:4771
+#, php-format
 msgid "Hourly availability for %s (units left)"
 msgstr ""
 
-#: libraries/language/admin.php:4747
+#: libraries/language/admin.php:4774
 msgid "One-way Fee"
 msgstr ""
 
-#: libraries/language/admin.php:4750
+#: libraries/language/admin.php:4777
 msgid "One-way fees will include any possible combination of pickup location different from the drop off location."
 msgstr ""
 
-#: libraries/language/admin.php:4753
+#: libraries/language/admin.php:4780
 msgid "Breaks"
 msgstr ""
 
-#: libraries/language/admin.php:4756
+#: libraries/language/admin.php:4783
 #: libraries/language/site.php:1128
+#, php-format
 msgid "The agency %s is open from %s to %s"
 msgstr ""
 
-#: libraries/language/admin.php:4759
+#: libraries/language/admin.php:4786
 #: libraries/language/site.php:1131
+#, php-format
 msgid "The agency %s is on break from %s to %s"
 msgstr ""
 
-#: libraries/language/admin.php:4762
+#: libraries/language/admin.php:4789
 msgid "Tracking/Conversion Driver"
 msgstr ""
 
-#: libraries/language/admin.php:4765
+#: libraries/language/admin.php:4792
 msgid "Measurement ID"
 msgstr ""
 
-#: libraries/language/admin.php:4768
+#: libraries/language/admin.php:4795
 msgid "Enter your Google Analytics Measurement ID"
 msgstr ""
 
-#: libraries/language/admin.php:4771
+#: libraries/language/admin.php:4798
 msgid "Auto-Assign Car Unit"
 msgstr ""
 
-#: libraries/language/admin.php:4774
+#: libraries/language/admin.php:4801
 msgid "Quick Actions"
 msgstr ""
 
-#: libraries/language/admin.php:4777
+#: libraries/language/admin.php:4804
 msgid "Minimum days of rent"
 msgstr ""
 
-#: libraries/language/admin.php:4780
+#: libraries/language/admin.php:4807
 msgid "Maximum days of rent"
 msgstr ""
 
-#: libraries/language/admin.php:4783
+#: libraries/language/admin.php:4810
 msgid "Filters the availability of this extra service by number of days of rent."
 msgstr ""
 
-#: libraries/language/admin.php:4786
+#: libraries/language/admin.php:4813
 msgid "Appearance"
 msgstr ""
 
-#: libraries/language/admin.php:4789
+#: libraries/language/admin.php:4816
 msgid "Light"
 msgstr ""
 
-#: libraries/language/admin.php:4792
+#: libraries/language/admin.php:4819
 msgid "Auto"
 msgstr ""
 
-#: libraries/language/admin.php:4795
+#: libraries/language/admin.php:4822
 msgid "Dark"
 msgstr ""
 
-#: libraries/language/admin.php:4798
+#: libraries/language/admin.php:4825
 msgid "Let the customers choose to leave a deposit"
 msgstr ""
 
-#: libraries/language/admin.php:4801
+#: libraries/language/admin.php:4828
 #: libraries/language/adminsys.php:97
 msgid "Disabled"
 msgstr ""
 
-#: libraries/language/admin.php:4804
+#: libraries/language/admin.php:4831
 #: libraries/language/adminsys.php:94
 msgid "Enabled"
 msgstr ""
 
-#: libraries/language/admin.php:4807
+#: libraries/language/admin.php:4834
 msgid "Drop off combinations"
 msgstr ""
 
-#: libraries/language/admin.php:4810
+#: libraries/language/admin.php:4837
 msgid "Optional locations available for drop off when this location is selected for pick up."
 msgstr ""
 
-#: libraries/language/admin.php:4813
+#: libraries/language/admin.php:4840
 msgid "The invoice will be generated. Proceed?"
 msgstr ""
 
-#: libraries/language/admin.php:4816
+#: libraries/language/admin.php:4843
 msgid "Max. Order Total"
 msgstr ""
 
-#: libraries/language/admin.php:4819
+#: libraries/language/admin.php:4846
 msgid "Exclude Taxes/Fees"
 msgstr ""
 
-#: libraries/language/admin.php:4822
+#: libraries/language/admin.php:4849
 msgid "If enabled, any percent coupon code will not discount taxes or mandatory fees/services. If you disable it, the coupon code will be applied on the entire reservation amount."
 msgstr ""
 
-#: libraries/language/admin.php:4825
+#: libraries/language/admin.php:4852
 msgid "Number of uses"
 msgstr ""
 
-#: libraries/language/admin.php:4828
+#: libraries/language/admin.php:4855
 msgid "Do you want to proceed?"
 msgstr ""
 
-#: libraries/language/admin.php:4831
+#: libraries/language/admin.php:4858
 msgid "iCal Export - Past months"
 msgstr ""
 
-#: libraries/language/admin.php:4834
+#: libraries/language/admin.php:4861
 msgid "Number of months in the past to get the rental orders to include in the exported iCal calendars. 0 means only future reservations."
 msgstr ""
 
-#: libraries/language/admin.php:4837
+#: libraries/language/admin.php:4864
 msgid "Search Results Style"
 msgstr ""
 
-#: libraries/language/admin.php:4840
+#: libraries/language/admin.php:4867
 #: libraries/language/adminsys.php:250
 msgid "List"
 msgstr ""
 
-#: libraries/language/admin.php:4843
+#: libraries/language/admin.php:4870
 #: libraries/language/adminsys.php:247
 #: modules/mod_vikrentcar_cars/language/handler.php:107
 msgid "Grid"
 msgstr ""
 
-#: libraries/language/admin.php:4846
+#: libraries/language/admin.php:4873
+#: modules/mod_vikrentcar_search/language/handler.php:224
 msgid "Classic"
 msgstr ""
 
-#: libraries/language/admin.php:4849
+#: libraries/language/admin.php:4876
 msgid "Scroll"
+msgstr ""
+
+#: libraries/language/admin.php:4880
+#: libraries/language/site.php:1150
+msgid "Print"
+msgstr ""
+
+#: libraries/language/admin.php:4886
+msgid "Profile settings"
+msgstr ""
+
+#: libraries/language/admin.php:4889
+msgid "This report supports multiple profiles with different settings."
+msgstr ""
+
+#: libraries/language/admin.php:4892
+msgid "Profile name"
+msgstr ""
+
+#: libraries/language/admin.php:4895
+msgid "New profile"
+msgstr ""
+
+#: libraries/language/admin.php:4898
+msgid "optional"
+msgstr ""
+
+#: libraries/language/admin.php:4901
+msgid "Empty data"
+msgstr ""
+
+#: libraries/language/admin.php:4910
+msgid "Insight"
+msgstr ""
+
+#: libraries/language/admin.php:4913
+msgid "Your occupancy is particularly low on these dates."
+msgstr ""
+
+#: libraries/language/admin.php:4916
+msgid "You've got a medium occupancy on these dates."
+msgstr ""
+
+#: libraries/language/admin.php:4919
+msgid "Your occupancy is pretty high on these dates."
+msgstr ""
+
+#: libraries/language/admin.php:4922
+msgid "Since these dates are very near, you could create a last-minute promotion to offer a discount to max out your occupancy"
+msgstr ""
+
+#: libraries/language/admin.php:4925
+msgid "Since these dates are not so close and not so far, you could create a basic promotion to attract more guests."
+msgstr ""
+
+#: libraries/language/admin.php:4928
+msgid "Since these dates are pretty far ahead, you could create an early-booker promotion to fill your occupancy earlier."
+msgstr ""
+
+#: libraries/language/admin.php:4931
+msgid "Automatic"
+msgstr ""
+
+#: libraries/language/admin.php:4934
+msgid "Next Weekend"
+msgstr ""
+
+#: libraries/language/admin.php:4937
+msgid "Weekend"
+msgstr ""
+
+#: libraries/language/admin.php:4943
+msgid "Create promotion"
+msgstr ""
+
+#: libraries/language/admin.php:4946
+msgid "Check-in date"
+msgstr ""
+
+#: libraries/language/admin.php:4949
+msgid "Check-out date"
+msgstr ""
+
+#: libraries/language/admin.php:4952
+#, php-format
+msgid "Minimum rental period: %d days"
+msgstr ""
+
+#: libraries/language/admin.php:4955
+msgid "Clear dates"
+msgstr ""
+
+#: libraries/language/admin.php:4958
+msgid "Close"
 msgstr ""
 
 #: libraries/language/adminsys.php:45
@@ -6277,10 +6456,12 @@ msgid "Vik Rent Car - Upgrade to Pro"
 msgstr ""
 
 #: libraries/language/adminsys.php:260
+#, php-format
 msgid "License Key valid until %s"
 msgstr ""
 
 #: libraries/language/adminsys.php:263
+#, php-format
 msgid "Your License Key expired on %s"
 msgstr ""
 
@@ -6564,71 +6745,79 @@ msgstr ""
 msgid "The Shortcode was successfully added to a new page of your website. Visit the new page in the front site to see the content (if any)."
 msgstr ""
 
-#: libraries/language/adminsys.php:491
-msgid "Alternatively, you can install one Sample Data package to skip the initial setup steps."
+#: libraries/language/adminsys.php:487
+msgid "Force Category"
 msgstr ""
 
-#: libraries/language/adminsys.php:494
-msgid "Select Sample Data"
+#: libraries/language/adminsys.php:490
+msgid "Set this filter to display only the vehicles from a specific category."
 msgstr ""
 
 #: libraries/language/adminsys.php:497
-msgid "Vik Rent Car - Install Sample Data"
+msgid "Alternatively, you can install one Sample Data package to skip the initial setup steps."
 msgstr ""
 
 #: libraries/language/adminsys.php:500
-msgid "Install Sample Data"
+msgid "Select Sample Data"
 msgstr ""
 
 #: libraries/language/adminsys.php:503
-msgid "Choose the type of Sample Data you would like to install. This operation will populate the plugin with some demo contents to complete the first configuration."
+msgid "Vik Rent Car - Install Sample Data"
 msgstr ""
 
 #: libraries/language/adminsys.php:506
+msgid "Install Sample Data"
+msgstr ""
+
+#: libraries/language/adminsys.php:509
+msgid "Choose the type of Sample Data you would like to install. This operation will populate the plugin with some demo contents to complete the first configuration."
+msgstr ""
+
+#: libraries/language/adminsys.php:512
 msgid "To undo the installation of the sample data, you can deactivate and delete the plugin for then re-installing it. Otherwise, you can modify or remove some demo contents according to your needs."
 msgstr ""
 
-#: libraries/language/adminsys.php:513
+#: libraries/language/adminsys.php:519
 msgid "Allow your guests to pay their orders online through your preferred bank gateway. The Pro version comes with an integration for PayPal Standard and two more payment solutions, but the framework could be extended by installing apposite payment plugins for Vik Rent Car for your preferred bank."
 msgstr ""
 
-#: libraries/language/adminsys.php:516
+#: libraries/language/adminsys.php:522
 msgid "Thanks to the coupon codes you can give your clients some dedicated discounts for their rental orders."
 msgstr ""
 
-#: libraries/language/adminsys.php:519
+#: libraries/language/adminsys.php:525
 msgid "Allow your guests to book some extra services, either they are optional or mandatory. This function can be used to create services or fees like insurances, extra mileage/km, late drop off and anything else that could be booked with the cars."
 msgstr ""
 
-#: libraries/language/adminsys.php:522
+#: libraries/language/adminsys.php:528
 msgid "This function will let you create seasonal prices, promotions or special rates for the weekends or any other day of the week. Those who are used to work with seasonal rates will find this feature fundamental."
 msgstr ""
 
-#: libraries/language/adminsys.php:525
+#: libraries/language/adminsys.php:531
 msgid "The booking restrictions will let you define a minimum or maximum number of days of rent for specific cars and dates of the year. You could also allow or deny the pickup/return on some specific days of the week."
 msgstr ""
 
-#: libraries/language/adminsys.php:528
+#: libraries/language/adminsys.php:534
 msgid "Here you can manage all of your customers information, send specific email messages, and manage their documents."
 msgstr ""
 
-#: libraries/language/adminsys.php:531
+#: libraries/language/adminsys.php:537
 msgid "This page will display graphs and charts by showing important information and statistics about your rental orders, occupancy and revenue."
 msgstr ""
 
-#: libraries/language/adminsys.php:534
+#: libraries/language/adminsys.php:540
 msgid "Cron Jobs are essentials to automatize certain functions, such as to send email reminders to your clients before the pick-up, after the drop-off, remaining balance payments and much more."
 msgstr ""
 
-#: libraries/language/adminsys.php:537
+#: libraries/language/adminsys.php:543
 msgid "Reports are essentials to obtain and/or export data. You can use them to calculate your revenue on some dates, your occupancy, or to generate documents for your accountant. This framework is also extendable with custom PMS reports."
 msgstr ""
 
-#: libraries/language/adminsys.php:540
+#: libraries/language/adminsys.php:546
 msgid "Those who work with one or multiple locations can use this feature to define costs for certain combinations of pickup/drop off locations."
 msgstr ""
 
-#: libraries/language/adminsys.php:543
+#: libraries/language/adminsys.php:549
 msgid "This feature will let you define some Out of Hours Fees for those rentals who start or end at certain times of day, maybe when the office should be closed."
 msgstr ""
 
@@ -6926,6 +7115,7 @@ msgid "Invalid Amount Paid"
 msgstr ""
 
 #: libraries/language/site.php:612
+#, php-format
 msgid "A payment for the order %s has been received. The total amount received is %s instead of %s."
 msgstr ""
 
@@ -7008,6 +7198,7 @@ msgid "The location is closed on this day"
 msgstr ""
 
 #: libraries/language/site.php:708
+#, php-format
 msgid "Error, the location %s is closed on the %s. Please select a different date"
 msgstr ""
 
@@ -7049,6 +7240,7 @@ msgid "Order Cancellation-Modification Request"
 msgstr ""
 
 #: libraries/language/site.php:762
+#, php-format
 msgid ""
 "A Cancellation-Modification Request has been sent by the customer for the order id %s.\n"
 "Order details: %s"
@@ -7115,10 +7307,12 @@ msgid "Pick up for today no longer available at this time, please select a diffe
 msgstr ""
 
 #: libraries/language/site.php:876
+#, php-format
 msgid "Error, minimum days in advance for pick up is %d days"
 msgstr ""
 
 #: libraries/language/site.php:879
+#, php-format
 msgid "Hourly Availability for the day %s"
 msgstr ""
 
@@ -7155,98 +7349,122 @@ msgid "Book"
 msgstr ""
 
 #: libraries/language/site.php:948
+#, php-format
 msgid "Error, the pick up day in %s must be on a %s. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:951
+#, php-format
 msgid "Error, the Maximum Num of Days in %s is %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:954
+#, php-format
 msgid "Error, the Minimum Num of Days in %s is %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:957
+#, php-format
 msgid "Error, the Num of Days allowed in %s must be a multiple of %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:960
+#, php-format
 msgid "Error, the drop off day in %s must be on a %s if picking up on a %s"
 msgstr ""
 
 #: libraries/language/site.php:963
+#, php-format
 msgid "Error, the pick up day in these dates must be on a %s. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:966
+#, php-format
 msgid "Error, the Maximum Num of Days in these dates is %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:969
+#, php-format
 msgid "Error, the Minimum Num of Days in these dates is %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:972
+#, php-format
 msgid "Error, the Num of Days allowed in these dates must be a multiple of %d. Please try again."
 msgstr ""
 
 #: libraries/language/site.php:975
+#, php-format
 msgid "Error, the drop off day in these dates must be on a %s if picking up on a %s"
 msgstr ""
 
 #: libraries/language/site.php:978
+#, php-format
 msgid "Some results were excluded: try selecting the pick up day in %s as a %s."
 msgstr ""
 
 #: libraries/language/site.php:981
+#, php-format
 msgid "Some results were excluded: the Maximum Num of Days in %s is %d."
 msgstr ""
 
 #: libraries/language/site.php:984
+#, php-format
 msgid "Some results were excluded: the Minimum Num of Days in %s is %d."
 msgstr ""
 
 #: libraries/language/site.php:987
+#, php-format
 msgid "Some results were excluded: the Num of Days allowed in %s should be a multiple of %d."
 msgstr ""
 
 #: libraries/language/site.php:990
+#, php-format
 msgid "Some results were excluded: the drop off day in %s should be on a %s if picking up on a %s"
 msgstr ""
 
 #: libraries/language/site.php:993
+#, php-format
 msgid "Some results were excluded: the pick up day in these dates should be on a %s."
 msgstr ""
 
 #: libraries/language/site.php:996
+#, php-format
 msgid "Some results were excluded: the Maximum Num of Days in these dates is %d."
 msgstr ""
 
 #: libraries/language/site.php:999
+#, php-format
 msgid "Some results were excluded: the Minimum Num of Days in these dates is %d."
 msgstr ""
 
 #: libraries/language/site.php:1002
+#, php-format
 msgid "Some results were excluded: the Num of Days allowed in these dates should be a multiple of %d."
 msgstr ""
 
 #: libraries/language/site.php:1005
+#, php-format
 msgid "Some results were excluded: the drop off day in these dates should be on a %s if picking up on a %s"
 msgstr ""
 
 #: libraries/language/site.php:1008
+#, php-format
 msgid "Error, pick ups on %s are not permitted on %s"
 msgstr ""
 
 #: libraries/language/site.php:1011
+#, php-format
 msgid "Error, drop offs on %s are not permitted on %s"
 msgstr ""
 
 #: libraries/language/site.php:1014
+#, php-format
 msgid "Error, pick ups on %s are not permitted on the selected dates"
 msgstr ""
 
 #: libraries/language/site.php:1017
+#, php-format
 msgid "Error, drop offs on %s are not permitted on the selected dates"
 msgstr ""
 
@@ -7255,6 +7473,7 @@ msgid "Request Information"
 msgstr ""
 
 #: libraries/language/site.php:1023
+#, php-format
 msgid "Request Information for %s"
 msgstr ""
 
@@ -7268,6 +7487,7 @@ msgid "Please fill in all fields in order to request information."
 msgstr ""
 
 #: libraries/language/site.php:1041
+#, php-format
 msgid "Information Request for %s"
 msgstr ""
 
@@ -7308,6 +7528,7 @@ msgid "Closest booking solutions"
 msgstr ""
 
 #: libraries/language/site.php:1080
+#, php-format
 msgid "Your confirmed order at %s"
 msgstr ""
 
@@ -7349,21 +7570,25 @@ msgstr ""
 
 #: libraries/language/site.php:1116
 #: modules/mod_vikrentcar_search/language/handler.php:212
+#, php-format
 msgid "The selected location will open at %s"
 msgstr ""
 
 #: libraries/language/site.php:1119
 #: modules/mod_vikrentcar_search/language/handler.php:215
+#, php-format
 msgid "The selected location will close at %s"
 msgstr ""
 
 #: libraries/language/site.php:1122
 #: modules/mod_vikrentcar_search/language/handler.php:218
+#, php-format
 msgid "The selected location for pickup is on break from %s to %s"
 msgstr ""
 
 #: libraries/language/site.php:1125
 #: modules/mod_vikrentcar_search/language/handler.php:221
+#, php-format
 msgid "The selected location for drop off is on break from %s to %s"
 msgstr ""
 
@@ -7376,6 +7601,7 @@ msgid "Pay full amount now"
 msgstr ""
 
 #: libraries/language/site.php:1140
+#, php-format
 msgid "Leave a deposit of %s"
 msgstr ""
 
@@ -7396,6 +7622,7 @@ msgid "The controller does not exist."
 msgstr ""
 
 #: libraries/language/system.php:54
+#, php-format
 msgid "The controller [%s] classname does not exist."
 msgstr ""
 
@@ -7524,10 +7751,12 @@ msgid "- Select Type -"
 msgstr ""
 
 #: libraries/language/system.php:257
+#, php-format
 msgid "%d items"
 msgstr ""
 
 #: libraries/language/system.php:262
+#, php-format
 msgctxt "e.g. 1 of 12"
 msgid "%d of %s"
 msgstr ""
@@ -7561,6 +7790,7 @@ msgid "Clear"
 msgstr ""
 
 #: libraries/language/system.php:335
+#, php-format
 msgid "Maximum upload size: <strong>%s</strong>"
 msgstr ""
 
@@ -7589,6 +7819,7 @@ msgid "Item saved."
 msgstr ""
 
 #: libraries/language/system.php:368
+#, php-format
 msgid "Save failed with the following error: %s"
 msgstr ""
 
@@ -7636,18 +7867,20 @@ msgid "This Pricing Model is only supported in the Pro version."
 msgstr ""
 
 #: libraries/lite/manager.php:74
+#, php-format
 msgid "Your Pro version of Vik Rent Car was downgraded to the Free version after the update. Please visit the <a href=\"%s\">Go to Pro</a> page to restore your Pro settings and complete the update process."
 msgstr ""
 
-#: libraries/mvc/admin/controllers/override.php:96
+#: libraries/mvc/admin/controllers/override.php:103
 msgid "No code received"
 msgstr ""
 
-#: libraries/mvc/admin/controllers/override.php:121
+#: libraries/mvc/admin/controllers/override.php:128
+#, php-format
 msgid "Cannot use the file as destination: [%s]"
 msgstr ""
 
-#: libraries/mvc/admin/controllers/override.php:241
+#: libraries/mvc/admin/controllers/override.php:248
 msgid "1 item deleted."
 msgstr ""
 
@@ -7679,23 +7912,23 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:189
+#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:190
 msgid "Connection Lost! Please try again."
 msgstr ""
 
-#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:242
+#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:243
 msgid "Show files tree"
 msgstr ""
 
-#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:264
+#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:265
 msgid "Hide original file"
 msgstr ""
 
-#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:271
+#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:272
 msgid "Show both in columns"
 msgstr ""
 
-#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:278
+#: libraries/mvc/admin/views/overrides/tmpl/default_editor.php:279
 msgid "Show one over the other"
 msgstr ""
 
@@ -7998,50 +8231,50 @@ msgstr ""
 msgid "Shortcode:"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:299
+#: admin/resources/js/gutenberg-shortcodes.js:301
 msgid "See all"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:301
+#: admin/resources/js/gutenberg-shortcodes.js:303
 msgid "Display all the existing shortcodes."
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:301
+#: admin/resources/js/gutenberg-shortcodes.js:303
 msgid "Toggle to display also the shortcodes that are already assigned to a post."
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:331
+#: admin/resources/js/gutenberg-shortcodes.js:335
 msgid "Page Type"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:332
+#: admin/resources/js/gutenberg-shortcodes.js:336
 msgid "Choose the type of the page that should be displayed in the front-end."
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:336
+#: admin/resources/js/gutenberg-shortcodes.js:340
 msgid "Select an option"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:360
+#: admin/resources/js/gutenberg-shortcodes.js:366
 msgid "Choose whether the shortcode should be available for a specific language only."
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:410
+#: admin/resources/js/gutenberg-shortcodes.js:418
 msgid "New Item"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:422
+#: admin/resources/js/gutenberg-shortcodes.js:430
 msgid "Create Shortcode"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:468
+#: admin/resources/js/gutenberg-shortcodes.js:476
 msgid "You need to specify a title for this post first."
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:495
+#: admin/resources/js/gutenberg-shortcodes.js:503
 msgid "An error has occurred"
 msgstr ""
 
-#: admin/resources/js/gutenberg-shortcodes.js:530
+#: admin/resources/js/gutenberg-shortcodes.js:538
 msgid "You can create a new shortcode from the block settings under the right sidebar."
 msgstr ""

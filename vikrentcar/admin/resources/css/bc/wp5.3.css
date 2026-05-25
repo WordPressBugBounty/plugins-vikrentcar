@@ -36,11 +36,11 @@ input, textarea, select, .wp-core-ui select {
 	position: relative;
 }
 
-.select2-search input,
+/* .select2-search input,
 .postbox-container input {
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
-}
+} */
 
 .media-sidebar input,
 .media-sidebar select {

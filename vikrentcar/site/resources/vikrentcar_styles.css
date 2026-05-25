@@ -1963,6 +1963,9 @@ p.vrcuserordersparag {
 	margin: 3px;
 	display: inline-block;
 }
+.vrc-carat-cont > span {
+	margin-right: 4px;
+}
 .vrc-carat-cont img {
 	max-height: 100px;
 }
@@ -3066,7 +3069,7 @@ a.vrcdialog-overlay-close {
 	border-top: 1px solid var(--vrc-border-color) !important;
 }
 .vrc-partially-cell.vrc-cell-selected-arrival, .vrc-partially-cell:hover {
-	background: var(--vbo-orange-color);
+	background: var(--vrc-orange-color);
 }
 
 /* Search Suggestion */

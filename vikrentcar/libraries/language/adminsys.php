@@ -487,7 +487,7 @@ class VikRentCarLanguageAdminSys implements JLanguageHandler
 				$result = __('Force Category', 'vikrentcar');
 				break;
 			case 'COM_VIKRENTCAR_CATEGORY_FIELD_FORCE_TITLE_DESC':
-				$result = __('If you would like the results to be taken only from a specific category, set this filter to an existing category where some of the rooms should be assigned.', 'vikrentcar');
+				$result = __('Set this filter to display only the vehicles from a specific category.', 'vikrentcar');
 				break;
 
 			/**

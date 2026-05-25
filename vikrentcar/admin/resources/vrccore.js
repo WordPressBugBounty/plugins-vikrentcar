@@ -33,6 +33,27 @@
 		}
 
 		/**
+		 * Fires a given function when the DOM content has loaded.
+		 * 
+		 * @param 	function 	fireFn 	The function to fire when the document is ready.
+		 * 
+		 * @return 	undefined
+		 */
+		static DOMLoaded(fireFn) {
+			if (typeof fireFn !== 'function') {
+				throw new Error('Invalid argument provided');
+			}
+
+			if (document.readyState === 'loading') {
+				// register event because DOMContentLoaded hasn't finished yet
+				document.addEventListener('DOMContentLoaded', fireFn);
+			} else {
+				// DOMContentLoaded event has fired already
+				fireFn();
+			}
+		}
+
+		/**
 		 * Parses an AJAX response error object.
 		 * 
 		 * @param 	object  err
@@ -114,17 +135,33 @@
 		}
 
 		/**
-		 * Emits a custom event, with optional data.
+		 * Emits an event related to the multitask features or a custom event, with optional data.
 		 */
-		static emitEvent(ev_name, ev_data) {
+		static emitMultitaskEvent(ev_name, ev_data) {
+			var def_ev_name = VRCCore.options.multitask_save_event;
+			if (typeof ev_name === 'string') {
+				def_ev_name = ev_name;
+			}
+
 			if (typeof ev_data !== 'undefined' && ev_data) {
 				// trigger the custom event
-				document.dispatchEvent(new CustomEvent(ev_name, {bubbles: true, detail: ev_data}));
+				document.dispatchEvent(new CustomEvent(def_ev_name, {bubbles: true, detail: ev_data}));
 				return;
 			}
 
 			// trigger the event
-			document.dispatchEvent(new Event(ev_name));
+			document.dispatchEvent(new Event(def_ev_name));
+		}
+
+		/**
+		 * Proxy for dispatching an event to the document with optional data.
+		 */
+		static emitEvent(ev_name, ev_data) {
+			if (typeof ev_name !== 'string' || !ev_name.length) {
+				return;
+			}
+
+			return VRCCore.emitMultitaskEvent(ev_name, ev_data);
 		}
 
 		/**
@@ -679,7 +716,13 @@
 			let pinned_actions = 0;
 			let unpinned_index = [];
 			for (let i = 0; i < menu_actions.length; i++) {
-				if (menu_actions[i]['href'] == menu_action_entry['href']) {
+				// avoid duplicate entries
+				if (!menu_action_entry.hasOwnProperty('widget') && menu_actions[i]['href'] == menu_action_entry['href']) {
+					// duplicate link
+					return false;
+				}
+				if (menu_action_entry.hasOwnProperty('widget') && menu_actions[i].hasOwnProperty('widget') && menu_actions[i]['widget'] == menu_action_entry['widget']) {
+					// duplicate widget
 					return false;
 				}
 				if (menu_actions[i].hasOwnProperty('pinned') && menu_actions[i]['pinned']) {
@@ -770,6 +813,11 @@
 		default_loading_body: 	'....',
 		admin_menu_maxactions: 	3,
 		admin_menu_actions_nm: 	'vikrentcar.admin_menu.actions',
+		multitask_save_event: 	'vrc-admin-multitask-save',
+		multitask_open_event: 	'vrc-admin-multitask-open',
+		multitask_close_event: 	'vrc-admin-multitask-close',
+		multitask_shortcut_ev: 	'vrc_multitask_shortcut',
+		multitask_searchfs_ev: 	'vrc_multitask_search_focus',
 	};
 
 })(jQuery, window);

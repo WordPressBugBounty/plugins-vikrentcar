@@ -48,6 +48,8 @@ class VikRentCarReportTopCountries extends VikRentCarReport
 
 		$this->debug = (VikRequest::getInt('e4j_debug', 0, 'request') > 0);
 
+		$this->registerExportCSVFileName();
+
 		parent::__construct();
 	}
 
@@ -495,6 +497,21 @@ class VikRentCarReportTopCountries extends VikRentCarReport
 		}
 
 		return $map;
+	}
+
+	/**
+	 * Registers the name to give to the CSV file being exported.
+	 * 
+	 * @return 	void
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	private function registerExportCSVFileName()
+	{
+		$pfromdate = VikRequest::getString('fromdate', '', 'request');
+		$ptodate = VikRequest::getString('todate', '', 'request');
+
+		$this->setExportCSVFileName($this->reportName . '-' . str_replace('/', '_', $pfromdate) . '-' . str_replace('/', '_', $ptodate) . '.csv');
 	}
 
 }

@@ -779,6 +779,7 @@ if (VikRentCar::allowRent()) {
 	$selform .= "<input type=\"hidden\" name=\"option\" value=\"com_vikrentcar\"/>\n";
 	$selform .= "<input type=\"hidden\" name=\"task\" value=\"search\"/>\n";
 	$selform .= "<input type=\"hidden\" name=\"cardetail\" value=\"".$car['id']."\"/>\n";
+	$selform .= "<input type=\"hidden\" name=\"Itemid\" value=\"".$pitemid."\"/>\n";
 	if ($ptmpl == 'component') {
 		$selform .= "<input type=\"hidden\" name=\"tmpl\" value=\"component\"/>\n";
 	}

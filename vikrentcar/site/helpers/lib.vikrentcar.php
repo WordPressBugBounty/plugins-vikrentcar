@@ -729,6 +729,44 @@ class VikRentCar
 		}
 	}
 
+	public static function getDateSeparator($skipsession = true)
+	{
+		// cache value in static var
+		static $getDateSeparator = null;
+
+		if ($getDateSeparator) {
+			return $getDateSeparator;
+		}
+
+		$dbo = JFactory::getDbo();
+
+		if ($skipsession) {
+			$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='datesep'";
+			$dbo->setQuery($q, 0, 1);
+			$val = $dbo->loadResult();
+
+			$getDateSeparator = empty($val) ? "/" : $val;
+
+			return $getDateSeparator;
+		}
+
+		$session = JFactory::getSession();
+		$sval = $session->get('vbgetDateSep', '');
+		if (!empty($sval)) {
+			return $sval;
+		}
+
+		$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='datesep'";
+		$dbo->setQuery($q, 0, 1);
+		$val = $dbo->loadResult();
+
+		$getDateSeparator = empty($val) ? "/" : $val;
+
+		$session->set('vbgetDateSep', $getDateSeparator);
+
+		return $getDateSeparator;
+	}
+
 	public static function useCharatsFilter($skipsession = false)
 	{
 		if ($skipsession) {
@@ -792,25 +830,36 @@ class VikRentCar
 
 	public static function getDateFormat($skipsession = true)
 	{
-		$dbo = JFactory::getDbo();
-		if ($skipsession) {
-			$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='dateformat';";
-			$dbo->setQuery($q);
-			$dbo->execute();
-			$s = $dbo->loadAssocList();
-			return $s[0]['setting'];
+		// cache value in static var
+		static $getDateFormat = null;
+
+		if ($getDateFormat) {
+			return $getDateFormat;
 		}
+
+		$dbo = JFactory::getDbo();
+
+		if ($skipsession) {
+			$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='dateformat'";
+			$dbo->setQuery($q, 0, 1);
+			$getDateFormat = $dbo->loadResult();
+
+			return $getDateFormat;
+		}
+
 		$session = JFactory::getSession();
-		$sval = $session->get('getDateFormat', '');
+		$sval = $session->get('vbgetDateFormat', '');
 		if (!empty($sval)) {
 			return $sval;
 		}
-		$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='dateformat';";
-		$dbo->setQuery($q);
-		$dbo->execute();
-		$s = $dbo->loadAssocList();
-		$session->set('getDateFormat', $s[0]['setting']);
-		return $s[0]['setting'];
+
+		$q = "SELECT `setting` FROM `#__vikrentcar_config` WHERE `param`='dateformat'";
+		$dbo->setQuery($q, 0, 1);
+		$getDateFormat = $dbo->loadResult();
+
+		$session->set('vbgetDateFormat', $getDateFormat);
+
+		return $getDateFormat;
 	}
 
 	public static function getTimeFormat($skipsession = false)
@@ -1175,10 +1224,22 @@ class VikRentCar
 	 * 
 	 * @since 	1.12 - Revision September 27th 2018
 	 */
-	public static function getDateTimestamp($date, $h, $m, $s = 0)
-	{
+	public static function getDateTimestamp($date, $h = 0, $m = 0, $s = 0) {
 		$df = self::getDateFormat();
-		$x = explode("/", $date);
+		$datesep = self::getDateSeparator();
+		$cur_dsep = "/";
+		if ($datesep != $cur_dsep && strpos($date, $datesep) !== false) {
+			$cur_dsep = $datesep;
+		}
+		if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+			// date is in Y-m-d format (with no time)
+			$cur_dsep = '-';
+			$df = "%Y/%m/%d";
+		}
+		$x = explode($cur_dsep, $date);
+		if (!(count($x) > 2)) {
+			return 0;
+		}
 		if ($df == "%d/%m/%Y") {
 			$month = (int)$x[1];
 			$mday = (int)$x[0];
@@ -1192,8 +1253,11 @@ class VikRentCar
 			$mday = (int)$x[2];
 			$year = (int)$x[0];
 		}
+		$h = empty($h) ? 0 : (int)$h;
+		$m = empty($m) ? 0 : (int)$m;
 		$s = $s > 0 && $s <= 59 ? $s : 0;
-		return mktime((int)$h, (int)$m, $s, $month, $mday, $year);
+
+		return mktime($h, $m, $s, $month, $mday, $year);
 	}
 
 	public static function ivaInclusa($skipsession = false)
@@ -8165,129 +8229,8 @@ HTML
 			return '<p>---------</p>';
 		}
 
-		// flags for JS helpers
-		$js_helpers = array();
+		return VRCParamsRendering::getInstance($config, $params)->setInputName('vikcronparams')->getHtml();
 
-		$html = '';
-		foreach ($config as $value => $cont) {
-			if (empty($value)) {
-				continue;
-			}
-			$inp_attr = '';
-			if (isset($cont['attributes'])) {
-				foreach ($cont['attributes'] as $inpk => $inpv) {
-					$inp_attr .= $inpk.'="'.$inpv.'" ';
-				}
-				$inp_attr = ' ' . rtrim($inp_attr);
-			}
-			$labelparts = explode('//', (isset($cont['label']) ? $cont['label'] : ''));
-			$label = $labelparts[0];
-			$labelhelp = isset($labelparts[1]) ? $labelparts[1] : '';
-			if (!empty($cont['help'])) {
-				$labelhelp = $cont['help'];
-			}
-			$default_paramv = isset($cont['default']) ? $cont['default'] : null;
-			$html .= '<div class="vrc-param-container' . (in_array($cont['type'], array('textarea', 'visual_html')) ? ' vrc-param-container-full' : '') . '">';
-			if (strlen($label) > 0 && (!isset($cont['hidden']) || $cont['hidden'] != true)) {
-				$html .= '<div class="vrc-param-label">'.$label.'</div>';
-			}
-			$html .= '<div class="vrc-param-setting">';
-			switch ($cont['type']) {
-				case 'custom':
-					$html .= $cont['html'];
-					break;
-				case 'select':
-					$options = isset($cont['options']) && is_array($cont['options']) ? $cont['options'] : array();
-					$is_assoc = (array_keys($options) !== range(0, count($options) - 1));
-					if (isset($cont['multiple']) && $cont['multiple']) {
-						$html .= '<select name="vikcronparams['.$value.'][]" multiple="multiple"' . $inp_attr . '>';
-					} else {
-						$html .= '<select name="vikcronparams['.$value.']"' . $inp_attr . '>';
-					}
-					foreach ($options as $optkey => $poption) {
-						$checkval = $is_assoc ? $optkey : $poption;
-						$selected = false;
-						if (isset($params[$value])) {
-							if (is_array($params[$value])) {
-								$selected = in_array($checkval, $params[$value]);
-							} else {
-								$selected = ($checkval == $params[$value]);
-							}
-						} elseif (isset($default_paramv)) {
-							if (is_array($default_paramv)) {
-								$selected = in_array($checkval, $default_paramv);
-							} else {
-								$selected = ($checkval == $default_paramv);
-							}
-						}
-						$html .= '<option value="' . ($is_assoc ? $optkey : $poption) . '"'.($selected ? ' selected="selected"' : '').'>'.$poption.'</option>';
-					}
-					$html .= '</select>';
-					break;
-				case 'password':
-					$html .= '<div class="btn-wrapper input-append">';
-					$html .= '<input type="password" name="vikcronparams['.$value.']" value="'.(isset($params[$value]) ? JHtml::fetch('esc_attr', $params[$value]) : JHtml::fetch('esc_attr', $default_paramv)).'" size="20"' . $inp_attr . '/>';
-					$html .= '<button type="button" class="btn btn-primary" onclick="vikCronParamTogglePwd(this);"><i class="' . VikRentCarIcons::i('eye') . '"></i></button>';
-					$html .= '</div>';
-					// set flag for JS helper
-					$js_helpers[] = $cont['type'];
-					break;
-				case 'number':
-					$number_attr = array();
-					if (isset($cont['min'])) {
-						$number_attr[] = 'min="' . JHtml::fetch('esc_attr', $cont['min']) . '"';
-					}
-					if (isset($cont['max'])) {
-						$number_attr[] = 'max="' . JHtml::fetch('esc_attr', $cont['max']) . '"';
-					}
-					if (isset($cont['step'])) {
-						$number_attr[] = 'step="' . JHtml::fetch('esc_attr', $cont['step']) . '"';
-					}
-					$html .= '<input type="number" name="vikcronparams['.$value.']" value="'.(isset($params[$value]) ? JHtml::fetch('esc_attr', $params[$value]) : JHtml::fetch('esc_attr', $default_paramv)).'" ' . implode(' ', $number_attr) . $inp_attr . '/>';
-					break;
-				case 'textarea':
-					$html .= '<textarea name="vikcronparams['.$value.']"' . $inp_attr . '>'.(isset($params[$value]) ? JHtml::fetch('esc_textarea', $params[$value]) : JHtml::fetch('esc_textarea', $default_paramv)).'</textarea>';
-					break;
-				case 'visual_html':
-					$tarea_cont = isset($params[$value]) ? JHtml::fetch('esc_textarea', $params[$value]) : JHtml::fetch('esc_textarea', $default_paramv);
-					$tarea_attr = isset($cont['attributes']) && is_array($cont['attributes']) ? $cont['attributes'] : array();
-					$editor_opts = isset($cont['editor_opts']) && is_array($cont['editor_opts']) ? $cont['editor_opts'] : array();
-					$editor_btns = isset($cont['editor_btns']) && is_array($cont['editor_btns']) ? $cont['editor_btns'] : array();
-					$html .= self::getVrcApplication()->renderVisualEditor('vikcronparams[' . $value . ']', $tarea_cont, $tarea_attr, $editor_opts, $editor_btns);
-					break;
-				case 'hidden':
-					$html .= '<input type="hidden" name="vikcronparams['.$value.']" value="'.(isset($params[$value]) ? JHtml::fetch('esc_attr', $params[$value]) : JHtml::fetch('esc_attr', $default_paramv)).'"' . $inp_attr . '/>';
-					break;
-				case 'checkbox':
-					// always display a hidden input value turned off before the actual checkbox to support the "off" (0) status
-					$html .= '<input type="hidden" name="vikcronparams['.$value.']" value="0" />';
-					$html .= self::getVrcApplication()->printYesNoButtons('vikcronparams['.$value.']', JText::translate('VRYES'), JText::translate('VRNO'), (isset($params[$value]) ? (int)$params[$value] : (int)$default_paramv), 1, 0);
-					break;
-				default:
-					$html .= '<input type="text" name="vikcronparams['.$value.']" value="'.(isset($params[$value]) ? JHtml::fetch('esc_attr', $params[$value]) : JHtml::fetch('esc_attr', $default_paramv)).'" size="20"' . $inp_attr . '/>';
-					break;
-			}
-			if (strlen($labelhelp) > 0) {
-				$html .= '<span class="vrc-param-setting-comment">'.$labelhelp.'</span>';
-			}
-			$html .= '</div>';
-			$html .= '</div>';
-		}
-
-		// JS helper functions
-		if (in_array('password', $js_helpers)) {
-			// toggle the password fields
-			$html .= "\n" . '<script>' . "\n";
-			$html .= 'function vikCronParamTogglePwd(elem) {' . "\n";
-			$html .= '	var btn = jQuery(elem), inp = btn.parent().find("input").first();' . "\n";
-			$html .= '	if (!inp || !inp.length) {return false;}' . "\n";
-			$html .= '	var inp_type = inp.attr("type");' . "\n";
-			$html .= '	inp.attr("type", (inp_type == "password" ? "text" : "password"));' . "\n";
-			$html .= '}' . "\n";
-			$html .= "\n" . '</script>' . "\n";
-		}
-
-		return $html;
 	}
 
 	public static function getVrcApplication()
@@ -9110,6 +9053,22 @@ HTML
 
 		// make sure the regex ends with the delimiter found
 		return (bool) preg_match("/\\{$d}[gimsxU]*$/", $str);
+	}
+
+	/**
+	 * Gets the instance of a specific report class.
+	 * 
+	 * @param 	string 	$report 	the name of the report to load.
+	 * 
+	 * @return 	mixed 	false or report object instance.
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public static function getReportInstance($report)
+	{
+		require_once VRC_ADMIN_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'report' . DIRECTORY_SEPARATOR . 'report.php';
+
+		return VikRentCarReport::getInstanceOf($report);
 	}
 
 	/**

@@ -78,16 +78,17 @@ class VikRentCarUpdateManager
 		self::execSqlFile(VIKRENTCAR_BASE . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR . 'install.mysql.utf8.sql');
 		
 		$dbo = JFactory::getDbo();
+		$config = VRCFactory::getConfig();
 
 		// create the configuration record with the email address of the current user
-		$q = "INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('adminemail', " . $dbo->q(JFactory::getUser()->email) . ");";
-		$dbo->setQuery($q);
-		$dbo->execute();
+		$config->set('adminemail', JFactory::getUser()->email);
 
 		// footer must be disabled by default
-		$q = "UPDATE `#__vikrentcar_config` SET `setting`='0' WHERE `param`='showfooter';";
-		$dbo->setQuery($q);
-		$dbo->execute();
+		$config->set('showfooter', 0);
+
+		// handle random secret and initial keys
+		$config->set('icalkey', VikRentCar::getCPinInstance()->generateSerialCode(8));
+		$config->set('cronkey', VikRentCar::getCPinInstance()->generateSerialCode(8));
 
 		// closing main text must not mention the name of the software
 		$q = "UPDATE `#__vikrentcar_texts` SET `setting`='' WHERE `param`='closingmain';";

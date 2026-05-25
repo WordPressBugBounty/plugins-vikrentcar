@@ -197,6 +197,16 @@ class VikRentCarUpdateFixer
 			}
 		}
 
+		if (version_compare($this->version, '1.4.6', '<'))
+		{
+			$config = VRCFactory::getConfig();
+			if (strlen($config->getString('icalkey', '')) < 5)
+			{
+				// randomize key
+				$config->set('icalkey', VikRentCar::getCPinInstance()->generateSerialCode(8));
+			}
+		}
+
 		/**
 		 * Unpublish overrides and obtain tracking list.
 		 *

@@ -783,6 +783,11 @@
 			darkMode:       null,
 			hideOnEsc:      true,
 			formatShortcut: null,
+			search:         false,
+			searchHint:     '',
+			searchEmpty:    'No results.',
+			searchClass:    'separator',
+			searchFocus:    true,
 		},
 	};
 

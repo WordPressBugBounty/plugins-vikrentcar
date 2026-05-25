@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_customers` (
   `phone` varchar(64) DEFAULT NULL,
   `country` varchar(32) DEFAULT NULL,
   `cfields` text DEFAULT NULL,
-  `pin` int(10) NOT NULL DEFAULT 0,
+  `pin` varchar(16) NOT NULL DEFAULT '0',
   `ujid` int(5) NOT NULL DEFAULT 0,
   `address` varchar(256) DEFAULT NULL,
   `city` varchar(64) DEFAULT NULL,
@@ -524,11 +524,9 @@ INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('firstwday','0');
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('charatsfilter','0');
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('damageshowtype','3');
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('thumbswidth','100');
-INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('cronkey', FLOOR(1000 + (RAND() * 9000)));
 INSERT INTO `#__vikrentcar_config` (`param`, `setting`) VALUES('invoiceinum', '0');
 INSERT INTO `#__vikrentcar_config` (`param`, `setting`) VALUES('invoicesuffix', '/WEB');
 INSERT INTO `#__vikrentcar_config` (`param`, `setting`) VALUES('invcompanyinfo', '');
-INSERT INTO `#__vikrentcar_config` (`param`, `setting`) VALUES('icalkey', FLOOR(100 + (RAND() * 900)));
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('multilang','1');
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('timeformat','H:i');
 INSERT INTO `#__vikrentcar_config` (`param`,`setting`) VALUES ('taxsummary','0');

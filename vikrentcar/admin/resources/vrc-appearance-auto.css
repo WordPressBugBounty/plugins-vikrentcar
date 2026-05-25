@@ -251,6 +251,10 @@
 		border-top: 1px solid var(--vrc-border);
 		border-right: 1px solid var(--vrc-border);
 		border-bottom: 1px solid var(--vrc-border);
+
+		p {
+			color: var(--vrc-white);
+		}
 	}
 	body a {
 		color: var(--vrc-link-text-color);

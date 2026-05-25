@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.6
+
+*Release date - 25 May 2026*
+
+- Core framework updated.
+- Various back-end security improvements.
+- Reports framework refactoring.
+- New Auto-Exporter cron job implementation.
+- Backend style improvements.
+- Enforced iCal secret key to be 8-char long when less than 5 chars (if you're using iCal calendars, check new URLs).
+
 ## 1.4.5
 
 *Release date - 26 November 2025*

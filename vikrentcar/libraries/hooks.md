@@ -210,7 +210,7 @@ web resources (CSS and JS). In case the controller terminates the process
 `do_action('vikrentcar_before_dispatch_' . $view)`
 
 ##### Description
-Fires before the controller of VikAppointments displays the requested {VIEW}.
+Fires before the controller of VikRentCar displays the requested {VIEW}.
 
 `@since 1.2.0`
 
@@ -220,7 +220,7 @@ Fires before the controller of VikAppointments displays the requested {VIEW}.
 `do_action('vikrentcar_after_dispatch_' . $view)`
 
 ##### Description
-Fires after the controller of VikAppointments has displayed the requested {VIEW}.
+Fires after the controller of VikRentCar has displayed the requested {VIEW}.
 
 `@since 1.2.0`
 

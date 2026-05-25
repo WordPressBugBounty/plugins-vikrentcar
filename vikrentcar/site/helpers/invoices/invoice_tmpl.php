@@ -25,6 +25,11 @@ defined('ABSPATH') or die('No script kiddies please!');
 {invoice_grandtotal}
 {total_paid}
 {remaining_balance}
+{dropoff_date}
+{pickup_date}
+{pickup_location}
+{dropoff_location}
+{order_date}
 */
 
 /**

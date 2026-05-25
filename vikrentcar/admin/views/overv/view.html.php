@@ -62,7 +62,7 @@ class VikRentCarViewOverv extends JViewVikRentCar {
 		$pageNav = new JPagination( $dbo->loadResult(), $lim0, $lim );
 		$navbut = "<table align=\"center\"><tr><td>".$pageNav->getListFooter()."</td></tr></table>";
 
-		$pmnum = VikRequest::getInt('mnum', 1, 'request');
+		$pmnum = VikRequest::getInt('mnum', 0, 'request');
 		$pmonth = VikRequest::getInt('month', 0, 'request');
 		$cmnum = $cookie->get('vrcOvwMnum', '', 'string');
 		$punits_show_type = VikRequest::getString('units_show_type', '', 'request');

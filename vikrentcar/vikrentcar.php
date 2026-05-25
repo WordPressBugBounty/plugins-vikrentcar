@@ -3,7 +3,7 @@
 Plugin Name:  VikRentCar
 Plugin URI:   https://vikwp.com/plugin/vikrentcar
 Description:  Robust Car Rental Management Software.
-Version:      1.4.5
+Version:      1.4.6
 Author:       E4J s.r.l.
 Author URI:   https://vikwp.com
 License:      GPL2
@@ -289,6 +289,18 @@ add_action('vikrentcar_before_dispatch', function()
 	{
 		require_once VRC_ADMIN_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'vikrentcar.php';
 		require_once VRC_ADMIN_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'jv_helper.php';
+
+		/**
+		 * License expiration check is required for routine actions and it only involves Pro plugin users.
+		 * 
+		 * @since 1.4.6
+		 */
+		if (!wp_doing_ajax() && VikRentCarLicense::getKey() && VikRentCarLicense::isExpired())
+		{
+			// display a message
+			$message = sprintf('Your Pro license has expired. Please <a href="%s">renew your license</a> to continue receiving updates and support.', 'admin.php?option=com_vikrentcar&view=gotopro');
+			$app->enqueueMessage($message, 'error');
+		}
 	}
 	else
 	{
@@ -614,4 +626,3 @@ add_filter('run_wptexturize', function($run_texturize)
 {
 	return is_admin() ? $run_texturize : false;
 }, PHP_INT_MAX);
-

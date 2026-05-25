@@ -490,8 +490,8 @@ class VikRentCarHelperConditionalRules
 			 */
 			$cond_texts[$token]['msg'] = preg_replace_callback("/\s*(src|href)=([\"'])(.*?)[\"']/i", function($match) {
 				// check if the URL starts with the base domain
-				if (stripos($match[3], JUri::root()) !== 0 && !preg_match("/^(https?:\/\/|www\.)/i", $match[3])) {
-					// prepend base domain to URL
+				if (stripos($match[3], JUri::root()) !== 0 && !preg_match("/^(https?:\/\/|www\.|{)/i", $match[3])) {
+					// safely prepend base domain to URL
 					$match[0] = ' ' . $match[1] . '=' . $match[2] . JUri::root() . $match[3] . $match[2];
 				}
 				return $match[0];

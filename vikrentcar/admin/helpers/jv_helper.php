@@ -284,6 +284,492 @@ JS
 	}
 
 	/**
+	 * Renders a date-time locale input element to pick a date and time.
+	 * 
+	 * @param 	array 	$options 	Associative list of element options.
+	 * 
+	 * @return 	string 				The HTML string necessary to render the date-time picker.
+	 * 
+	 * @since 	1.18.0 (J) - 1.8.0 (WP)
+	 */
+	public function renderDateTimePicker(array $options = [])
+	{
+		if (!($options['id'] ?? null)) {
+			// the ID attribute is mandatory
+			$options['id'] = uniqid('dtp_');
+		}
+
+		// ensure attributes are set
+		if (!($options['attributes'] ?? [])) {
+			$options['attributes'] = [];
+		}
+
+		// attributes name, value, min and max can also be specified outside the "attributes" key
+		if (($options['name'] ?? null) && !($options['attributes']['name'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['name'] = $options['name'];
+		}
+		if (($options['value'] ?? null) && !($options['attributes']['value'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['value'] = $options['value'];
+		}
+		if (($options['min'] ?? null) && !($options['attributes']['min'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['min'] = $options['min'];
+		}
+		if (($options['max'] ?? null) && !($options['attributes']['max'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['max'] = $options['max'];
+		}
+
+		// check for "min" attribute, required to hide seconds from the time-picker
+		if (!($options['attributes']['min'] ?? null)) {
+			// default to 10 years in the past
+			$options['attributes']['min'] = JFactory::getDate('-10 years')->format('Y-m-d\TH:i');
+		}
+
+		// build attributes list
+		$attributes = array_merge([
+			'id' => $options['id'],
+		], $options['attributes']);
+
+		// build attributes string
+		$attr_str = implode(' ', array_map(function($name, $value) {
+			return $name . '="' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '"'; 
+		}, array_keys($attributes), array_values($attributes)));
+
+		// build HTML string
+		$html = <<<HTML
+<input type="datetime-local" {$attr_str} />
+HTML;
+
+		// return the HTML string to be displayed
+		return $html;
+	}
+
+	/**
+	 * Renders a time input element to pick a time.
+	 * 
+	 * @param 	array 	$options 	Associative list of element options.
+	 * 
+	 * @return 	string 				The HTML string necessary to render the time picker.
+	 * 
+	 * @since 	1.18.4 (J) - 1.8.4 (WP)
+	 */
+	public function renderTimePicker(array $options = [])
+	{
+		if (!($options['id'] ?? null)) {
+			// the ID attribute is mandatory
+			$options['id'] = uniqid('tp_');
+		}
+
+		// ensure attributes are set
+		if (!($options['attributes'] ?? [])) {
+			$options['attributes'] = [];
+		}
+
+		// attributes name, value, min and max can also be specified outside the "attributes" key
+		if (($options['name'] ?? null) && !($options['attributes']['name'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['name'] = $options['name'];
+		}
+		if (($options['value'] ?? null) && !($options['attributes']['value'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['value'] = $options['value'];
+		}
+		if (($options['min'] ?? null) && !($options['attributes']['min'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['min'] = $options['min'];
+		}
+		if (($options['max'] ?? null) && !($options['attributes']['max'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['max'] = $options['max'];
+		}
+		if (($options['step'] ?? null) && !($options['attributes']['step'] ?? null)) {
+			// resort the attribute inside the apposite key
+			$options['attributes']['step'] = $options['step'];
+		}
+
+		// build attributes list
+		$attributes = array_merge([
+			'id' => $options['id'],
+		], $options['attributes']);
+
+		// build attributes string
+		$attr_str = implode(' ', array_map(function($name, $value) {
+			return $name . '="' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '"'; 
+		}, array_keys($attributes), array_values($attributes)));
+
+		// build HTML string
+		$html = <<<HTML
+<input type="time" {$attr_str} />
+HTML;
+
+		// return the HTML string to be displayed
+		return $html;
+	}
+
+	/**
+	 * Renders a select2 component to display existing tags or to add new ones.
+	 * 
+	 * @param 	array 	$options 	Associative list of dropdown options.
+	 * @param 	array 	$elements 	Associative list of element records.
+	 * @param 	array 	$groups 	Optional list of element groups to source.
+	 * 
+	 * @return 	string 				The HTML string necessary to render the dropdown.
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function renderTagsDropDown(array $options = [], array $elements = [], array $groups = [])
+	{
+		// load select2 assets
+		$this->loadSelect2();
+
+		if (!($options['id'] ?? null)) {
+			// the ID attribute is mandatory
+			$options['id'] = uniqid('tdd_');
+		}
+
+		// build attributes list
+		$attributes = array_merge([
+			'id' => $options['id'],
+		], ($options['attributes'] ?? []));
+
+		// build attributes string
+		$attr_str = implode(' ', array_map(function($name, $value) {
+			return $name . '="' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8') . '"'; 
+		}, array_keys($attributes), array_values($attributes)));
+
+		// build data sources
+		$data_sources  = [];
+
+		foreach ($elements as $element) {
+			if (is_object($element)) {
+				$element = (array) $element;
+			}
+
+			if (empty($element['id'])) {
+				continue;
+			}
+
+			// build element data source
+			$data_source = [
+				'id'    => $element['id'],
+				'text'  => $element['name'] ?? $element['id'],
+				'color' => $element['color'] ?? null,
+				'hex'   => $element['hex'] ?? null,
+			];
+
+			// check for option selected status
+			if (($options['selected_value'] ?? null) && $options['selected_value'] == $element['id']) {
+				$data_source['selected'] = true;
+			} elseif (is_array($options['selected_values'] ?? null) && in_array($element['id'], $options['selected_values'])) {
+				$data_source['selected'] = true;
+			}
+
+			// check for option disabled status
+			if (($options['disabled_value'] ?? null) && $options['disabled_value'] == $element['id']) {
+				$data_source['disabled'] = true;
+			} elseif (is_array($options['disabled_values'] ?? null) && in_array($element['id'], $options['disabled_values'])) {
+				$data_source['disabled'] = true;
+			}
+
+			// push element data source
+			$data_sources[] = $data_source;
+		}
+
+		// append groups to source as data elements
+		foreach ($groups as $group) {
+			if (is_object($group)) {
+				// always cast to array
+				$group = (array) $group;
+			}
+
+			if (!is_array($group) || empty($group['text']) || empty($group['elements'])) {
+				continue;
+			}
+
+			// filter out invalid group elements
+			$group['elements'] = array_filter((array) $group['elements'], function($group_element) {
+				return is_array($group_element) && isset($group_element['id']) && isset($group_element['text']);
+			});
+
+			// check for option selected status
+			if (($options['selected_value'] ?? null) || (is_array($options['selected_values'] ?? null) && $options['selected_values'])) {
+				foreach ($group['elements'] as $k => $element) {
+					if (($options['selected_value'] ?? null)) {
+						if ($options['selected_value'] == $element['id']) {
+							$group['elements'][$k]['selected'] = true;
+						}
+					} else {
+						if (in_array($element['id'], $options['selected_values'])) {
+							$group['elements'][$k]['selected'] = true;
+						}
+					}
+				}
+			}
+
+			// check for option disabled status
+			if (($options['disabled_value'] ?? null) || (is_array($options['disabled_values'] ?? null) && $options['disabled_values'])) {
+				foreach ($group['elements'] as $k => $element) {
+					if (($options['disabled_value'] ?? null)) {
+						if ($options['disabled_value'] == $element['id']) {
+							$group['elements'][$k]['disabled'] = true;
+						}
+					} else {
+						if (in_array($element['id'], $options['disabled_values'])) {
+							$group['elements'][$k]['disabled'] = true;
+						}
+					}
+				}
+			}
+
+			// push group element data source
+			$data_sources[] = [
+				'text' => $group['text'],
+				'children' => $group['elements'],
+			];
+		}
+
+		// data sources JSON encoded string
+		$data_sources_str = json_encode($data_sources);
+
+		// empty option tag
+		$empty_option = '';
+		if (!($options['attributes']['multiple'] ?? null)) {
+			$empty_option = '<option></option>';
+		}
+
+		// clearing allowed
+		$clearable = (bool) ($options['allow_clear'] ?? 1);
+		$clearable_str = $clearable ? 'true' : 'false';
+
+		// tags allowed (for entering custom values)
+		$taggable = (bool) ($options['allow_tags'] ?? 1);
+		$taggable_str = $taggable ? 'true' : 'false';
+
+		// placeholder text
+		$placeholder = json_encode($options['placeholder'] ?? '');
+
+		// select2 width
+		$sel2width = $options['width'] ?? 'resolve';
+
+		// supported tag colors
+		$colors = json_encode((array) ($options['colors'] ?? []));
+
+		// build HTML string
+		$html = <<<HTML
+<select {$attr_str}>{$empty_option}</select>
+HTML;
+
+		// build script declaration
+		$js_decl = <<<JAVASCRIPT
+jQuery(function() {
+	const supportedColors = $colors;
+	let remainingColors = supportedColors.slice();
+
+	if (remainingColors.length) {
+		// internally rearrange tags by ID to preserve the linear color scheme supported by default
+		const existingTags = {$data_sources_str}.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+		// iterate all the existing tags
+		existingTags.forEach((tag) => {
+			let index = remainingColors.indexOf(tag.color);
+			if (index != -1) {
+				// remove the tag color from the remaining ones
+				remainingColors.splice(index, 1);
+
+				if (remainingColors.length == 0) {
+					// no more remaining colors, reset array
+					remainingColors = supportedColors.slice();
+				}
+			}
+		});
+	}
+
+	jQuery('select#{$options['id']}').select2({
+		width: '$sel2width',
+		allowClear: $clearable_str,
+		data: $data_sources_str,
+		placeholder: $placeholder,
+		tags: $taggable_str,
+		createTag: function (params) {
+			const term = (params.term || '').replace(/:/g, '').trim();
+
+			if (term === '') {
+				return null;
+			}
+
+			// temporarily assign the first available color
+			const color = remainingColors[0];
+
+			return {
+				id: term + ':' + color,
+				text: term,
+				color: color,
+				newTag: true,
+			};
+		},
+		templateResult: (element) => {
+			if (!element.id) {
+				return element.text;
+			}
+
+			let tag_class = '';
+			let tag_style = '';
+			if (element?.color) {
+				tag_class = element.color;
+			} else if (element?.hex) {
+				tag_style = 'background-color: ' + element.hex + ';';
+			} else {
+				tag_class = (element.id + '').toLowerCase().replace(/[^a-z0-9]/ig, '');
+			}
+			return jQuery('<span class="vrc-sel2-selectable-tag"><span class="vrc-sel2-selectable-tag-color vrc-colortag-circle' + (tag_class ? ' ' + tag_class : '') + '"' + (tag_style ? ' style="' + tag_style + '"' : '') + '></span><span class="vrc-sel2-selectable-tag-name">' + element.text + '</span></span>');
+		},
+		templateSelection: (element) => {
+			if (!element.id) {
+				return element.text;
+			}
+
+			let tag_elem = jQuery('<span></span>')
+				.addClass('vrc-sel2-selected-tag')
+				.text(element.text);
+
+			if (element.newTag) {
+				// we can understand here whether a new tag has been officially submitted
+				element.newTag = false;
+
+				// permanently detach the last color assigned
+				remainingColors.shift();
+
+				if (remainingColors.length == 0) {
+					// no more remaining colors, reset array
+					remainingColors = supportedColors.slice();
+				}
+			}
+
+			if (element?.color) {
+				tag_elem.addClass(element.color);
+			} else if (element?.hex) {
+				tag_elem.css('background-color', element.hex);
+			} else {
+				tag_elem.addClass((element.id + '').toLowerCase().replace(/[^a-z0-9]/ig, ''));
+			}
+
+			return tag_elem;
+		},
+	});
+});
+JAVASCRIPT;
+
+		if ((VRCPlatformDetection::isWordPress() && wp_doing_ajax()) || (!VRCPlatformDetection::isWordPress() && !strcasecmp((string) JFactory::getApplication()->input->server->get('HTTP_X_REQUESTED_WITH', ''), 'xmlhttprequest'))) {
+			// concatenate script to HTML string when doing an AJAX request
+			$html .= "\n" . '<script>' . $js_decl . '</script>';
+		} else {
+			// add script declaration to document
+			JFactory::getDocument()->addScriptDeclaration($js_decl);
+		}
+
+		// return the HTML string to be displayed
+		return $html;
+	}
+
+	/**
+	 * Loads the assets for setting up the VRCCore JS in the site section.
+	 * 
+	 * @param 	array 	$options 	Associative list of loading options.
+	 * 
+	 * @return 	void
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function loadCoreJS(array $options = [])
+	{
+		static $corejs_loaded = null;
+
+		if ($corejs_loaded) {
+			// loaded flag
+			return;
+		}
+
+		// cache loaded flag
+		$corejs_loaded = 1;
+
+		// add script
+		$this->addScript(VRC_ADMIN_URI . 'resources/vrccore.js', ['version' => VIKRENTCAR_SOFTWARE_VERSION]);
+
+		if ($options) {
+			$core_options = json_encode((object) $options, JSON_PRETTY_PRINT);
+
+			// add script declaration to document
+			JFactory::getDocument()->addScriptDeclaration(
+<<<JS
+jQuery(function() {
+	VRCCore.setOptions($core_options);
+});
+JS
+			);
+		}
+	}
+
+	/**
+	 * Loads the assets for rendering the signature pad.
+	 * 
+	 * @param 	array 	$options 	Associative list of loading options.
+	 * 
+	 * @return 	void
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function loadSignaturePad(array $options = [])
+	{
+		static $signpad_loaded = null;
+
+		if ($signpad_loaded) {
+			// loaded flag
+			return;
+		}
+
+		// cache loaded flag
+		$signpad_loaded = 1;
+
+		// add script
+		$this->addScript(VRC_SITE_URI . 'resources/signature_pad.js', ['version' => VIKRENTCAR_SOFTWARE_VERSION]);
+	}
+
+	/**
+	 * Loads the assets solely needed to render the DRP calendar.
+	 * 
+	 * @param 	array 	$options 	Associative list of loading options.
+	 * 
+	 * @return 	void
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function loadDatesRangePicker(array $options = [])
+	{
+		static $drp_loaded = null;
+
+		if ($drp_loaded) {
+			// loaded flag
+			return;
+		}
+
+		// cache loaded flag
+		$drp_loaded = 1;
+
+		// add DRP script
+		$this->addScript(VRC_SITE_URI . 'resources/datesrangepicker.js', ['version' => VIKRENTCAR_SOFTWARE_VERSION]);
+
+		// load JS lang defs
+		JText::script('VRPICKUPROOM');
+		JText::script('VRRETURNROOM');
+		JText::script('VRC_MIN_STAY_NIGHTS');
+		JText::script('VRC_CLEAR_DATES');
+		JText::script('VRC_CLOSE');
+	}
+
+	/**
 	 * Loads the necessary JS and CSS assets to render the jQuery UI Datepicker calendar.
 	 * 
 	 * @since   1.1.0

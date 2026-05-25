@@ -1145,6 +1145,10 @@ class VikRentCarLanguageSite implements JLanguageHandler
 			case 'VRCCOUPONINVMAXTOTORD':
 				$result = __('The order total amount exceeds the limit for this coupon', 'vikrentcar');
 				break;
+				// @since 1.4.6(WP) - 1.15.9(J)
+			case 'VRCPRINT':
+				$result = __('Print', 'vikrentcar');
+				break;
 		}
 
 		return $result;

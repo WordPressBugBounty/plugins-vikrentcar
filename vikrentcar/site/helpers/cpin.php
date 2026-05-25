@@ -32,23 +32,57 @@ class VikRentCarCustomersPin
 	}
 
 	/**
+	 * Generates a serial code of a fixed length from a chars map.
+	 * 
+	 * @param 	int 	$length 	The length of the serial code to generate.
+	 * @param 	?array 	$map 		Optional map of allowed characters.
+	 * 
+	 * @return 	string
+	 * 
+	 * @since 	1.15.9 (J) - 1.4.6 (WP)
+	 */
+	public function generateSerialCode(int $length = 8, ?array $map = null)
+	{
+		$code = '';
+
+		if (!$map) {
+			// use default tokens unless specified
+			$map = [
+				'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+				'0123456789',
+			];
+		}
+
+		// iterate until the specified length is reached
+		for ($i = strlen($code); $i < $length; $i++) {
+			// toss tokens block
+			$_row = rand(0, count($map) - 1);
+			// toss block character
+			$_col = rand(0, strlen($map[$_row]) - 1);
+
+			// append character to serial code
+			$code .= (string) $map[$_row][$_col];
+		}
+
+		return $code;
+	}
+
+	/**
 	 * Generates a unique PIN number for the customer.
 	 * 
-	 * @param 	boolean 	$notpush
+	 * @param 	bool 	$notpush 	True to avoid internal caching.
 	 * 
-	 * @return 	int 		8-digit pin
+	 * @return 	string 				The unique pin-code string.
 	 * 
 	 * @since 	1.15.0 (J) - 1.3.0 (WP) pin length changed from 5 to 8 digits.
+	 * @since 	1.15.9 (J) - 1.4.6 (WP) pin length changed to 8 alphanumeric characters.
 	 */
 	public function generateUniquePin($notpush = false)
 	{
-		// minimum 5 digits, maximum 8 digits
-		$rand_pin = rand(10000, 99999999);
-		if ($this->pinExists($rand_pin)) {
-			while ($this->pinExists($rand_pin)) {
-				$rand_pin += 1;
-			}
-		}
+		do {
+			// generate a random serial code
+			$rand_pin = $this->generateSerialCode(8);
+		} while ($this->pinExists($rand_pin));
 
 		if (!$notpush) {
 			$this->all_pins[] = $rand_pin;
@@ -67,7 +101,8 @@ class VikRentCarCustomersPin
 	 */
 	public function pinExists($pin, $ignorepin = '')
 	{
-		$current_pins = $this->all_pins === false ? $this->getAllPins($ignorepin) : $this->all_pins;
+		$current_pins = $this->all_pins ?: $this->getAllPins($ignorepin);
+
 		return in_array($pin, $current_pins);
 	}
 
@@ -81,14 +116,14 @@ class VikRentCarCustomersPin
 		$current_pins = array();
 		$q = "SELECT `pin` FROM `#__vikrentcar_customers`".(!empty($ignorepin) ? " WHERE `pin`!=".$this->dbo->quote($ignorepin) : "").";";
 		$this->dbo->setQuery($q);
-		$this->dbo->execute();
-		if ($this->dbo->getNumRows() > 0) {
-			$pins = $this->dbo->loadAssocList();
-			foreach ($pins as $v) {
-				$current_pins[] = $v['pin'];
-			}
+		$pins = $this->dbo->loadAssocList();
+
+		foreach ($pins as $v) {
+			$current_pins[] = $v['pin'];
 		}
+
 		$this->all_pins = $current_pins;
+
 		return $this->all_pins;
 	}
 

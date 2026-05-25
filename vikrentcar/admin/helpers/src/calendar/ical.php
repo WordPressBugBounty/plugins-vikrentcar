@@ -191,7 +191,7 @@ class VRCCalendarIcal
 			}
 		}
 
-		if (stristr($keyword, "DTSTART") or stristr($keyword, "DTEND")) {
+		if (stristr($keyword, "DTSTART") || stristr($keyword, "DTEND") || stristr($keyword, "LAST-MODIFIED")) {
 			$keyword = explode(";", $keyword);
 			$keyword = $keyword[0];
 		}

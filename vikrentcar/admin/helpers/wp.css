@@ -16,9 +16,22 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 	min-height: inherit;
 }
 
+/*** WP 7 - We apply CSS that will not bother other WP version ***/
+.notice, div.error, div.updated {
+	border-top: 1px solid #c3c4c7;
+	border-bottom: 1px solid #c3c4c7;	
+	border-right: 1px solid #c3c4c7;
+}
+.wp-list-table a {
+	color: var(--vrc-base-color);
+}
+.wp-list-table a:hover {
+	color: var(--vrc-blue-600);
+}
+/*** End: WP 7 ***/
 /*** Menu ***/
 .vrc-menu-container {
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 	margin-top: 20px;
 }
 .vrc-menu-container-closer {
@@ -79,6 +92,9 @@ input[type=checkbox]:checked:before {
 .btn-group.pull-left {
 	float: left;
 }
+#vrc-search-tools {
+	height: 42px;
+}
 .vrc-btn-toolbar .btn-group .btn:hover {
 	color: var(--vrc-light-400);
 	background: var(--vrc-light-200);
@@ -112,7 +128,7 @@ input[type=checkbox]:checked:before {
 	height: 40px !important;
 }
 .vrc-ratesoverview-entryinline .select2-container--default .select2-selection--single .select2-selection__rendered, .vrc-reports-container .select2-container--default .select2-selection--single .select2-selection__rendered, .vrc-ratesoverview-carsel-block .select2-container--default .select2-selection--single .select2-selection__rendered {
-	line-height: 36px !important;
+	line-height: 40px !important;
 }
 .vrc-allbookings-fm .vrc-btn-toolbar .btn-group.pull-right > a {
 	margin: 0 2px;
@@ -120,7 +136,7 @@ input[type=checkbox]:checked:before {
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], 
 input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
 	border: 1px solid var(--vrc-light-400);
-	border-radius: 3px;
+	border-radius: var(--vrc-field-radius);
 	padding: 4px 6px;
 	line-height: 2;
 }
@@ -153,10 +169,11 @@ select {
 .wp-calendar-box {
 	background: var(--vrc-light-FFF);
 	border: 1px solid var(--vrc-border);
-	border-radius: 2px;
+	border-radius: var(--vrc-field-radius);
 	padding: 4px 6px 4px 0;
 	display: inline-block;
 	vertical-align: top;
+	overflow: hidden;
 }
 .wp-calendar-box input {
 	border: 0;
@@ -470,7 +487,7 @@ i.icon-image:before {
 	padding: 10px 12px;
 	font-size: 13px;
 	line-height: 18px;
-	border-radius: .25rem;
+	border-radius: var(--vrc-field-radius);
 	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	cursor: pointer;
 }
@@ -519,7 +536,7 @@ a.btn {
 	margin: 0;
 }
 .input-append .btn {
-	border-radius: 3px;
+	border-radius: var(--vrc-field-radius);
 	padding: 9.5px 12px;
 	font-size: 14px;
 	cursor: pointer;
@@ -620,14 +637,6 @@ fieldset.adminform {
 #jmodal-vrc-checkin-booking {
 	width: 90% !important;
 }
-.vrc-bookingdet-detcont label, .vrc-bookingdet-admin-entry label {
-	display: block;
-	margin-bottom: 10px;
-}
-.vrc-editbooking-totpaid label {
-	display: block;
-	margin-bottom: 10px;
-}
 .vrc-editbooking-car-pricetypes .vrc-editbooking-car-pricetype label, .vrc-editbooking-car-options .vrc-editbooking-car-option label {
 	display: block;
 	margin-bottom: 5px;
@@ -695,6 +704,8 @@ label.vrc-timeline-label {
 }
 .vrc-ratesoverview-carsel-block > form .vrc-ratesoverview-carsel-entry-calc .wp-calendar-box input {
 	border: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 	border-right: 1px solid var(--vrc-border);
 }
 .vrc-ratesoverview-carsel-block > form .vrc-ratesoverview-carsel-entry-calc .wp-calendar-box .dashicons {
@@ -714,9 +725,6 @@ label.vrc-timeline-label {
 }
 .vrc-roverview-datecmd-top .vrc-roverview-datecmd-date input {
 	width: 80px !important;
-}
-.vrc-ratesoverview-tabscont div.vrc-ratesoverview-tab-unactive {
-	background: var(--vrc-border);
 }
 .vrc-seasons-calendar-table {
 	border-collapse: collapse;
@@ -819,14 +827,8 @@ label.vrc-timeline-label {
 .vrc-reports-filters-outer .vrc-reports-filters-report .vrc-report-filter-wrap {
 	vertical-align: top;
 }
-.vrc-report-layout-type {
-	margin-top: 20px;
-}
 .vrc-report-sheetnchart .vrc-report-sheet .vrc-report-col-hideable {
 	display: none;
-}
-.vrc-report-sheetnchart .vrc-report-chart-meta {
-	flex-basis: 50%
 }
 .vrc-report-sheetnchart .vrc-report-chart-metas .vrc-report-chart-meta-val .vrc-report-chart-meta-val-descr {
 	display: block;

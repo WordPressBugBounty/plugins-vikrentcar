@@ -79,7 +79,7 @@ class VikrentcarViewOrder extends JViewVikRentCar
 		// render the order details
 
 		//set noindex instruction for robots
-		$document->setMetaData('robots', 'noindex,follow');
+		$document->setMetaData('robots', 'noindex, nofollow');
 		
 		$tar = [];
 		$is_cust_cost = (!empty($order[0]['cust_cost']) && $order[0]['cust_cost'] > 0);

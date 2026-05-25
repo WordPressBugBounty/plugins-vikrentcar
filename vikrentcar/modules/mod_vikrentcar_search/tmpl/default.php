@@ -671,7 +671,7 @@ var vrcrestrctarange, vrcrestrctdrange, vrcrestrcta, vrcrestrctd;';
 					}
 				} else {
 					foreach ($restr as $kr => $drestr) {
-						if (strlen($drestr['wday']) > 0) {
+						if (strlen((string)$drestr['wday']) > 0) {
 							$wdaysrestrictionsrange[$kr][0] = date('Y-m-d', $drestr['dfrom']);
 							$wdaysrestrictionsrange[$kr][1] = date('Y-m-d', $drestr['dto']);
 							$wdaysrestrictionsrange[$kr][2] = $drestr['wday'];

@@ -38,9 +38,22 @@
 	--vrc-error-bg: #ffe3e3;
 	--vrc-error-border: #ea6060;
 
+	/* Config */
+	--vrc-base-color: #2282bd;
+	--vrc-config-border-color: #ddd;
+	--vrc-config-bg-color: #fff;
+
 	/* Elements */
 	--vrc-toolbar: #d4dae5;
 	--vrc-contrast-text-color: #fff;
+
+	/* Sizes */
+	--vrc-field-radius: 8px;
+	/*linea 6140*/
+	--vrc-highlighted-field-radius: 4px;
+
+	/* No change in dark mode */
+	--vrc-white: #fff;
 }
 a:focus, a:hover {
     text-decoration: none !important;
@@ -108,7 +121,7 @@ body #content .btn-warning:hover, body #wpcontent .btn-warning:hover {
 	background-color: var(--vrc-light-FFF);
 	border: 1px solid var(--vrc-border) !important;
 	height: 40px;
-	border-radius: 2px;
+	border-radius: var(--vrc-field-radius);
 }
 .select2-container.select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 40px;
@@ -158,9 +171,6 @@ body #content .btn-warning:hover, body #wpcontent .btn-warning:hover {
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
 	background: var(--vrc-light-200) !important;
 }
-.vrc-param-label .vrc-quest-popover, .vrc-param-label .wp-quest-popover {
-	float: right;
-}
 .container-main .btn.btn-danger, .vrc-checkin-commands-wrap .btn.btn-danger {
     border: 1px solid var(--vrc-red);
     background-color: var(--vrc-red);
@@ -207,11 +217,11 @@ body #content .btn-warning:hover, body #wpcontent .btn-warning:hover {
 .container-main .btn.btn-success, .vrc-checkin-commands-wrap .btn.btn-success {
     border: 1px solid var(--vrc-green);
     background-color: var(--vrc-green);
-    border-radius: 3px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 14px;
     margin-bottom: 0;
     font-weight: bold;
-    font-size: inherit;
+    font-size: 13px;
 }
 .container-main .btn.btn-success:hover, .vrc-checkin-commands-wrap .btn.btn-success:hover {
     background-color: var(--vrc-green-hover);
@@ -240,6 +250,7 @@ table.vrc-list-table tbody tr .vrc-highlighted-td {
 }
 .vrc-orderslist-table tbody > tr > td, .vrc-orderslist-table tbody > tr > th, .vrc-list-table tbody > tr > td, .vrc-list-table tbody > tr > th {
 	background: var(--vrc-light-FFF);
+	vertical-align: middle;
 }
 .vrc-orderslist-table tbody > tr:hover td, .vrc-list-table tbody > tr:hover td {
     background: var(--vrc-light-F6F) !important;
@@ -266,6 +277,226 @@ table.vrc-list-table tbody tr .vrc-highlighted-td {
 	padding: 4px 10px;
 	margin: 3px;
 }
+
+.vrc-btn-toolbar .btn[type="submit"] :not(i), .vrc-btn-toolbar .btn[type="button"] :not(i){
+	font-weight: bold;
+}
+
+/** Context Menu **/
+
+.vrc-context-menu-btn .vrc-context-menu-lbl {
+	padding: 10px;
+	display: inline-block;
+}
+.vrc-context-menu-btn.btn-small .vrc-context-menu-lbl {
+	padding: 3px 10px 3px;
+}
+.btn-small.vrc-context-menu-btn .vrc-context-menu-lbl:hover {
+	border: 0;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.btn.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background-color: var(--vrc-middle-color-btn); /* to add */
+}
+body #content .btn-warning.vrc-context-menu-btn, body #wpcontent .btn-warning.vrc-context-menu-btn {
+	background: var(--vrc-orange);
+}
+body #wpcontent .btn-warning.vrc-context-menu-btn:hover .vrc-context-menu-ico, body #content .btn-warning.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background: var(--vrc-orange-hover);
+	color: var(--vrc-contrast-text-color);
+	border: 0;
+}
+body #wpcontent .btn-warning.vrc-context-menu-btn:focus .vrc-context-menu-ico, body #content .btn-warning.vrc-context-menu-btn:focus .vrc-context-menu-ico {
+	background: var(--vrc-orange-hover);
+	color: var(--vrc-contrast-text-color);
+	border: 0;
+}
+
+body #content .btn-danger.vrc-context-menu-btn, body #wpcontent .btn-danger.vrc-context-menu-btn, body.wp-admin .btn-danger.vrc-context-menu-btn, .btn-danger.vrc-context-menu-btn {
+	background: var(--vrc-red);
+}
+body #wpcontent .btn-danger.vrc-context-menu-btn:hover .vrc-context-menu-ico, body #content .btn-danger.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background: var(--vrc-red-hover);
+	color: var(--vrc-contrast-text-color);
+	border: 0;
+}
+body #wpcontent .btn-danger.vrc-context-menu-btn:focus .vrc-context-menu-ico, body #content .btn-danger.vrc-context-menu-btn:focus .vrc-context-menu-ico {
+	background: var(--vrc-red-hover);
+	color: var(--vrc-contrast-text-color);
+	border: 0;
+}
+
+body #content .btn-success.vrc-context-menu-btn, body #wpcontent .btn-success.vrc-context-menu-btn {
+	background-color: var(--vrc-green);
+	border-color: var(--vrc-green);
+}
+body #wpcontent .btn-success.vrc-context-menu-btn:hover .vrc-context-menu-ico, body #content .btn-success.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background-color: var(--vrc-green-hover);
+	border-color: var(--vrc-green-hover);
+}
+body #wpcontent .btn-success.vrc-context-menu-btn:focus .vrc-context-menu-ico, body #content .btn-success.vrc-context-menu-btn:focus .vrc-context-menu-ico {
+	background-color: var(--vrc-green-hover);
+	border-color: var(--vrc-green-hover);
+}
+
+body #content .btn-primary.vrc-context-menu-btn, body #wpcontent .btn-primary.vrc-context-menu-btn {
+	background-color: var(--vrc-blue);
+	border-color: var(--vrc-blue);
+}
+body #wpcontent .btn-primary.vrc-context-menu-btn:hover .vrc-context-menu-ico, body #content .btn-primary.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background-color: var(--vrc-blue-600);
+	border-color: var(--vrc-blue-600);
+}
+body #wpcontent .btn-primary.vrc-context-menu-btn:focus .vrc-context-menu-ico, body #content .btn-primary.vrc-context-menu-btn:focus .vrc-context-menu-ico {
+	background-color: var(--vrc-blue-600);
+	border-color: var(--vrc-blue-600);
+}
+
+.vrc-context-menu-btn .vrc-context-menu-ico {
+	padding: 13px 8px;
+	line-height: 12px;
+	text-align: center;
+	border-top-left-radius: var(--vrc-field-radius);
+	border-bottom-left-radius: var(--vrc-field-radius);
+	font-size: 13px;
+}
+.vrc-context-menu-btn .vrc-context-menu-lbl + .vrc-context-menu-ico {
+	border-radius: 0;
+	border-top-right-radius: var(--vrc-field-radius);
+	border-bottom-right-radius: var(--vrc-field-radius);
+}
+.vrc-context-menu-btn.btn-small .vrc-context-menu-ico {
+	padding: 5px 8px 6px;
+}
+.vrc-context-menu-btn .vrc-context-menu-ico-left {
+	padding-left: 12px;
+}
+.vrc-context-menu-btn .vrc-context-menu-ico-left + .vrc-context-menu-lbl {
+	padding-left: 5px;
+}
+.btn.vrc-context-menu-btn .vrc-context-menu-ico i {
+	margin-right: 0;
+	position: relative;
+	top: -1px;
+	vertical-align: initial;
+}
+.btn-primary.vrc-context-menu-btn:hover .vrc-context-menu-ico {
+	background: var(--vrc-base-color-hover); /* to add */
+}
+.vrc-context-menu-btn.vrc-widget-bookdets-searchtype:hover {
+	background: var(--vrc-base-color-hover); /* to add */
+	border-color: var(--vrc-base-color-hover); /* to add */
+}
+.vrc-context-menu-btn.vrc-widget-bookdets-searchtype .vrc-context-menu-ico {
+	border-radius: 0;
+	border-top-left-radius: var(--vrc-field-radius);
+	border-bottom-left-radius: var(--vrc-field-radius);
+	display: initial;
+  	vertical-align: initial;
+} 
+.vik-context-menu.vrc-dropdown-cxmenu {
+	background: var(--vrc-config-bg-color); /* to add */
+	opacity: 1;
+	padding: 5px;
+	box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	z-index: 2147483647 !important;
+	border: 1px solid rgba(0,0,0,.10);
+  	border-radius: 8px;
+	max-height: 60vh;
+}
+.vrc-dropdown-cxmenu-horizontal ul {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.vik-context-menu.vrc-dropdown-cxmenu .search-box input {
+	height: 34px;
+	width: 100% !important;
+	margin-bottom: 0;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a {
+	border-radius: 4px;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a:not(.disabled):hover {
+	color: var(--vrc-contrast-text-color);
+	background: var(--vrc-base-color); /* to add */
+	cursor: pointer;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li, .vik-context-menu.vrc-dropdown-cxmenu li:last-child, .vik-context-menu.vrc-dropdown-cxmenu li:first-child:not(.separator) {
+	padding: 0;
+	margin: 0;
+}
+.vik-context-menu li.search-box {
+	padding: 3px 6px 6px 6px !important;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a {
+	color: var(--vrc-body-text-color);
+	padding: 8px 12px;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.btngroup {
+	padding: 4px 12px;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-danger:hover {
+	background: var(--vrc-red);	
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-danger:focus, .vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-danger:active {
+	background: var(--vrc-red-hover);
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-success:hover {
+	background: var(--vrc-green);	
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-success:focus, .vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-success:active {
+	background: var(--vrc-green-hover);	
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-warning:hover {
+	background: var(--vrc-orange-hover);	
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-secondary:hover {
+	background-color: var(--vrc-basic-btn); /* to add */
+	color: var(--vrc-body-text-color); /* to add */
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a.vrc-context-menu-entry-secondary:hover i {
+	color: var(--vrc-body-text-color); /* to add */
+}
+.vik-context-menu.vrc-dropdown-cxmenu li .button-icon {
+	color: var(--vrc-config-text-color-light); /* to add */
+	font-size: 12px;
+	min-width: 16px;
+}
+.vik-context-menu.vrc-dropdown-cxmenu li a:hover .button-icon {
+	color: var(--vrc-contrast-text-color);
+}
+.btn.vrc-context-menu-btn-raw, .btn.vrc-context-menu-btn-raw:hover, .btn.vrc-context-menu-btn-raw:focus {
+	background-color: var(--vrc-input-style); /* to add */
+}
+.btn.vrc-context-menu-btn-raw .vrc-context-menu-ico {
+	padding: 12px 8px;
+}
+.btn.vrc-context-menu-btn-raw:hover, .btn.vrc-context-menu-btn-raw:focus {
+	border-color: var(--vrc-base-color);
+}
+.btn.vrc-context-menu-btn-raw:hover .vrc-context-menu-ico {
+	background-color: var(--vrc-config-bg-color); /* to add */
+}
+.btn-group-inline .vrc-context-menu-btn.vrc-widget-bookdets-searchtype {
+	border-radius: 0;
+	border-top-left-radius: var(--vrc-field-radius);
+	border-bottom-left-radius: var(--vrc-field-radius);
+}
+
+body #content .btn.vrc-context-menu-btn, body #wpcontent .btn.vrc-context-menu-btn, body.wp-admin .btn.vrc-context-menu-btn, .btn.vrc-context-menu-btn{
+	padding: 0px !important;
+	text-align: left;
+	height: 40px;
+}
+
+body #content .btn.vrc-context-menu-btn:not(.vrc-context-menu-searchtype), body #wpcontent .btn.vrc-context-menu-btn:not(.vrc-context-menu-searchtype), body.wp-admin .btn.vrc-context-menu-btn:not(.vrc-context-menu-searchtype), .btn.vrc-context-menu-btn:not(.vrc-context-menu-searchtype){
+	display: flex;
+	align-items: center;
+}
+
+/** Ending Context Menu **/
+
 .vrcadmincaltable .busy {
 	background:#8AA9CA;
 }
@@ -820,8 +1051,13 @@ td.carname {
 	display: block;
 	text-align: center;
 }
+.vrcoverviewtablerow .bluedays > .vrc-overv-mday {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 3px 0;
+} 
 .vrcoverviewtdone {
-	min-width: 350px !important;
+	min-width: 250px !important;
 }
 .vrc-select-all {
 	display: block;
@@ -1220,7 +1456,7 @@ div.vrcorderpartot {
 	background: none repeat scroll 0 0 var(--vrc-blue-600);
 	border: 1px solid var(--vrc-blue-600);
 	border-radius: 1px;
-	color: var(--vrc-light-FFF);
+	color: var(--vrc-white);
 	display: inline-block;
 	font-size: 12px;
 	padding: 4px 12px;
@@ -1481,11 +1717,13 @@ div.vrcorderpartot {
 }
 .vrc-menu-left a {
 	position: relative;
-	display: block;
+	display: inline-flex;
 	overflow: hidden;
 }
 .vrc-menu-left a, .vrc-menu-left a:link, .vrc-menu-left a:visited, .vrc-menu-left a:hover {
 	text-decoration: none;
+	box-shadow: none;
+	outline: none;
 }
 .vrc-menu-left a:after {
 	opacity: 0;
@@ -1603,7 +1841,7 @@ div.vrcorderpartot {
     width: 98% !important;
     background: var(--vrc-light-FFF);
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 10px;
 }
 .vrc-ratesoverview-carsel-entry-chcars .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -1648,7 +1886,7 @@ div.vrcorderpartot {
 .vrc-ratesoverview-entryinline {
 	display: inline-block;
 	margin: 5px;
-	vertical-align: top;
+	vertical-align: bottom;
 }
 .vrc-ratesoverview-entryinline > span {
 	display: inline-block;
@@ -1661,7 +1899,7 @@ div.vrcorderpartot {
 .vrc-editbooking-summary .select2-container--default .select2-selection--single {
     height: 36px;
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
 }
 .vrc-ratesoverview-carsel-block > form .vrc-ratesoverview-carsel-entry-calc .select2-container--default .select2-selection--single .select2-selection__rendered,
 .vrc-editbooking-summary .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -1687,7 +1925,7 @@ div.vrcorderpartot {
 .vrc-ratesoverview-carsel-block > form .vrc-ratesoverview-carsel-entry-calc input {
     background: var(--vrc-light-FFF);
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 10px;
     width: 70% !important;
 }
@@ -1992,10 +2230,14 @@ tr.vrc-seasons-calendar-seasonrow td:nth-child(n+2) {
 	cursor: pointer;
 	background: var(--vrc-light-FFF);
 	color: var(--vrc-blue);
-	border-radius: 3px;
-	display: inline-block;
+	border-radius: var(--vrc-field-radius);
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 	font-weight: bold;
 	border: 1px solid var(--vrc-blue);
+	overflow: hidden;
+	height: 40px;
 }
 .vrc-assign-customer:hover {
     background: var(--vrc-blue-600);
@@ -2005,7 +2247,10 @@ tr.vrc-seasons-calendar-seasonrow td:nth-child(n+2) {
 .vrc-assign-customer > i {
     background: var(--vrc-blue);
     color: var(--vrc-light-FFF);
-    padding: 8px 10px;
+     padding: 0px 10px;
+ 	height: 100%;
+	display: inline-flex;
+	align-items: center;
 }
 .vrc-assign-customer > span {
     padding: 0 8px 0 3px;
@@ -2114,7 +2359,7 @@ tr.vrc-seasons-calendar-seasonrow td:nth-child(n+2) {
 }
 .vrc-calendar-cfields-filler-overlay .vrc-calendar-cfields-filler input, .vrc-calendar-cfields-filler .vrc-calendar-cfield-entry textarea {
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 10px;
     margin-bottom: 0;
     width: 100% !important;
@@ -2125,7 +2370,7 @@ tr.vrc-seasons-calendar-seasonrow td:nth-child(n+2) {
     background-color: var(--vrc-light-F6F);
 }
 .vrc-calendar-cfields-filler .vrc-calendar-cfield-entry select {
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     background-color: var(--vrc-light-FFF);
     border: 1px solid var(--vrc-border);
     padding: 8px 10px;
@@ -2156,7 +2401,7 @@ tr.vrc-seasons-calendar-seasonrow td:nth-child(n+2) {
 }
 .vrc-calendar-cfields-bottom .btn {
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 9px 14px;
     margin-bottom: 0;
     font-weight: bold;
@@ -2999,20 +3244,6 @@ label.vrc-timeline-label {
 	border-bottom: 1px solid #e5e5e5;
 	padding-bottom: 10px;
 }
-.vrc-graphstats-country-wrap {
-	display: block;
-	margin: 2px 0;
-}
-.vrc-graphstats-country-img {
-	display: inline-block;
-	margin-right: 5px;
-}
-.vrc-graphstats-country-name {
-	display: inline-block;
-	font-weight: bold;
-	min-width: 120px;
-	margin-right: 5px;
-}
 .vrc-graphstats-country-totb {
 	display: inline-block;
 }
@@ -3166,7 +3397,7 @@ label.vrc-timeline-label {
 	cursor: pointer;
 	padding: 16px;
 	margin: 0;
-	font-size: 1.2em;
+	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: bold;
 }
@@ -3252,8 +3483,10 @@ label.vrc-timeline-label {
 	color: var(--vrc-light-600);
 }
 .vrc-bookingdet-detcont label, .vrc-bookingdet-admin-entry label {
+	display: block;
 	font-weight: bold;
 	text-transform: uppercase;
+	margin-bottom: 10px;
 }
 .vrc-bookingdet-detcont i {
 	margin-right: 3px;
@@ -3599,6 +3832,7 @@ textarea.vradminnotestarea {
 	font-weight: bold;
 	margin-top: 10px;
 	margin-right: 10px;
+	font-size: 13px;
 }
 .vrc-editbooking-addcar {
 	display: inline-block;
@@ -3834,7 +4068,7 @@ form[name="customersform"] .input-append {
 .vrc-btn-toolbar .input-append .btn {
     padding: 8px 12px;
     border: 1px solid var(--vrc-border);
-    border-radius: 0 2px 2px 0;
+    border-radius: 0 var(--vrc-field-radius) var(--vrc-field-radius) 0;
 }
 .vrc-btn-toolbar .btn i {
     margin-right: 5px;
@@ -4131,7 +4365,7 @@ a.vrc-info-overlay-close {
 }
 .vrc-overlay-fests-addnew-elem input[type="text"], .vrc-overlay-fests-addnew-elem textarea, .vrc-info-overlay-content input[type="text"], .vrc-info-overlay-content input[type="number"] {
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 10px;
 }
 .vrc-overlay-fests-addnew-elem input[type="text"], .vrc-info-overlay-content input[type="text"], .vrc-info-overlay-content input[type="number"] {
@@ -4207,7 +4441,7 @@ a.vrc-info-overlay-close {
 }
 .vrc-avov-toolbar select {
 	margin-bottom: 0;
-	border-radius: 2px;
+	border-radius: var(--vrc-field-radius);
 	border: 1px solid var(--vrc-border);
 	padding: 8px 10px;
 	height: inherit;
@@ -4240,6 +4474,7 @@ table.vrcoverviewtable .bluedays {
 	box-sizing: border-box;
 	border-right: 1px solid var(--vrc-light-200);
 	border-bottom: 1px solid var(--vrc-light-200);
+	line-height: 1.3em;
 }
 table.vrcoverviewtable .carname {
 	text-align: left;
@@ -4283,7 +4518,7 @@ span.vrc-overview-subcar-toggle {
     margin-top: 5px;
 }
 td.carname.subcarname {
-    background: var(--vrc-light-F6F);
+    background: var(--vrc-light-FFF);
 }
 .vrc-overview-subcarunits {
 	display: inline-block;
@@ -4312,10 +4547,10 @@ td.carname.subcarname {
     position: relative;
 }
 .vrc-overv-todaycell {
-	background: var(--vrc-light-400);
+	background: var(--vrc-blue-100);
 }
 .bluedays.vrc-overv-todaycell {
-	background: var(--vrc-blue-600);
+	background: var(--vrc-blue);
 }
 .busy.vrc-overv-todaycell {
 	background: var(--vrc-red) !important;
@@ -4429,7 +4664,7 @@ td.carname.subcarname {
 }
 .vrc-roverviewtablerow td:first-child {
     font-weight: bold;
-    background: var(--vrc-light-200);
+    background: var(--vrc-light-F6F);
 }
 .vrc-roverviewrowone form[name^="vrcratesoverview"] {
     margin-bottom: 0;
@@ -4487,7 +4722,7 @@ td.carname.subcarname {
     border: 0;
 }
 .vrc-roverviewtableavrow td:first-child {
-    background: var(--vrc-border);
+    background: var(--vrc-light-FFF);
     font-weight: bold;
     padding: 10px 10px;
 }
@@ -4506,7 +4741,7 @@ td.carname.subcarname {
     text-align: center;
 }
 td.vrc-roverw-daynotbusy {
-    background: var(--vrc-light-200) none repeat scroll 0 0;
+    background: var(--vrc-light-F6F) none repeat scroll 0 0;
     color: var(--vrc-dark-900);
     cursor: not-allowed;
 }
@@ -4646,10 +4881,13 @@ td.vrc-roverw-daynotbusy {
     padding: 5px;
     box-shadow: 0 0 10px #0000001a;
     padding-bottom: 40px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
 }
 .vrc-ratesoverview-period-box-cals-inner > div {
     display: inline-block;
-    vertical-align: top;
+    flex: 1;
 }
 .vrc-ratesoverview-period-box-cals-inner > div > h4 {
     padding: 3px 0;
@@ -4816,7 +5054,7 @@ label.vrc-roverw-setnewrate-currency, label.vrc-roverw-setnewrestr-lbl {
     width: 100px !important;
 }
 .vrc-roverw-setnewrate-btns button.btn-danger {
-    border-radius: 3px;
+    border-radius: var(--vrc-field-radius);
     padding: 9px 14px;
     margin-bottom: 0;
     font-weight: bold;
@@ -5020,12 +5258,19 @@ i[class^="vrcicn-"], i[class*=" vrcicn-"] {
 }
 .vrc-trackings-table-head {
     border-top: 1px solid var(--vrc-border);
-    padding: 12px 15px 0;
-    font-weight: bold;
+    padding: 12px 15px;
+	font-weight: bold;
+	min-height: 50px;
+	display: flex;
+	width: 100%;
+	box-sizing: border-box;
 }
 .vrc-trackings-table-head-inner {
     display: flex;
-    padding: 0 15px;
+	padding: 0 15px;
+	width: 100%;
+	box-sizing: border-box;
+	align-items: center;
 }
 .vrc-trackings-table-head-inner > div * {
     text-transform: uppercase;
@@ -5061,16 +5306,20 @@ i[class^="vrcicn-"], i[class*=" vrcicn-"] {
     flex: 0 0 60px;
 }
 .vrc-trackings-table-body {
-    padding: 15px 15px 30px;
+    padding: 0 15px 30px;
 }
 .vrc-trackings-table-body-row {
     display: flex;
     flex-wrap: wrap;
+	align-items: center;
     background: var(--vrc-light-FFF);
     padding: 15px;
     border-radius: 4px;
     margin: 15px 0;
     box-shadow: 0 4px 6px #0000000d;
+}
+.vrc-trackings-table-body-row:first-child {
+	margin-top: 0;
 }
 .vrc-trackings-table-body-subrow {
     display: none;
@@ -5484,7 +5733,7 @@ dl.tabs {
 
 /* New Admin style */
 .vrc-config-body {
-    margin-top: -50px;
+    margin-top: -20px;
 }
 .vrc-config-tab-container {
 	padding-top: 10px !important;
@@ -5547,6 +5796,9 @@ dl.tabs {
 }
 .vrc-admin-container > div {
     flex-basis: calc(50% - 10px);
+}
+.vrc-admin-container-full .vrc-params-wrap{
+	flex-basis: 100%;
 }
 .vrc-admin-container .vrc-config-maintab-left {
 	margin-right: 10px;
@@ -5614,7 +5866,7 @@ dl.tabs {
 }
 .vrc-admin-container .vrc-param-container .vrc-param-setting select, .new_depovr_container select, .vrc-calendar-custmail-tpls-wrap select, .vrc-bookingdet-topcontainer select, .vrc-cardet-guest-detail select, .vrc-btn-toolbar select, .occupancy-adults-ovr select {
     margin-bottom: 0;
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     border: 1px solid var(--vrc-border);
     padding: 8px 10px;
     height: inherit;
@@ -5627,11 +5879,19 @@ dl.tabs {
 }
 form input[type="text"], form textarea, .vrc-admin-container .vrc-param-container .vrc-param-setting input, .vrc-admin-container .vrc-param-container .vrc-param-setting textarea, .new_depovr_container input[type="number"], .vrc-admin-container .vrc-param-container .vrc-param-label input, .vrc-bookingdet-detcont input[type="text"], .vrc-bookingdet-summary .vrc-bookingdet-summary-total input, .vrc-btn-toolbar .input-append input[type="text"], .vrc-editbooking-summary-car input[type="number"], .vrc-editbooking-summary-car input[type="text"], .occupancy-adults-ovr input[type="number"] {
     border: 1px solid var(--vrc-border);
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     padding: 8px 10px;
     margin-bottom: 0;
     box-sizing: border-box;
     height: auto;
+}
+.vrc-btn-toolbar .input-append input[type="text"] {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.vrc-admin-container .vrc-param-container .vrc-param-setting input[name="mintotord"], .vrc-admin-container .vrc-param-container .vrc-param-setting input[name="maxtotord"] {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 .vrc-admin-container .vrc-param-container .vrc-param-setting #customfchoose .vrc-customf-sel-added {
 	margin: 5px 0;
@@ -5645,6 +5905,10 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 }
 .vrc-admin-container .vrc-param-container .vrc-param-setting .vrwdaytwodiv {
 	margin-left: 5px;
+}
+.vrc-admin-container .vrc-param-container .vrc-param-setting .input-append input {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 .vrc-admin-container .vrc-param-container .vrc-param-setting .vrwdaytwodiv > span {
 	margin-right: 8px;
@@ -5713,7 +5977,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 .vrc-admin-container .vrc-param-container .vrc-param-setting .vrwdaycombop input {
 	min-height: inherit;
 }
-.vrc-admin-container .vrc-param-container .vrc-param-setting-comment {
+.vrc-admin-container .vrc-param-container .vrc-param-setting-comment, .vrc-param-setting-comment {
     display: block;
     font-size: .9em;
     margin-top: 4px;
@@ -5814,6 +6078,8 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 	margin-top: 15px;
 }
 .iti.iti--allow-dropdown {
+	overflow: hidden;
+	border-radius: var(--vrc-field-radius);
     border: 1px solid var(--vrc-border);
     display: flex;
     z-index: 0;
@@ -5874,7 +6140,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 }
 .vrc-admin-container .vrc-param-container .vrc-param-setting .field-calendar button, .btn.vrcdatepicker-trig-icon {
     padding: 8px 10px;
-    border-radius: 0 2px 2px 0;
+    border-radius: 0 var(--vrc-field-radius) var(--vrc-field-radius) 0;
     border: 1px solid var(--vrc-border);
 }
 .field-calendar .input-append input + button[type="button"] .icon-calendar {
@@ -5920,7 +6186,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
     border: 0;
     padding: 9px 14px;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: var(--vrc-field-radius);
 	font-size: 13px;
 	line-height: 18px;
 	display: inline-block;
@@ -5939,7 +6205,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
     padding: 9px 14px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: var(--vrc-field-radius);
 	font-size: 13px;
 	line-height: 18px;
 	display: inline-block;
@@ -5952,7 +6218,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
     font-weight: bold;
     font-size: 12px;
     line-height: 15px;
-    border-radius: 3px;
+    border-radius: var(--vrc-field-radius);
     display: inline-block;
 }
 .vrc-admin-container .vrc-param-container.vrc-param-nested {
@@ -5974,7 +6240,7 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 .vrc-admin-container .vrc-param-container .vrc-param-setting .vrc-param-setting-block .vrc-car-img-modal {
     background: var(--vrc-light-200);
     padding: 11px 15px;
-    border-radius: 2px;
+    border-radius: var(--vrc-field-radius);
     border: 1px solid var(--vrc-border);
     color: var(--vrc-dark-900);
     display: inline-block;
@@ -6109,16 +6375,16 @@ form input[type="text"], form textarea, .vrc-admin-container .vrc-param-containe
 .vrc-param-container .vrc-param-setting .select2-selection--single, .vrc-quickres-head .vrc-quickres-head-right .select2-selection--single, .vrc-btn-toolbar .select2-selection--single {
     font-weight: normal;
     font-size: 14px !important;
-    height: 36px !important;
+    height: 40px !important;
     border: 1px solid var(--vrc-border) !important;
-    border-radius: 2px !important;
+	border-radius: var(--vrc-field-radius) !important;
 }
 .vrc-param-container .vrc-param-setting .select2-selection--single .select2-selection__rendered, .vrc-quickres-head .vrc-quickres-head-right .select2-container--default .select2-selection--single .select2-selection__rendered, .vrc-btn-toolbar .select2-container .select2-selection--single .select2-selection__rendered {
-	line-height: 36px;
+	line-height: 40px;
 }
 .vrc-param-container .vrc-param-setting .select2-selection--single .select2-selection__arrow,
 .vrc-quickres-head .vrc-quickres-head-right .select2-container--default .select2-selection--single .select2-selection__arrow, .vrc-btn-toolbar .select2-container--default .select2-selection--single .select2-selection__arrow {
-	height: 36px;
+	height: 40px;
 }
 .select2-container.select2-container--open {
     z-index: 9999999999 !important;
@@ -6130,12 +6396,29 @@ input[type="search"].select2-search__field {
 }
 .select2-container--open.select2-container--default .select2-results__option--highlighted[aria-selected] {
 	background-color: var(--vrc-blue-600);
+	border-radius: var(--vrc-highlighted-field-radius);
 }
 .select2-container--open.select2-container--default .select2-results__option[aria-selected="true"] {
   background-color: var(--vrc-light-FFF);
   color: var(--vrc-blue);
   border: 1px solid var(--vrc-blue);
 }
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+	border: 1px solid var(--vrc-config-border-color) !important;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+	border-color: var(--vrc-base-color) !important;
+}
+
+.select2-container--default .select2-results > .select2-results__options{
+	padding: 0 4px;
+}
+
+.select2-container--open.select2-container--default .select2-results__option{
+	border-radius: var(--vrc-highlighted-field-radius);
+}
+
 .vrc-choosebusy-head {
 	display: inline-block;
 	background: rgb(246, 246, 246) none repeat scroll 0% 0%;
@@ -6223,7 +6506,7 @@ ul.vrc-sortable li {
 }
 .vrc-config-maintab-right .vrc-tariffs-updaterates-cont + .table-responsive .vrc-list-table input[type="number"] {
 	border: 1px solid var(--vrc-border);
-	border-radius: 2px;
+	border-radius: var(--vrc-field-radius);
 	padding: 8px 10px;
 	margin-bottom: 0;
 	width: 120px !important;
@@ -6348,6 +6631,12 @@ ul.vrc-sortable li {
     display: inline-block;
     margin-right: 5px;
 }
+.vrc-graphstats-country-img img {
+	width: 16px;
+	height: 16px;
+	object-fit: cover;
+	border-radius: 50%;
+}
 .vrc-graphstats-country-name {
     display: inline-block;
     font-weight: bold;
@@ -6371,11 +6660,17 @@ ul.vrc-sortable li {
 .vrc-reports-filters-report .vrc-report-filter-wrap {
     display: inline-block;
 }
+.vrc-report-layout-type {
+	margin-top: 20px;
+}
 .vrc-report-filter-lbl {
     margin-bottom: 2px;
 }
 .vrc-reports-filters-export {
     float: right;
+}
+.vrc-reports-filters-export > .btn {
+	margin-left: 5px;
 }
 .vrccsvexport {
     cursor: pointer;
@@ -6440,6 +6735,7 @@ ul.vrc-sortable li {
     padding: 8px 10px;
     height: inherit;
     flex: 1;
+	background-color: var(--vrc-config-bg-color);
 }
 .vrc-reports-container {
     background: var(--vrc-light-200);
@@ -6540,10 +6836,9 @@ ul.vrc-sortable li {
     box-shadow: 0 3px 10px rgba(0,0,0,.05);
     margin-bottom: 15px;
     position: relative;
-    height: 70%;
 }
 .vrc-report-sheetnchart .vrc-report-chart-meta {
-    flex-basis: 33%;
+    flex-basis: 50%;
 }
 .vrc-report-chart-main .vrc-report-chart-meta-inner {
     margin: 0 5px;
@@ -6576,7 +6871,7 @@ ul.vrc-sortable li {
 }
 .vrc-report-chart-metas .vrc-report-chart-meta-val .vrc-report-chart-meta-val-descr {
     font-size: 13px;
-    display: inline-block;
+    display: block;
     vertical-align: middle;
     color: var(--vrc-light-600);
 }
@@ -6852,7 +7147,7 @@ td.vrc-cardaynote-full span.vrc-cardaynote-trigger, td.vrc-cardaynote-empty span
 .vrc-modal-cardaynotes-addnew .vrc-modal-cardaynotes-addnew-elem .select2-selection--single {
 	height: 40px;
 	border: 1px solid var(--vrc-light-400);
-	border-radius: 2px;
+	border-radius: var(--vrc-field-radius);
 }
 .vrc-modal-cardaynotes-addnew .vrc-modal-cardaynotes-addnew-elem .select2-selection--single #select2-roomselcalc-container {
 	font-weight: normal;
@@ -7390,7 +7685,8 @@ td.vrc-cardaynote-full span.vrc-cardaynote-trigger, td.vrc-cardaynote-empty span
 }	
 .vrc-admin-widget-head .form-control {
 	border: 1px solid var(--vrc-border);
-	border-radius: 2px;
+	border-top-left-radius: var(--vrc-field-radius);
+	border-bottom-left-radius: var(--vrc-field-radius);
 	padding: 8px 10px;
 	margin-bottom: 0;
 	box-sizing: border-box;
@@ -7398,14 +7694,14 @@ td.vrc-cardaynote-full span.vrc-cardaynote-trigger, td.vrc-cardaynote-empty span
 }
 .vrc-admin-widget-head .btn {
 	padding: 8px 10px;
-	border-radius: 0 2px 2px 0;
+	border-radius: 0 var(--vrc-field-radius) var(--vrc-field-radius) 0;
 	border: 1px solid var(--vrc-border);
 }
 .vvrc-admin-widget-head .btn i {
 	margin-right: 0;
 }
 .vrc-admin-widget-head h4 {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	text-align: right;
 	padding: 10px 0 3px 15px;
@@ -7652,8 +7948,8 @@ td.vrc-cardaynote-full span.vrc-cardaynote-trigger, td.vrc-cardaynote-empty span
 }
 .vrc-admin-widget-wrapper h4 i {
 	vertical-align: middle;
-	margin-right: 15px;
-	font-size: 20px;
+	margin-right: 8px;
+	font-size: 16px;
 }
 .vrc-dash-chart-title .vrc-dash-chart-nav i {
 	margin-right: 0;
@@ -8879,6 +9175,11 @@ tr.no-results > td {
 	padding: 20px;
 	background: var(--vrc-light-F6F);
 }
+.vrc-modal-overlay-content-head h3 {
+	margin: 0;
+	font-weight: normal;
+	font-size: 18px;
+}
 .vrc-modal-overlay-content-head h3 > i {
 	margin-right: 5px;
 	color: var(--vrc-light-600);
@@ -9804,9 +10105,6 @@ div.modal.in .modal-header + div.modal-body-wrapper {
 	.vrc-report-sheetnchart .vrc-report-sheet {
     	flex-basis: 50%;
 	}
-	.vrc-report-sheetnchart .vrc-report-chart-meta {
-	    flex-basis: 50%;
-	}
 	.vrc-bookingdet-summary-car .btn-group, .vrc-bookingdet-summary-car .vrc-bookingdet-summary-carnum-chunit {
 		display: block;
 		float: none;
@@ -10234,6 +10532,7 @@ div.modal.in .modal-header + div.modal-body-wrapper {
 	}
 	.vrc-ratesoverview-period-box-cals-inner > div {
 		display: block;
+		flex-basis: 100%;
 	}
 	.vrc-tracking-info-details > .vrc-tracking-info-carsrates-cont, .vrc-tracking-info-details > .vrc-tracking-info-dates-cont, .vrc-tracking-info-details > .vrc-tracking-info-party-cont {
     	flex: 1;

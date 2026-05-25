@@ -2,8 +2,8 @@
 Contributors: e4jvikwp
 Tags: car rental, rent a car, vehicles, rental management, vehicles booking
 Requires at least: 4.7
-Tested up to: 6.9
-Stable tag: 1.4.5
+Tested up to: 7.0
+Stable tag: 1.4.6
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -112,6 +112,16 @@ You can create several vehicles through the back-end, each with a total number o
 
 == Changelog ==
 
+= 1.4.6 =
+*Release date - 25 May 2026*
+
+* Core framework updated.
+* Various back-end security improvements.
+* Reports framework refactoring.
+* New Auto-Exporter cron job implementation.
+* Backend style improvements.
+* Enforced iCal secret key to be 8-char long when less than 5 chars (if you're using iCal calendars, check new URLs).
+
 = 1.4.5 =
 *Release date - 26 November 2025*
 
@@ -143,28 +153,6 @@ You can create several vehicles through the back-end, each with a total number o
 * Adapter framework updated.
 * Field validation controls improvements.
 * Minor layout improvements.
-
-= 1.4.0 =
-*Release date - 1 March 2024*
-
-* New framework major release.
-* Added support for Gutenberg native blocks (FSE).
-* Several widget/block improvements.
-* Dark mode with dedicated styles to admin and site sections.
-* Forced combinations for pick-up/drop-off locations.
-* Updated payment framework.
-* New PDF contract text management functions through tags.
-* Several new hooks to facilitate customization.
-* Restrictions framework improved.
-* Coupon codes usage counters.
-* Availability Overview new scrollable layout.
-* New grid layout for cars list and search results.
-* Tens of minor improvements to both admin and site sections.
-
-= 1.3.3 =
-*Release date - 1 February 2024*
-
-* Modified naming technique for PDF contracts.
 
 = Earlier versions =
 

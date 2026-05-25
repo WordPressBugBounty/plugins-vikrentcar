@@ -293,7 +293,7 @@ final class VRCConversionFactory
 				case 'checkbox':
 					// always display a hidden input value turned off before the actual checkbox to support the "off" (0) status
 					$html .= '<input type="hidden" name="vikparams['.$value.']" value="0" />';
-					$html .= VikRentCar::getVrcApplication()->printYesNoButtons('vikparams['.$value.']', JText::translate('VBYES'), JText::translate('VBNO'), (isset($params[$value]) ? (int)$params[$value] : (int)$default_paramv), 1, 0);
+					$html .= VikRentCar::getVrcApplication()->printYesNoButtons('vikparams['.$value.']', JText::translate('VRYES'), JText::translate('VRNO'), (isset($params[$value]) ? (int)$params[$value] : (int)$default_paramv), 1, 0);
 					break;
 				default:
 					$html .= '<input type="text" name="vikparams['.$value.']" value="'.(isset($params[$value]) ? JHtml::fetch('esc_attr', $params[$value]) : JHtml::fetch('esc_attr', $default_paramv)).'" size="20"' . $inp_attr . '/>';

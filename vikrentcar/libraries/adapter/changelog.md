@@ -1,5 +1,15 @@
 # Framework Changelog
 
+### 10.1.66
+
+*Release date - 17 September 2025*
+
+##### CHANGE
+
+* `JDocument::setMetaData()` is now able to set the "robots" meta data by using the `wp_robots` filter.
+
+---
+
 ### 10.1.65
 
 *Release date - 30 July 2025*
