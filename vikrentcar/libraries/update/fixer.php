@@ -31,7 +31,11 @@ class VikRentCarUpdateFixer
 	 */
 	public function __construct($version)
 	{
+		// bind version
 		$this->version = $version;
+
+		// main library
+		require_once VRC_SITE_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'lib.vikrentcar.php';
 	}
 
 	/**
@@ -197,7 +201,7 @@ class VikRentCarUpdateFixer
 			}
 		}
 
-		if (version_compare($this->version, '1.4.6', '<'))
+		if (version_compare($this->version, '1.4.7', '<'))
 		{
 			$config = VRCFactory::getConfig();
 			if (strlen($config->getString('icalkey', '')) < 5)

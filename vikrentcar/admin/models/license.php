@@ -213,8 +213,8 @@ class VikRentCarModelLicense extends JModelForm
 			'filename'  => $tmp . DIRECTORY_SEPARATOR . 'vikrentcarpro.zip',
 			// make sure the request is non blocking
 			'blocking'  => true,
-			// force timeout to 60 seconds
-			'timeout'   => 60,
+			// force timeout to 120 seconds
+			'timeout'   => 120,
 			// disable the SSL peer verification
 			'sslverify' => false,
 		);

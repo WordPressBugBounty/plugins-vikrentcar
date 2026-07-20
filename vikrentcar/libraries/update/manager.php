@@ -75,6 +75,9 @@ class VikRentCarUpdateManager
 	 */
 	public static function install()
 	{
+		// main library
+		require_once VRC_SITE_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'lib.vikrentcar.php';
+
 		self::execSqlFile(VIKRENTCAR_BASE . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR . 'install.mysql.utf8.sql');
 		
 		$dbo = JFactory::getDbo();
