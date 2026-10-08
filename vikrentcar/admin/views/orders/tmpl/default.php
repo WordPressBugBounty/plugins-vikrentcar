@@ -212,7 +212,7 @@ $filters_set = false;
 			$pdatefiltto = $app->getUserStateFromRequest("vrc.orders.datefiltto", 'datefiltto', '', 'string');
 			if (!empty($pdatefilt) && (!empty($pdatefiltfrom) || !empty($pdatefiltto))) {
 				$filters_set = true;
-				$dates_filter = '&amp;datefilt='.$pdatefilt.(!empty($pdatefiltfrom) ? '&amp;datefiltfrom='.$pdatefiltfrom : '').(!empty($pdatefiltto) ? '&amp;datefiltto='.$pdatefiltto : '');
+				$dates_filter = JHtml::fetch('esc_attr', '&amp;datefilt='.$pdatefilt.(!empty($pdatefiltfrom) ? '&amp;datefiltfrom='.$pdatefiltfrom : '').(!empty($pdatefiltto) ? '&amp;datefiltto='.$pdatefiltto : ''));
 			}
 			$datesel = '<select name="datefilt" onchange="vrcToggleDateFilt(this.value);"><option value="">'.JText::translate('VRFILTERBYDATES').'</option>';
 			$datesel .= '<option value="1"'.(!empty($pdatefilt) && $pdatefilt == 1 ? ' selected="selected"' : '').'>'.JText::translate('VRPCHOOSEBUSYORDATE').'</option>';

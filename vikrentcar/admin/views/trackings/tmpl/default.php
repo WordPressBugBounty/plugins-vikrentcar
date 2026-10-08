@@ -118,7 +118,7 @@ jQuery(document).ready(function() {
 		jQuery("." + newtabrel).fadeIn();
 		jQuery("#vrc_active_tab").val(newtabrel);
 	});
-	jQuery(".vrc-trackings-tab[data-vrctab='<?php echo $pactive_tab; ?>']").trigger('click');
+	jQuery(".vrc-trackings-tab[data-vrctab='<?php echo JHtml::fetch('esc_attr', $pactive_tab); ?>']").trigger('click');
 });
 </script>
 

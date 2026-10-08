@@ -36,7 +36,7 @@ if (is_array($category)) {
 }
 
 ?>
-<div class="vrc-search-results-block vrc-search-results-block-<?php echo $layoutstyle; ?>">
+<div class="vrc-search-results-block vrc-search-results-block-<?php echo JHtml::fetch('esc_attr', $layoutstyle); ?>">
 
 <?php
 foreach ($cars as $c) {

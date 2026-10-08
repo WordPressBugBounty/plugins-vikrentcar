@@ -1,5 +1,84 @@
 # Framework Changelog
 
+### 10.1.73
+
+*Release date - 9 June 2026*
+
+##### CHANGE
+
+* The `JDatabaseDriver` instance now immediately flushes the results obtained with the last query to free disk space.
+
+---
+
+### 10.1.72
+
+*Release date - 14 April 2026*
+
+##### ADD
+
+* Implemented `JUri::setPath()` method.
+
+##### CHANGE
+
+* `JApplication::getRouter()` method cannot be called statically any longer.
+
+---
+
+### 10.1.71
+
+*Release date - 27 February 2026*
+
+##### ADD
+
+* Added support to custom previews for certain blocks/widgets.
+
+##### CHANGE
+
+* The text form fields now support the placeholder attribute.
+* The textarea form fields now support translatable placeholders. 
+
+---
+
+### 10.1.70
+
+*Release date - 9 February 2026*
+
+##### CHANGE
+
+* In case the session is not started at `init`, the framework will try to lazy load it when requested (only if possible).
+
+---
+
+### 10.1.69
+
+*Release date - 3 February 2026*
+
+##### ADD
+
+* Implemented `JSmsDriver::setOrder()` method to support runtime tags injection.
+
+---
+
+### 10.1.68
+
+*Release date - 15 January 2026*
+
+##### CHANGE
+
+* `JObject::getProperties()` is now able to exclude all the protected and private properties.
+
+---
+
+### 10.1.67
+
+*Release date - 15 December 2025*
+
+##### BUG FIXES
+
+* Fixed a warning thrown by SimplePie, used to download RSS feeds.
+
+---
+
 ### 10.1.66
 
 *Release date - 17 September 2025*

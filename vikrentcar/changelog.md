@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.7
+
+*Release date - 08 October 2026*
+
+- Core framework updated.
+- Various XSS preventions.
+
 ## 1.4.6
 
 *Release date - 25 May 2026*
