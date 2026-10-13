@@ -2458,6 +2458,18 @@ class VikRentCarController extends JControllerVikRentCar
 		$dbo->execute();
 
 		/**
+		 * Pre check-in configuration settings
+		 * 
+		 * @since 	1.12
+		 */
+		$pprecheckinenabled = VikRequest::getInt('precheckinenabled', 0, 'request');
+		$pprecheckinenabled = $pprecheckinenabled > 0 ? 1 : 0;
+
+		$config->set('precheckinenabled', $pprecheckinenabled);
+		// this may be a negative integer, it should not be unsigned
+		$config->set('precheckinminoffset', VikRequest::getInt('precheckinminoffset', 0, 'request'));
+
+		/**
 		 * PDF contract text.
 		 * 
 		 * @since 	1.15.5 (J) - 1.4.0 (WP)
@@ -2780,6 +2792,13 @@ class VikRentCarController extends JControllerVikRentCar
 		// save configuration
 		$config->set('backuptype', $backup_type);
 		$config->set('backupfolder', $backup_folder);
+
+		/**
+		 * Check-in data collection type.
+		 * 
+		 * @since 	1.15.11 (J) - 1.4.7 (WP)
+		 */
+		$config->set('checkindata', VikRequest::getString('checkindata', 'basic', 'request'));
 
 		// forced pickup/drop off times
 		$forcedtimes 	= $app->input->getInt('forcedtimes', 0);
@@ -8862,6 +8881,65 @@ class VikRentCarController extends JControllerVikRentCar
 
 		echo 'e4j.ok';
 		exit;
+	}
+
+	/**
+	 * AJAX endpoint to invoke a report object's method.
+	 *
+	 * @return 	void
+	 * 
+	 * @since 	1.15.0 (J) - 1.5.0 (WP)
+	 * @since 	1.18.6 (J) - 1.8.6 (WP) added support for "call_args".
+	 */
+	public function invoke_report()
+	{
+		$app = JFactory::getApplication();
+
+		$report_name = $app->input->getString('report', '');
+		$report_call = $app->input->getString('call', '');
+		$call_args = $app->input->get('call_args', [], 'array');
+		$params = $app->input->get('params', [], 'array');
+
+		if (empty($report_name)) {
+			VRCHttpDocument::getInstance($app)->close(400, 'Missing report name');
+		}
+
+		if (empty($report_call)) {
+			VRCHttpDocument::getInstance($app)->close(400, 'Missing report call');
+		}
+
+		// get requested report instance
+		$report = VikRentCar::getReportInstance($report_name);
+		if (!$report) {
+			VRCHttpDocument::getInstance($app)->close(404, 'Report not found');
+		}
+
+		if (!method_exists($report, $report_call) || !is_callable(array($report, $report_call))) {
+			VRCHttpDocument::getInstance($app)->close(403, sprintf('Cannot call [%s] on report', $report_call));
+		}
+
+		try {
+			// call on report's method
+			if ($call_args) {
+				$result = call_user_func_array([$report, $report_call], $call_args);
+			} else {
+				$result = $report->{$report_call}($params);
+			}
+		} catch (Exception $e) {
+			VRCHttpDocument::getInstance($app)->close($e->getCode() ?: 500, $e->getMessage());
+		}
+
+		if (is_null($result)) {
+			VRCHttpDocument::getInstance($app)->close(400, 'Null response');
+		}
+
+		if (is_scalar($result)) {
+			// wrap result within an array for a JSON encoded response
+			VRCHttpDocument::getInstance($app)->json([$result]);
+		}
+
+		// output the JSON encoded array/object returned
+		VRCHttpDocument::getInstance($app)->json($result);
 	}
 
 	/**

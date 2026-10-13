@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_cars` (
   `short_info` varchar(512) DEFAULT NULL,
   `params` text DEFAULT NULL,
   `alias` varchar(128) NOT NULL,
+  `max_drivers` tinyint(2) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -313,6 +314,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_orders` (
   `payable` decimal(12,2) DEFAULT 0.00,
   `id_ical` int(10) DEFAULT NULL,
   `idorder_ical` varchar(256) DEFAULT NULL,
+  `drivers_count` tinyint(2) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

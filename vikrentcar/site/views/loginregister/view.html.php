@@ -12,29 +12,32 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 jimport('joomla.application.component.view');
 
-class VikrentcarViewLoginregister extends JViewVikRentCar {
-	function display($tpl = null) {
+class VikrentcarViewLoginregister extends JViewVikRentCar
+{
+	public function display($tpl = null)
+	{
 		$dbo = JFactory::getDbo();
-		$ppriceid = VikRequest::getString('priceid', '', 'request');
-		$pplace = VikRequest::getString('place', '', 'request');
-		$preturnplace = VikRequest::getString('returnplace', '', 'request');
-		$pcarid = VikRequest::getString('carid', '', 'request');
-		$pdays = VikRequest::getString('days', '', 'request');
-		$ppickup = VikRequest::getString('pickup', '', 'request');
-		$prelease = VikRequest::getString('release', '', 'request');
-		$copts = array();
+
+		$ppriceid = VikRequest::getInt('priceid', 0, 'request');
+		$pplace = VikRequest::getInt('place', 0, 'request');
+		$preturnplace = VikRequest::getInt('returnplace', 0, 'request');
+		$pcarid = VikRequest::getInt('carid', 0, 'request');
+		$pdays = VikRequest::getInt('days', 0, 'request');
+		$ppickup = VikRequest::getInt('pickup', 0, 'request');
+		$prelease = VikRequest::getInt('release', 0, 'request');
+
+		$copts = [];
 		$q = "SELECT * FROM `#__vikrentcar_optionals`;";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		if ($dbo->getNumRows() > 0) {
-			$optionals = $dbo->loadAssocList();
-			foreach ($optionals as $opt) {
-				$tmpvar = VikRequest::getString('optid' . $opt['id'], '', 'request');
-				if (!empty ($tmpvar)) {
-					$copts[$opt['id']] = $tmpvar;
-				}
+		$optionals = $dbo->loadAssocList();
+
+		foreach ($optionals as $opt) {
+			$tmpvar = VikRequest::getInt('optid' . $opt['id'], 0, 'request');
+			if (!empty($tmpvar)) {
+				$copts[$opt['id']] = $tmpvar;
 			}
 		}
+
 		$this->priceid = $ppriceid;
 		$this->place = $pplace;
 		$this->returnplace = $preturnplace;

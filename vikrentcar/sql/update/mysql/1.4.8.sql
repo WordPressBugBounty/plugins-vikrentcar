@@ -1,0 +1,1 @@
+ALTER TABLE `#__vikrentcar_orders` ADD COLUMN `drivers_count` tinyint(2) NOT NULL DEFAULT 1;

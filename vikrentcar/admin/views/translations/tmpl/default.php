@@ -44,7 +44,7 @@ if (!(count($langs) > 1)) {
 	</form>
 	<?php
 } else {
-	$cur_langtab = VikRequest::getString('vrc_lang', '', 'request');
+	$cur_langtab = preg_replace('/[^A-Z\-\_]+/i', '', VikRequest::getString('vrc_lang', '', 'request'));
 	$table = VikRequest::getString('vrc_table', '', 'request');
 	if (!empty($table)) {
 		$table = $vrc_tn->replacePrefix($table);
@@ -558,7 +558,7 @@ if (!empty($cur_langtab)) {
 	?>
 	jQuery('.vrc-translation-tab').each(function() {
 		var langtag = jQuery(this).attr('data-vrclang');
-		if (langtag != '<?php echo $cur_langtab; ?>') {
+		if (langtag != <?php echo json_encode($cur_langtab); ?>) {
 			return true;
 		}
 		if (jQuery('#vrc_langcontent_'+langtag).length) {

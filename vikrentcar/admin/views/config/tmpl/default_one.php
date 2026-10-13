@@ -36,7 +36,31 @@ $maxdate_val = intval(substr($maxdatefuture, 1, (strlen($maxdatefuture) - 1)));
 $maxdate_interval = substr($maxdatefuture, -1, 1);
 
 $vrcsef = file_exists(VRC_SITE_PATH.DS.'router.php');
+
+$precheckin_enabled = (int)VikRentCar::precheckinEnabled();
 ?>
+
+<script type="text/javascript">
+
+var precheckinenabled = <?php echo $precheckin_enabled; ?>;
+
+jQuery(function() {
+
+	jQuery('input[name="precheckinenabled"]').change(function() {
+		if (precheckinenabled < 0) {
+			jQuery('.precheckin-params-tr').hide();
+			return;
+		}
+		if (jQuery(this).is(':checked') && parseInt(jQuery(this).val()) > 0) {
+			jQuery('.precheckin-params-tr').fadeIn();
+		} else {
+			jQuery('.precheckin-params-tr').fadeOut();
+		}
+	});
+
+});
+
+</script>
 
 <div class="vrc-config-maintab-left">
 	<fieldset class="adminform">
@@ -248,6 +272,14 @@ $vrcsef = file_exists(VRC_SITE_PATH.DS.'router.php');
 				<div class="vrc-param-container">
 					<div class="vrc-param-label"><?php echo JText::translate('VRCONFIGONETENSEVEN'); ?></div>
 					<div class="vrc-param-setting"><input type="number" name="minuteslock" value="<?php echo VikRentCar::getMinutesLock(); ?>" min="0"/></div>
+				</div>
+				<div class="vrc-param-container">
+					<div class="vrc-param-label"><?php echo JText::translate('VBCONFIGPRECHECKINENABLED'); ?></div>
+					<div class="vrc-param-setting"><?php echo $vrc_app->printYesNoButtons('precheckinenabled', JText::translate('VBYES'), JText::translate('VBNO'), $precheckin_enabled, 1, 0); ?></div>
+				</div>
+				<div class="vrc-param-container vrc-param-nested precheckin-params-tr" style="display: <?php echo $precheckin_enabled > 0 ? 'flex' : 'none'; ?>;">
+					<div class="vrc-param-label"><?php echo JText::translate('VBCONFIGPRECHECKINMIND'); ?></div>
+					<div class="vrc-param-setting"><input type="number" name="precheckinminoffset" value="<?php echo VikBooking::precheckinMinOffset(); ?>" min="-7" max="365" /></div>
 				</div>
 			</div>
 		</div>

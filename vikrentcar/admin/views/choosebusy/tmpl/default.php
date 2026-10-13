@@ -35,7 +35,7 @@ if (is_file(VRC_ADMIN_PATH . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPAR
 }
 $unitsdisp = $rows[0]['units'] - $totres;
 $unitsdisp = ($unitsdisp < 0 ? "0" : $unitsdisp);
-$pgoto = VikRequest::getString('goto', '', 'request');
+$pgoto = rawurlencode(VikRequest::getString('goto', '', 'request'));
 ?>
 
 <div class="vrc-choosebusy-head">
@@ -212,8 +212,8 @@ for ($h = 0; $h <= 23; $h++) {
 		//
 		?>
 		<tr class="row<?php echo $k; ?>">
-			<td class="left"><a class="vrc-orderid" href="index.php?option=com_vikrentcar&amp;task=editbusy<?php echo (!empty($pgoto) ? '&amp;goto='.$pgoto : ''); ?>&amp;cid[]=<?php echo $row['idorder']; ?>"><?php echo $row['idorder']; ?></a></td>
-			<td><a href="index.php?option=com_vikrentcar&amp;task=editbusy<?php echo (!empty($pgoto) ? '&amp;goto='.$pgoto : ''); ?>&amp;cid[]=<?php echo $row['idorder']; ?>"><?php echo date($df.' '.$nowtf, $row['ritiro']); ?></a></td>
+			<td class="left"><a class="vrc-orderid" href="index.php?option=com_vikrentcar&amp;task=editbusy<?php echo (!empty($pgoto) ? '&amp;goto=' . JHtml::fetch('esc_attr', $pgoto) : ''); ?>&amp;cid[]=<?php echo $row['idorder']; ?>"><?php echo $row['idorder']; ?></a></td>
+			<td><a href="index.php?option=com_vikrentcar&amp;task=editbusy<?php echo (!empty($pgoto) ? '&amp;goto=' . JHtml::fetch('esc_attr', $pgoto) : ''); ?>&amp;cid[]=<?php echo $row['idorder']; ?>"><?php echo date($df.' '.$nowtf, $row['ritiro']); ?></a></td>
 			<td>
 			<?php
 			if ($row['stop_sales'] == 1) {

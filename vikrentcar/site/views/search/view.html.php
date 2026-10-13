@@ -258,7 +258,7 @@ class VikrentcarViewSearch extends JViewVikRentCar
 										if (in_array('-'.$restrcheckout['wday'].'-', $ctdrestrictions)) {
 											$restrictions_affcount++;
 											$restrictionsvalid = false;
-											$restrictionerrmsg = JText::sprintf('VRRESTRERRWDAYCTDRANGE', VikBooking::sayWeekDay($restrcheckout['wday']));
+											$restrictionerrmsg = JText::sprintf('VRRESTRERRWDAYCTDRANGE', VikRentCar::sayWeekDay($restrcheckout['wday']));
 										}
 									}
 								}

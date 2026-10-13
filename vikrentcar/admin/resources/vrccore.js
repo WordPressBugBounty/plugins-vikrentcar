@@ -89,11 +89,21 @@
 				attempt = 1;
 			}
 
-			return $.ajax({
+			let requestOptions = {
 				type: 'POST',
 				url: url,
-				data: data
-			}).done(function(resp) {
+				data: data,
+			};
+
+			if (data instanceof FormData) {
+				// ensure the FormData object is not manipulated
+				requestOptions.processData = false;
+				requestOptions.contentType = false;
+			}
+
+			return $.ajax(
+				requestOptions
+			).done(function(resp) {
 				if (success !== undefined) {
 					// launch success callback function
 					success(resp);
@@ -113,12 +123,18 @@
 				} else {
 					// launch the failure callback otherwise
 					if (failure !== undefined) {
+						if (err.responseText === 'false') {
+							// make the property empty to rely on others
+							err.responseText = '';
+						}
 						failure(err);
 					}
 				}
 
-				// always log the error in console
-				console.log('AJAX request failed' + (err.status == 500 ? ' (' + err.responseText + ')' : ''), err);
+				if (!err.status || err.status == 500) {
+					// log the error in console
+					console.error('AJAX request failed' + (err.status == 500 ? ' (' + err.responseText + ')' : ''), err);
+				}
 			});
 		}
 

@@ -18,7 +18,8 @@ $navig = $this->navig;
 $currencysymb = VikRentCar::getCurrencySymb();
 
 $layoutstyle = VikRequest::getString('layoutstyle', 'list', 'request');
-$pitemid = VikRequest::getString('Itemid', 0, 'request');
+$layoutstyle = in_array($layoutstyle, ['list', 'grid']) ? $layoutstyle : 'list';
+$pitemid = VikRequest::getInt('Itemid', 0, 'request');
 
 if (is_array($category)) {
 	?>

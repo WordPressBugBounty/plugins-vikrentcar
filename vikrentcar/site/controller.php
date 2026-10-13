@@ -1467,16 +1467,16 @@ class VikRentCarController extends JControllerVikRentCar
 		$system_tz = date_default_timezone_get();
 		$icsname = date('Y-m-d_H_i_s');
 
-		$icscontent = "BEGIN:VCALENDAR\n";
-		$icscontent .= "VERSION:2.0\n";
-		$icscontent .= "PRODID:-//e4j//VikRentCar//EN\n";
-		$icscontent .= "CALSCALE:GREGORIAN\n";
-		$icscontent .= "X-WR-TIMEZONE:{$system_tz}\n";
+		$icscontent = "BEGIN:VCALENDAR\r\n";
+		$icscontent .= "VERSION:2.0\r\n";
+		$icscontent .= "PRODID:-//e4j//VikRentCar//EN\r\n";
+		$icscontent .= "CALSCALE:GREGORIAN\r\n";
+		$icscontent .= "X-WR-TIMEZONE:{$system_tz}\r\n";
 
 		/**
 		 * We allow to define a maximum date in the past for the orders to include.
 		 * 
-		 * @since 	1.15.5 (J) - 1.4.0 (WP)
+		 * @since 	1.15.11 (J) - 1.4.6 (WP)
 		 */
 		$past_months = VRCFactory::getConfig()->getInt('ical_past_months', 0);
 		$info_date   = getdate();
@@ -1506,59 +1506,90 @@ class VikRentCarController extends JControllerVikRentCar
 			$dbo->setQuery($q);
 			$rows = $dbo->loadAssocList();
 
+			if ($rows) {
+				/**
+				 * Dispatch the event to allow third-party plugins to manipulate the booking records found.
+				 * 
+				 * @since 	1.15.11 (J) - 1.4.6 (WP)
+				 */
+				VRCFactory::getPlatform()->getDispatcher()->trigger('onBeforeParseBookingsCalendar', [&$rows]);
+			}
+
+			/**
+			 * In case of no bookings, we no longer send a 404 error code, but
+			 * we rather deliver an empty calendar, yet syntactically valid.
+			 * 
+			 * @since 	1.15.11 (J) - 1.4.6 (WP)
+			 */
+			$rows = is_array($rows) ? $rows : [];
+
+			// build ics content
 			$icalstr = "";
+			
 			foreach ($rows as $r) {
 				$uri = VikRentCar::externalroute('index.php?option=com_vikrentcar&view=order&sid=' . $r['sid'] . '&ts=' . $r['ts'], false);
 				$pickloc = VikRentCar::getPlaceName($r['idplace']);
-				$car = VikRentCar::getCarInfo($r['idcar']);
+				$car_info = VikRentCar::getCarInfo($r['idcar']);
 				//$custdata = preg_replace('/\s+/', ' ', trim($r['custdata']));
-				//$description = $car['name']."\\n".$r['custdata'];
-				$description = $car['name']."\\n".str_replace("\n", "\\n", trim($r['custdata']));
-				$icalstr .= "BEGIN:VEVENT\n";
+				//$description = $car_info['name']."\\n".$r['custdata'];
+				$description = $car_info['name']."\\n".str_replace("\n", "\\n", trim($r['custdata']));
+				$calendar_event = [
+					'BEGIN' => 'VEVENT',
+				];
+
 				if ($evendtype == 'drop') {
-					// Event End Date set to Drop off Date
-					$icalstr .= "DTEND;TZID={$system_tz}:".date('Ymd\THis', $r['consegna'])."\n";
+					$calendar_event["DTEND;TZID={$system_tz}"] = date('Ymd\THis', $r['consegna']);
 				} else {
-					// Event End Date set to Pick up Date
-					$icalstr .= "DTEND;TZID={$system_tz}:".date('Ymd\THis', $r['ritiro'])."\n";
+					$calendar_event["DTEND;TZID={$system_tz}"] = date('Ymd\THis', $r['ritiro']);
 				}
 
-				/**
-				 * Keep "event" UID if this was a previously imported reservation from an iCal calendar.
-				 * 
-				 * @since 	1.15.9 (J) - 1.4.6 (WP)
-				 */
-				if (!empty($r['id_ical']) && !empty($r['idorder_ical'])) {
-					// use the previous UID
-					$icalstr .= "UID:" . $r['idorder_ical'] . "\n";
-				} else {
-					// build the proper UID syntax for this site
-					$icalstr .= "UID:" . $r['id'] . '_' . $r['sid'] . "\n";
-				}
+				$calendar_event['UID'] = !empty($r['id_ical']) && !empty($r['idorder_ical']) ? $r['idorder_ical'] : sha1($r['id'] . '_' . $r['sid']);
 
-				/**
-				 * Check if the rental order has got multiple history events for modifications.
-				 * 
-				 * @since 	1.15.9 (J) - 1.4.6 (WP)
-				 */
 				$book_history  = VikRentCar::getOrderHistoryInstance()->setBid($r['id'])->loadHistory();
 				if (count($book_history) > 1) {
-					$icalstr .= "LAST-MODIFIED;TZID={$system_tz}:".date('Ymd\THis', strtotime(JHtml::fetch('date', $book_history[0]['dt'])))."\n";
+					$calendar_event["LAST-MODIFIED;TZID={$system_tz}"] = date(
+						'Ymd\THis',
+						strtotime(JHtml::fetch('date', $book_history[0]['dt']))
+					);
 				}
 
-				$icalstr .= "DTSTAMP:".date('Ymd\THis\Z')."\n";
-				$icalstr .= "LOCATION:".preg_replace('/([\,;])/','\\\$1', $pickloc)."\n";
-				$icalstr .= ((strlen($description) > 0 ) ? "DESCRIPTION:".preg_replace('/([\,;])/','\\\$1', $description)."\n" : "");
-				$icalstr .= "URL;VALUE=URI:".preg_replace('/([\,;])/','\\\$1', $uri)."\n";
-				// $icalstr .= "SUMMARY:".JText::sprintf('VRCICSEXPSUMMARY', $r['pickup_location_name'])."\n";
-				$icalstr .= "SUMMARY:" . sprintf('%s #%d @ %s', JText::translate('VRRENTALORD'), $r['id'], (string)$r['pickup_location_name']) . "\n";
-				$icalstr .= "DTSTART;TZID={$system_tz}:".date('Ymd\THis', $r['ritiro'])."\n";
-				$icalstr .= "END:VEVENT\n";
+				$calendar_event['DTSTAMP'] = date('Ymd\THis\Z');
+				$calendar_event['LOCATION'] = preg_replace('/([\,;])/','\\\$1', $pickloc);
+
+				if (strlen($description)) {
+					$calendar_event['DESCRIPTION'] = preg_replace('/([\,;])/','\\\$1', $description);
+				}
+
+				$calendar_event['URL;VALUE=URI'] = preg_replace('/([\,;])/','\\\$1', $uri);
+				$calendar_event['SUMMARY'] = sprintf('%s #%d @ %s', JText::translate('VRRENTALORD'), $r['id'], (string) $r['pickup_location_name']);
+				$calendar_event["DTSTART;TZID={$system_tz}"] = date('Ymd\THis', $r['ritiro']);
+
+				/**
+			    * Dispatch the event to allow third-party plugins to manipulate
+			    * the calendar event before it is written into the ICS file.
+			    */
+				VRCFactory::getPlatform()->getDispatcher()->trigger('onBeforeSetBookingCalendar', [&$calendar_event, $r]);
+
+				/**
+				 * Third-party plugins could override the calendar, breaking the ICS file. 
+				 * We check if the calendar event is still valid before writing it into the ICS file. 
+				 */
+				if (!$calendar_event || empty($calendar_event['BEGIN'])) {
+					continue;
+				}
+
+				$calendar_event['END'] = 'VEVENT';
+
+				foreach ($calendar_event as $prop => $value) {
+					$event_line = "{$prop}:{$value}";
+					$icalstr .= implode("\r\n ", str_split($event_line, 75)) . "\r\n";
+				}
+
 			}
 			$icscontent .= $icalstr;
 		}
 
-		$icscontent .= "END:VCALENDAR\n";
+		$icscontent .= "END:VCALENDAR\r\n";
 
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename=' . $icsname . '.ics');
@@ -1861,6 +1892,155 @@ class VikRentCarController extends JControllerVikRentCar
 
 		// print success message and redirect
 		$app->enqueueMessage(JText::translate('VRC_SUBMIT_DOCSUPLOAD_TNKS'));
+		$app->redirect($goto);
+	}
+
+	/**
+	 * Front-end Pre Check-in submit of the guests details.
+	 *
+	 * @since 	1.12
+	 */
+	public function storeprecheckin()
+	{
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
+		$dbo 	 = JFactory::getDbo();
+		$app 	 = JFactory::getApplication();
+
+		$sid 	 = $app->input->getString('sid', '');
+		$ts 	 = $app->input->getString('ts', '');
+		$pguests = $app->input->get('guests', [], 'array');
+		$pitemid = $app->input->getInt('Itemid', 0);
+
+		$q = "SELECT `o`.* FROM `#__vikrentcar_orders` AS `o` WHERE (`o`.`sid`=" . $dbo->quote($sid) . ") AND `o`.`ts`=" . $dbo->quote($ts) . " AND `o`.`status`='confirmed';";
+		$dbo->setQuery($q);
+		$order = $dbo->loadAssoc();
+		if (!$order) {
+			throw new Exception('Booking not found', 404);
+		}
+
+		// access the customer record
+		$customer = VikRentCar::getCPinInstance()->getCustomerFromBooking($order['id']);
+
+		$q = "SELECT * FROM `#__vikrentcar_customers_orders` WHERE `idorder`=".(int)$order['id'].";";
+		$dbo->setQuery($q);
+		$custorder = $dbo->loadAssoc();
+		if (!$custorder) {
+			throw new Exception('No customer found', 404);
+		}
+
+		// booking details page
+		$goto = JRoute::rewrite('index.php?option=com_vikrentcar&view=order&sid=' . $order['sid'] . '&ts=' . $order['ts'] . (!empty($pitemid) ? '&Itemid=' . $pitemid : ''), false);
+
+		// make sure pre-checkin is allowed
+		$precheckin = VikRentCar::precheckinEnabled();
+		if ($precheckin) {
+			// make sure the limit of days in advance is reflected
+			$precheckin_mind = VikRentCar::precheckinMinOffset();
+			if ($precheckin_mind < 0) {
+				// validation made prior to check-out date and time
+				$precheckin = time() <= strtotime("{$precheckin_mind} days 23:59:59", $order['checkout']);
+			} else {
+				// classic validation prior to check-in date and time
+				$precheckin_lim_ts = strtotime("+{$precheckin_mind} days 00:00:00");
+				$precheckin = ($precheckin_lim_ts <= $order['checkin'] || ($precheckin_mind === 1 && time() <= $order['checkin']));
+			}
+		}
+		if (!$precheckin) {
+			// raise error and redirect in case of website or OTA booking
+			VikError::raiseWarning('', 'Pre-checkin not allowed at this time');
+			$app->redirect($goto);
+			exit;
+		}
+
+		// build guest details
+		$guests_details = array();
+
+		// list of keys for the guests details collected via front-end
+		$front_keys = array();
+		
+		foreach ($pguests as $ind => $adults) {
+			foreach ($adults as $aduind => $details) {
+				foreach ($details as $detkey => $detval) {
+					// accept no raw HTML tags as keys
+					$detkey = htmlspecialchars(strip_tags($detkey));
+					if (!$detkey) {
+						continue;
+					}
+					if (!in_array($detkey, $front_keys)) {
+						// push the key of the guest details for later comparison
+						array_push($front_keys, $detkey);
+					}
+					if (strlen($detval)) {
+						// push value only if not empty
+						if (!isset($guests_details[$ind])) {
+							$guests_details[$ind] = array();
+						}
+						if (!isset($guests_details[$ind][$aduind])) {
+							$guests_details[$ind][$aduind] = array();
+						}
+						$guests_details[$ind][$aduind][$detkey] = $detval;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Compare the current data collected to the back-end drivers_data in case there are some
+		 * fields dedicated to just the back-end for the admins (like extra_notes), and merge.
+		 */
+		$curpaxdata = json_decode($custorder['drivers_data'], true);
+		if (is_array($curpaxdata) && count($curpaxdata)) {
+			foreach ($curpaxdata as $ind => $adults) {
+				if (!isset($guests_details[$ind])) {
+					// current pax data include a room not present, set it to not lose it
+					$guests_details[$ind] = $adults;
+				}
+				foreach ($adults as $aduind => $details) {
+					if (!isset($guests_details[$ind][$aduind])) {
+						// current pax data include a guest not present, set it to not lose it
+						$guests_details[$ind][$aduind] = $details;
+					}
+					foreach ($details as $detkey => $detval) {
+						// accept no raw HTML tags as keys
+						$detkey = htmlspecialchars(strip_tags($detkey));
+						if (!$detkey) {
+							continue;
+						}
+						if (!in_array($detkey, $front_keys)) {
+							// merge this key probably reserved to the back-end
+							$guests_details[$ind][$aduind][$detkey] = $detval;
+						}
+					}
+				}
+			}
+		}
+		
+		// update checkin information
+		$q = "UPDATE `#__vikrentcar_customers_orders` SET `drivers_data`=".$dbo->quote(json_encode($guests_details))." WHERE `id`=".(int)$custorder['id'].";";
+		$dbo->setQuery($q);
+		$dbo->execute();
+
+		// Booking History
+		VikRentCar::getOrderHistoryInstance()->setBid($order['id'])->store('PC');
+
+		/**
+		 * Invoke the callback on the pax registration driver.
+		 * 
+		 * @since 	1.17.5 (J) - 1.7.5 (WP)
+		 */
+		VRCCheckinPax::callbackPrecheckinDataStored(
+			VRCFactory::getConfig()->getString('checkindata', 'basic'),
+			(array) $guests_details,
+			(array) $order,
+			(array) $customer
+		);
+
+		// print success message and redirect
+		$app->enqueueMessage(JText::translate('VRCSUBMITPRECHECKINTNKS'));
 		$app->redirect($goto);
 	}
 }

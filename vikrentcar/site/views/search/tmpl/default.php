@@ -280,23 +280,23 @@ foreach ($res as $k => $r) {
 							?>
 							<form action="<?php echo JRoute::rewrite('index.php?option=com_vikrentcar&view=vikrentcar'.(!empty($pitemid) ? '&Itemid='.$pitemid : '')); ?>" method="post">
 								<input type="hidden" name="option" value="com_vikrentcar"/>
-					  			<input type="hidden" name="caropt" value="<?php echo $k; ?>"/>
-					  			<input type="hidden" name="days" value="<?php echo $days; ?>"/>
-					  			<input type="hidden" name="pickup" value="<?php echo $pickup; ?>"/>
-					  			<input type="hidden" name="release" value="<?php echo $release; ?>"/>
-					  			<input type="hidden" name="place" value="<?php echo $place; ?>"/>
-					  			<input type="hidden" name="returnplace" value="<?php echo $returnplace; ?>"/>
-					  			<input type="hidden" name="task" value="showprc"/>
-					  			<input type="hidden" name="Itemid" value="<?php echo $pitemid; ?>"/>
-					  		<?php
-					  		if (!empty($pcategories) && $pcategories != 'all') {
-								echo "<input type=\"hidden\" name=\"categories\" value=\"".$pcategories."\"/>\n";
+								<input type="hidden" name="caropt" value="<?php echo JHtml::fetch('esc_attr', $k); ?>"/>
+								<input type="hidden" name="days" value="<?php echo JHtml::fetch('esc_attr', $days); ?>"/>
+								<input type="hidden" name="pickup" value="<?php echo JHtml::fetch('esc_attr', $pickup); ?>"/>
+								<input type="hidden" name="release" value="<?php echo JHtml::fetch('esc_attr', $release); ?>"/>
+								<input type="hidden" name="place" value="<?php echo JHtml::fetch('esc_attr', $place); ?>"/>
+								<input type="hidden" name="returnplace" value="<?php echo JHtml::fetch('esc_attr', $returnplace); ?>"/>
+								<input type="hidden" name="task" value="showprc"/>
+								<input type="hidden" name="Itemid" value="<?php echo JHtml::fetch('esc_attr', $pitemid); ?>"/>
+							<?php
+							if (!empty($pcategories) && $pcategories != 'all') {
+								echo "<input type=\"hidden\" name=\"categories\" value=\"" . JHtml::fetch('esc_attr', $pcategories) . "\"/>\n";
 							}
-					  		if ($ptmpl == 'component') {
+							if ($ptmpl == 'component') {
 								echo "<input type=\"hidden\" name=\"tmpl\" value=\"component\"/>\n";
 							}
-					  		?>
-								<input type="submit" name="goon" value="<?php echo JText::translate('VRPROSEGUI'); ?>" class="btn booknow vrc-pref-color-btn"/>
+							?>
+								<input type="submit" name="goon" value="<?php echo JHtml::fetch('esc_attr', JText::translate('VRPROSEGUI')); ?>" class="btn booknow vrc-pref-color-btn"/>
 							</form>
 						</div>
 					</div>

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.8
+
+*Release date - 13 October 2026*
+
+- Additional XSS preventions.
+
 ## 1.4.7
 
 *Release date - 08 October 2026*

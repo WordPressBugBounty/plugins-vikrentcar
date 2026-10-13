@@ -507,6 +507,60 @@ class VikRentCarUpdateManager
 	}
 
 	/**
+	 * Trigger called whenever a mirroring file has been deleted.
+	 * Checks if the destination path is recognized, and attempts to
+	 * delete the previously backed up file in order to never restore it.
+	 * 
+	 * @param 	string 		$dest 	The path to the file just deleted.
+	 *
+	 * @return 	boolean 	True on success.
+	 * 
+	 * @since 	1.4.7
+	 */
+	public static function triggerDeletionBackup($dest)
+	{
+		// seek the key of the uploaded dir
+		$dir_key = false;
+		foreach (self::getUploadBackupDirs(true) as $key => $path) {
+			if (strpos($dest, $path) !== false) {
+				$dir_key = $key;
+				break;
+			}
+		}
+		if (!$dir_key) {
+			// could not recognize upload dir path from destination file
+			return false;
+		}
+
+		// always make sure the upload backup dirs are set for bc with those that installed a previous version of the plugin
+		if (!self::installUploadBackup()) {
+			// cannot proceed because backup folders are not set
+			return false;
+		}
+
+		// import the File class
+		JLoader::import('adapter.filesystem.file');
+
+		// get the backup upload dir path for this type of file
+		$backup_dirs = self::getUploadBackupDirs();
+		if (!isset($backup_dirs[$dir_key])) {
+			// do not proceed
+			return false;
+		}
+
+		// build the full file path on the mirroring directory
+		$mirroredFilePath = $backup_dirs[$dir_key] . DIRECTORY_SEPARATOR . basename($dest);
+
+		if (!is_file($mirroredFilePath)) {
+			// do not proceed
+			return false;
+		}
+
+		// delete the file from its backup dir
+		return JFile::delete($mirroredFilePath);
+	}
+
+	/**
 	 * Trigger called to back up all the files inside the path with the key
 	 * passed. Useful to back up custom PHP files manually uploaded to extend
 	 * the default Reports, Cron Jobs, SMS APIs to save a clone copy of these

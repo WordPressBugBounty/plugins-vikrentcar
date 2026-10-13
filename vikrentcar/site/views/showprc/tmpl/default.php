@@ -47,7 +47,7 @@ jQuery(document).ready(function() {
 $document->addScriptDeclaration($navdecl);
 //
 
-$preturnplace = VikRequest::getString('returnplace', '', 'request');
+$preturnplace = VikRequest::getInt('returnplace', 0, 'request');
 $pcategories = VikRequest::getString('categories', '', 'request');
 $carats = VikRentCar::getCarCaratOriz($car['idcarat'], array(), $vrc_tn);
 $currencysymb = VikRentCar::getCurrencySymb();
@@ -67,7 +67,7 @@ $tindex = key($tars);
 <div class="vrcstepsbarcont">
 	<ol class="vrc-stepbar" data-vrcsteps="4">
 		<li class="vrc-step vrc-step-complete"><a href="<?php echo JRoute::rewrite('index.php?option=com_vikrentcar&view=vikrentcar&pickup='.$pickup.'&return='.$release.(!empty($pitemid) ? '&Itemid='.$pitemid : '')); ?>"><?php echo JText::translate('VRSTEPDATES'); ?></a></li>
-		<li class="vrc-step vrc-step-complete"><a href="<?php echo JRoute::rewrite('index.php?option=com_vikrentcar&task=search&place='.$place.'&pickupdate='.urlencode(date($df, $pickup)).'&pickuph='.date('H', $pickup).'&pickupm='.date('i', $pickup).'&releasedate='.urlencode(date($df, $release)).'&releaseh='.date('H', $release).'&releasem='.date('i', $release).'&returnplace='.$preturnplace.(!empty($pcategories) && $pcategories != 'all' ? '&categories='.$pcategories : '').(!empty($pitemid) ? '&Itemid='.$pitemid : ''), false); ?>"><?php echo JText::translate('VRSTEPCARSELECTION'); ?></a></li>
+		<li class="vrc-step vrc-step-complete"><a href="<?php echo JRoute::rewrite('index.php?option=com_vikrentcar&task=search&place='.$place.'&pickupdate='.urlencode(date($df, $pickup)).'&pickuph='.date('H', $pickup).'&pickupm='.date('i', $pickup).'&releasedate='.urlencode(date($df, $release)).'&releaseh='.date('H', $release).'&releasem='.date('i', $release).'&returnplace='.$preturnplace.(!empty($pcategories) && $pcategories != 'all' ? '&categories=' . JHtml::fetch('esc_attr', $pcategories) : '').(!empty($pitemid) ? '&Itemid='.$pitemid : ''), false); ?>"><?php echo JText::translate('VRSTEPCARSELECTION'); ?></a></li>
 		<li class="vrc-step vrc-step-current"><span><?php echo JText::translate('VRSTEPOPTIONS'); ?></span></li>
 		<li class="vrc-step vrc-step-next"><span><?php echo JText::translate('VRSTEPCONFIRM'); ?></span></li>
 	</ol>
@@ -287,17 +287,17 @@ if (!empty($car['idopt']) && is_array($optionals)) {
 	<?php
 }
 ?>
-	<input type="hidden" name="place" value="<?php echo $place; ?>"/>
-	<input type="hidden" name="returnplace" value="<?php echo $preturnplace; ?>"/>
-	<input type="hidden" name="carid" value="<?php echo $car['id']; ?>"/>
-	<input type="hidden" name="days" value="<?php echo $tars[$tindex]['days']; ?>"/>
-	<input type="hidden" name="pickup" value="<?php echo $pickup; ?>"/>
-	<input type="hidden" name="release" value="<?php echo $release; ?>"/>
+	<input type="hidden" name="place" value="<?php echo JHtml::fetch('esc_attr', $place); ?>"/>
+	<input type="hidden" name="returnplace" value="<?php echo JHtml::fetch('esc_attr', $preturnplace); ?>"/>
+	<input type="hidden" name="carid" value="<?php echo JHtml::fetch('esc_attr', $car['id']); ?>"/>
+	<input type="hidden" name="days" value="<?php echo JHtml::fetch('esc_attr', $tars[$tindex]['days']); ?>"/>
+	<input type="hidden" name="pickup" value="<?php echo JHtml::fetch('esc_attr', $pickup); ?>"/>
+	<input type="hidden" name="release" value="<?php echo JHtml::fetch('esc_attr', $release); ?>"/>
 	<input type="hidden" name="task" value="oconfirm"/>
-  	<?php
+	<?php
 	if (!empty($pitemid)) {
 	?>
-	<input type="hidden" name="Itemid" value="<?php echo $pitemid; ?>"/>
+	<input type="hidden" name="Itemid" value="<?php echo JHtml::fetch('esc_attr', $pitemid); ?>"/>
 	<?php
 	}
 
@@ -318,7 +318,7 @@ if (!empty($car['idopt']) && is_array($optionals)) {
 	if (!empty($pfid)) {
 		$backto = 'index.php?option=com_vikrentcar&view=cardetails&carid='.$pfid.'&dt='.$pickup.(!empty($pitemid) ? '&Itemid='.$pitemid : '');
 	} else {
-		$backto = 'index.php?option=com_vikrentcar&task=search&place='.$place.'&pickupdate='.urlencode(date($df, $pickup)).'&pickuph='.date('H', $pickup).'&pickupm='.date('i', $pickup).'&releasedate='.urlencode(date($df, $release)).'&releaseh='.date('H', $release).'&releasem='.date('i', $release).'&returnplace='.$preturnplace.(!empty($pcategories) && $pcategories != 'all' ? '&categories='.$pcategories : '').(!empty($pitemid) ? '&Itemid='.$pitemid : '');
+		$backto = 'index.php?option=com_vikrentcar&task=search&place='.$place.'&pickupdate='.urlencode(date($df, $pickup)).'&pickuph='.date('H', $pickup).'&pickupm='.date('i', $pickup).'&releasedate='.urlencode(date($df, $release)).'&releaseh='.date('H', $release).'&releasem='.date('i', $release).'&returnplace='.$preturnplace.(!empty($pcategories) && $pcategories != 'all' ? '&categories=' . JHtml::fetch('esc_attr', $pcategories) : '').(!empty($pitemid) ? '&Itemid='.$pitemid : '');
 	}
 	//
 	?>

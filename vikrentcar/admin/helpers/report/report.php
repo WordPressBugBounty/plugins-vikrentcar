@@ -204,7 +204,7 @@ abstract class VikRentCarReport
      */
     public function getAjaxUrl()
     {
-        return VikBooking::ajaxUrl('index.php?option=com_vikbooking&task=invoke_report&report=' . $this->reportFile);
+        return VikRentCar::ajaxUrl('index.php?option=com_vikrentcar&task=invoke_report&report=' . $this->reportFile);
     }
 	
 	/**

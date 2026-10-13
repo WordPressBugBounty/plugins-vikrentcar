@@ -65,7 +65,7 @@ jQuery(function($){'."\n".'
 });';
 $document->addScriptDeclaration($ldecl);
 $filtnc = VikRequest::getString('filtnc', '', 'request');
-$cid = VikRequest::getVar('cid', array(0));
+$cid = array_values(array_filter(array_map('intval', (array) VikRequest::getVar('cid', []))));
 $pcust_id = $app->getUserStateFromRequest("vrc.orders.cust_id", 'cust_id', 0, 'int');
 
 $loc_options = '';
@@ -165,7 +165,7 @@ $filters_set = false;
 				<?php
 				$pstatus = $app->getUserStateFromRequest("vrc.orders.status", 'status', '', 'string');
 				$filters_set = !empty($pstatus) || $filters_set;
-				$status_filter = !empty($pstatus) ? '&amp;status='.$pstatus : '';
+				$status_filter = JHtml::fetch('esc_attr', (!empty($pstatus) ? '&amp;status='.$pstatus : ''));
 				?>
 					<option value="confirmed"<?php echo $pstatus == 'confirmed' ? ' selected="selected"' : ''; ?>><?php echo JText::translate('VRCONFIRMED'); ?></option>
 					<option value="standby"<?php echo $pstatus == 'standby' ? ' selected="selected"' : ''; ?>><?php echo JText::translate('VRSTANDBY'); ?></option>
@@ -878,7 +878,7 @@ jQuery(document).ready(function() {
 
 // Invoices
 $pconfirmgen = VikRequest::getInt('confirmgen', 0, 'request');
-if (count($cid) > 0 && !empty($cid[0])) {
+if ($cid) {
 	$nextinvnum = VikRentCar::getNextInvoiceNumber();
 	$invsuff = VikRentCar::getInvoiceNumberSuffix();
 	$companyinfo = VikRentCar::getInvoiceCompanyInfo();

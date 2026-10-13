@@ -79,8 +79,7 @@ if (VikRentCar::tokenForm()) {
 	$tok = "<input type=\"hidden\" name=\"viktoken\" value=\"" . $vikt . "\"/>\n";
 }
 
-$pitemid = VikRequest::getInt('Itemid', '', 'request');
-$pcategories = VikRequest::getString('categories', '', 'request');
+$pitemid = VikRequest::getInt('Itemid', 0, 'request');
 
 $carats = VikRentCar::getCarCaratOriz($car['idcarat'], array(), $vrc_tn);
 $imp = VikRentCar::sayCostMinusIva($price['cost'], $price['idprice']);
@@ -839,10 +838,10 @@ if (is_array($cfields)) {
 				<div class="vrc-customfield-input">
 				<?php
 				if ($cf['isphone'] == 1 && method_exists($vrc_app, 'printPhoneInputField')) {
-					echo $vrc_app->printPhoneInputField(array('name' => 'vrcf' . $cf['id'], 'id' => 'vrcf-inp' . $cf['id'], 'value' => $def_textval, 'class' => 'vrcinput', 'size' => '40'));
+					echo $vrc_app->printPhoneInputField(array('name' => 'vrcf' . $cf['id'], 'id' => 'vrcf-inp' . $cf['id'], 'value' => JHtml::fetch('esc_attr', $def_textval), 'class' => 'vrcinput', 'size' => '40'));
 				} else {
 					?>
-					<input type="text" name="vrcf<?php echo $cf['id']; ?>" id="vrcf-inp<?php echo $cf['id']; ?>" value="<?php echo $def_textval; ?>" size="40" class="vrcinput"/>
+					<input type="text" name="vrcf<?php echo $cf['id']; ?>" id="vrcf-inp<?php echo $cf['id']; ?>" value="<?php echo JHtml::fetch('esc_attr', $def_textval); ?>" size="40" class="vrcinput"/>
 					<?php
 				}
 				?>

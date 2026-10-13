@@ -1545,7 +1545,6 @@ div.vrcorderpartot {
 }
 .vrc-menu-parent-li span i {
 	margin-left: -2px;
-	margin-right: 7px;
 	font-size: 17px;
 }
 .vrc-submenu-wrap {
@@ -10095,7 +10094,7 @@ div.modal.in .modal-header + div.modal-body-wrapper {
 }
 @media screen and (max-width: 1780px) {
 	.vrc-menu-parent-li > span {
-		padding: 14px 22px;
+		padding: 14px 12px;
 	}
 }
 @media screen and (max-width: 1760px) {

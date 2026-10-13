@@ -21,14 +21,12 @@ $copts = $this->copts;
 
 $action = 'index.php?option=com_user&amp;task=login';
 $vrc_app = VikRentCar::getVrcApplication();
-$pitemid = VikRequest::getString('Itemid', '', 'request');
+$pitemid = VikRequest::getInt('Itemid', 0, 'request');
 
 if (!empty($carid) && !empty($pickup) && !empty($release)) {
 	$chosenopts = "";
-	if (is_array($copts) && @count($copts) > 0) {
-		foreach($copts as $idopt => $quanopt) {
-			$chosenopts .= "&optid".$idopt."=".$quanopt;
-		}
+	foreach ((array) $copts as $idopt => $quanopt) {
+		$chosenopts .= "&optid".$idopt."=".$quanopt;
 	}
 	$goto = "index.php?option=com_vikrentcar&task=oconfirm&priceid=".$priceid."&place=".$place."&returnplace=".$returnplace."&carid=".$carid."&days=".$days."&pickup=".$pickup."&release=".$release.(!empty($chosenopts) ? $chosenopts : "").(!empty($pitemid) ? "&Itemid=".$pitemid : "");
 	/**
@@ -159,23 +157,21 @@ function checkVrcReg() {
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="priceid" value="<?php echo $priceid; ?>" />
-			<input type="hidden" name="place" value="<?php echo $place; ?>" />
-			<input type="hidden" name="returnplace" value="<?php echo $returnplace; ?>" />
-			<input type="hidden" name="carid" value="<?php echo $carid; ?>" />
-			<input type="hidden" name="days" value="<?php echo $days; ?>" />
-			<input type="hidden" name="pickup" value="<?php echo $pickup; ?>" />
-			<input type="hidden" name="release" value="<?php echo $release; ?>" />
+			<input type="hidden" name="priceid" value="<?php echo JHtml::fetch('esc_attr', $priceid); ?>" />
+			<input type="hidden" name="place" value="<?php echo JHtml::fetch('esc_attr', $place); ?>" />
+			<input type="hidden" name="returnplace" value="<?php echo JHtml::fetch('esc_attr', $returnplace); ?>" />
+			<input type="hidden" name="carid" value="<?php echo JHtml::fetch('esc_attr', $carid); ?>" />
+			<input type="hidden" name="days" value="<?php echo JHtml::fetch('esc_attr', $days); ?>" />
+			<input type="hidden" name="pickup" value="<?php echo JHtml::fetch('esc_attr', $pickup); ?>" />
+			<input type="hidden" name="release" value="<?php echo JHtml::fetch('esc_attr', $release); ?>" />
 			<?php
-			if (is_array($copts) && @count($copts) > 0) {
-				foreach($copts as $idopt => $quanopt) {
-					?>
-			<input type="hidden" name="optid<?php echo $idopt; ?>" value="<?php echo $quanopt; ?>" />
-					<?php
-				}
+			foreach((array) $copts as $idopt => $quanopt) {
+				?>
+			<input type="hidden" name="optid<?php echo (int) $idopt; ?>" value="<?php echo JHtml::fetch('esc_attr', $quanopt); ?>" />
+				<?php
 			}
 			?>
-			<input type="hidden" name="Itemid" value="<?php echo $pitemid; ?>" />
+			<input type="hidden" name="Itemid" value="<?php echo JHtml::fetch('esc_attr', $pitemid); ?>" />
 			<input type="hidden" name="option" value="com_vikrentcar" />
 			<input type="hidden" name="task" value="register" />
 		</form>

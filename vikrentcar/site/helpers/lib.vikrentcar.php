@@ -7716,6 +7716,31 @@ HTML
 		$value = str_replace(';', ' ', $value);
 		return $value;
 	}
+
+	/**
+	 * Checks whether the pre-checkin is enabled.
+	 * 
+	 * @return 	int 	0 if disabled, 1 otherwise
+	 * 
+	 * @since 	1.15.11 (J) - 1.4.8 (WP)
+	 */
+	public static function precheckinEnabled()
+	{
+		return (int) VRCFactory::getConfig()->getBool('precheckinenabled', true);
+	}
+
+	/**
+	 * Returns the minimum number of days in advance to
+	 * enable the pre-checkin via front-end.
+	 * 
+	 * @return 	int 	the min number of days in advance for pre-checkin.
+	 * 
+	 * @since 	1.15.11 (J) - 1.4.8 (WP)
+	 */
+	public static function precheckinMinOffset()
+	{
+		return VRCFactory::getConfig()->getInt('precheckinminoffset', 0);
+	}
 	
 	public static function getMinDaysAdvance($skipsession = false)
 	{

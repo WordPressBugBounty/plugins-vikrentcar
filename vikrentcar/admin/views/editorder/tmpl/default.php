@@ -119,7 +119,7 @@ if (!empty($row['idtar']) || $is_cust_cost) {
 	}
 	//
 }
-$pactive_tab = VikRequest::getString('vrc_active_tab', 'vrc-tab-details', 'request');
+$pactive_tab = preg_replace('/[^A-Z0-9\-\_]/i', '', VikRequest::getString('vrc_active_tab', 'vrc-tab-details', 'request'));
 
 if ($row['status'] == "confirmed") {
 	$saystaus = '<span class="label label-success">'.JText::translate('VRCONFIRMED').'</span>';
@@ -1320,7 +1320,7 @@ jQuery(document).ready(function() {
 		jQuery("#"+newtabrel).fadeIn();
 		jQuery("#vrc_active_tab").val(newtabrel);
 	});
-	jQuery(".vrc-bookingdet-tab[data-vrctab='<?php echo $pactive_tab; ?>']").trigger('click');
+	jQuery(".vrc-bookingdet-tab[data-vrctab='<?php echo JHtml::fetch('esc_attr', $pactive_tab); ?>']").trigger('click');
 	if (window.location.hash == '#tab-admin') {
 		setTimeout(function() {
 			jQuery(".vrc-bookingdet-tab[data-vrctab='vrc-tab-admin']").trigger('click');

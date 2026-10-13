@@ -341,7 +341,7 @@ function vrcRemoveExtraCost(elem) {
 							<?php echo JText::translate('VREDITORDERTWO'); ?>
 						</div>
 						<div class="vrc-editbooking-custarea">
-							<textarea name="custdata"><?php echo htmlspecialchars($row['custdata']); ?></textarea>
+							<textarea name="custdata"><?php echo JHtml::fetch('esc_textarea', $row['custdata']); ?></textarea>
 						<?php
 						if ($row['closure'] > 0) {
 							?>

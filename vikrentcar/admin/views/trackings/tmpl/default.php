@@ -59,9 +59,9 @@ $pdatefilt = VikRequest::getInt('datefilt', '', 'request');
 $pdatefiltfrom = VikRequest::getString('datefiltfrom', '', 'request');
 $pdatefiltto = VikRequest::getString('datefiltto', '', 'request');
 if ((!empty($pdatefiltfrom) || !empty($pdatefiltto))) {
-	$dates_filter = '&amp;datefilt='.$pdatefilt.(!empty($pdatefiltfrom) ? '&amp;datefiltfrom='.$pdatefiltfrom : '').(!empty($pdatefiltto) ? '&amp;datefiltto='.$pdatefiltto : '');
+	$dates_filter = JHtml::fetch('esc_attr', '&amp;datefilt='.$pdatefilt.(!empty($pdatefiltfrom) ? '&amp;datefiltfrom='.$pdatefiltfrom : '').(!empty($pdatefiltto) ? '&amp;datefiltto='.$pdatefiltto : ''));
 }
-$pactive_tab = VikRequest::getString('vrc_active_tab', 'vrc-trackings-tabcont-list', 'request');
+$pactive_tab = preg_replace('/[^A-Z0-9\-\_]/i', '', VikRequest::getString('vrc_active_tab', 'vrc-trackings-tabcont-list', 'request'));
 
 ?>
 <script type="text/javascript">
