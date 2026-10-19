@@ -5080,10 +5080,12 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function doexport() {
+		if (!JSession::checkToken()) {
+			throw new Exception(JText::translate('JINVALID_TOKEN'), 403);
+		}
 		$dbo = JFactory::getDbo();
 		$mainframe = JFactory::getApplication();
-		$oids = VikRequest::getVar('cid', array(0));
-		$oids = count($oids) > 0 && intval($oids[key($oids)]) > 0 ? $oids : array();
+		$oids = array_map('intval', (array) VikRequest::getVar('cid', []));
 		$pfrom = VikRequest::getString('from', '', 'request');
 		$pto = VikRequest::getString('to', '', 'request');
 		$pdatetype = VikRequest::getString('datetype', '', 'request');
@@ -6418,6 +6420,9 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function removebusy() {
+		if (!JSession::checkToken()) {
+			throw new Exception(JText::translate('JINVALID_TOKEN'), 403);
+		}
 		$mainframe = JFactory::getApplication();
 		$pidbusy = VikRequest::getInt('idbusy', '', 'request');
 		$pidorder = VikRequest::getInt('idorder', '', 'request');
@@ -6478,6 +6483,9 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function updatebusy() {
+		if (!JSession::checkToken()) {
+			throw new Exception(JText::translate('JINVALID_TOKEN'), 403);
+		}
 		$mainframe = JFactory::getApplication();
 		$pidbusy = VikRequest::getString('idbusy', '', 'request');
 		$pidorder = VikRequest::getInt('idorder', '', 'request');
@@ -7343,7 +7351,10 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function exportcustomerslaunch() {
-		$cid = VikRequest::getVar('cid', array(0));
+		if (!JSession::checkToken()) {
+			throw new Exception(JText::translate('JINVALID_TOKEN'), 403);
+		}
+		$cid = array_map('intval', (array) VikRequest::getVar('cid', []));
 		$dbo = JFactory::getDbo();
 		$pnotes = VikRequest::getInt('notes', '', 'request');
 		$pscanimg = VikRequest::getInt('scanimg', '', 'request');
@@ -9195,8 +9206,15 @@ class VikRentCarController extends JControllerVikRentCar
 	 */
 	public function upload_customer_document()
 	{
-		$input = JFactory::getApplication()->input;
+		$app = JFactory::getApplication();
+
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance($app)->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		$dbo   = JFactory::getDbo();
+		$input = $app->input;
 
 		$customer_id = $input->getUint('customer', 0);
 
@@ -9297,8 +9315,19 @@ class VikRentCarController extends JControllerVikRentCar
 	 */
 	public function delete_customer_document()
 	{
-		$input = JFactory::getApplication()->input;
+		$app = JFactory::getApplication();
+
+		if (!JSession::checkToken()) {
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance($app)->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
+		if (!JFactory::getUser()->authorise('core.delete', 'com_vikrentcar')) {
+			VRCHttpDocument::getInstance($app)->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$dbo   = JFactory::getDbo();
+		$input = $app->input;
 
 		$customer_id = $input->getUint('customer', 0);
 
@@ -9336,7 +9365,15 @@ class VikRentCarController extends JControllerVikRentCar
 
 		if (!is_file($path)) 
 		{
-			throw new Exception(sprintf('File [%s] not found', $path), 404);
+			throw new Exception('File path not found', 404);
+		}
+
+		// accept only non-traversal paths under the customer docs folder
+		$path = realpath($path);
+
+		if (!$path || strpos($path, VRC_CUSTOMERS_PATH) !== 0)
+		{
+			throw new Exception('Path not allowed for file deletion.', 403);
 		}
 
 		jimport('joomla.filesystem.file');
@@ -9552,6 +9589,10 @@ class VikRentCarController extends JControllerVikRentCar
 	 */
 	public function condtext_update_tmpl()
 	{
+		if (!JSession::checkToken()) {
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		VikRentCar::getConditionalRulesInstance(true);
 
 		$tagaction = VikRequest::getString('tagaction', '', 'request');

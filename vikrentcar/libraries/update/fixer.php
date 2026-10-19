@@ -211,6 +211,16 @@ class VikRentCarUpdateFixer
 			}
 		}
 
+		if (version_compare($this->version, '1.4.9', '<='))
+		{
+			$config = VRCFactory::getConfig();
+			if (strlen($config->getString('cronkey', '')) < 5)
+			{
+				// randomize key
+				$config->set('cronkey', VikRentCar::getCPinInstance()->generateSerialCode(8));
+			}
+		}
+
 		/**
 		 * Unpublish overrides and obtain tracking list.
 		 *

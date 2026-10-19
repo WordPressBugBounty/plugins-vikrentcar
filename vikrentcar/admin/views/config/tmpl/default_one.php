@@ -279,7 +279,7 @@ jQuery(function() {
 				</div>
 				<div class="vrc-param-container vrc-param-nested precheckin-params-tr" style="display: <?php echo $precheckin_enabled > 0 ? 'flex' : 'none'; ?>;">
 					<div class="vrc-param-label"><?php echo JText::translate('VBCONFIGPRECHECKINMIND'); ?></div>
-					<div class="vrc-param-setting"><input type="number" name="precheckinminoffset" value="<?php echo VikBooking::precheckinMinOffset(); ?>" min="-7" max="365" /></div>
+					<div class="vrc-param-setting"><input type="number" name="precheckinminoffset" value="<?php echo VikRentCar::precheckinMinOffset(); ?>" min="-7" max="365" /></div>
 				</div>
 			</div>
 		</div>

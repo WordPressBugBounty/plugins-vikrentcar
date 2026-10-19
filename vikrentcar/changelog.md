@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.9
+
+*Release date - 19 October 2026*
+
+- Forced email validation for new rental orders generated via front-site.
+- Backup framework improvements.
+- Added multiple CSRF tokens for validation.
+- Various XSS preventions.
+- Multiple framework improvements.
+
 ## 1.4.8
 
 *Release date - 13 October 2026*

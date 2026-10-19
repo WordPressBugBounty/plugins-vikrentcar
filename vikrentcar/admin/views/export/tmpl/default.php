@@ -79,4 +79,5 @@ if (!(count($oids) > 0)) {
 </table>
 <input type="hidden" name="task" value="doexport">
 <input type="hidden" name="option" value="com_vikrentcar" />
+<?php echo JHtml::fetch( 'form.token' ); ?>
 </form>

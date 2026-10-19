@@ -229,7 +229,20 @@ class VikRentCarController extends JControllerVikRentCar
 			foreach ($cfields as $cf) {
 				if (intval($cf['isemail']) == 1 && $emailwasfound == false) {
 					$useremail = trim(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
-					$emailwasfound = true;
+					if (VikRentCar::validEmail($useremail)) {
+						// valid email address
+						$emailwasfound = true;
+					} else {
+						// invalid email address
+						$useremail = '';
+						if (boolval($cf['required']) && $cf['type'] != 'separator') {
+							// insufficient data collected
+							$suffdata = false;
+							// abort and display error
+							showSelectVrc('Invalid email address provided.');
+							return;
+						}
+					}
 				}
 				if ($cf['isnominative'] == 1) {
 					$tmpcfval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
@@ -1734,7 +1747,7 @@ class VikRentCarController extends JControllerVikRentCar
 			);
 
 			// join fetched parts
-			$customer->docsfolder = strtolower(implode('-', array_filter($parts)));
+			$customer->docsfolder = JFilterOutput::stringURLSafe(implode('-', array_filter($parts)));
 
 			if (strlen($customer->docsfolder) < 16) {
 				throw new Exception('Possible security breach. Please specify as many details as possible.', 400);
@@ -1892,155 +1905,6 @@ class VikRentCarController extends JControllerVikRentCar
 
 		// print success message and redirect
 		$app->enqueueMessage(JText::translate('VRC_SUBMIT_DOCSUPLOAD_TNKS'));
-		$app->redirect($goto);
-	}
-
-	/**
-	 * Front-end Pre Check-in submit of the guests details.
-	 *
-	 * @since 	1.12
-	 */
-	public function storeprecheckin()
-	{
-		if (!JSession::checkToken()) {
-			// missing CSRF-proof token
-			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
-		}
-
-		$dbo 	 = JFactory::getDbo();
-		$app 	 = JFactory::getApplication();
-
-		$sid 	 = $app->input->getString('sid', '');
-		$ts 	 = $app->input->getString('ts', '');
-		$pguests = $app->input->get('guests', [], 'array');
-		$pitemid = $app->input->getInt('Itemid', 0);
-
-		$q = "SELECT `o`.* FROM `#__vikrentcar_orders` AS `o` WHERE (`o`.`sid`=" . $dbo->quote($sid) . ") AND `o`.`ts`=" . $dbo->quote($ts) . " AND `o`.`status`='confirmed';";
-		$dbo->setQuery($q);
-		$order = $dbo->loadAssoc();
-		if (!$order) {
-			throw new Exception('Booking not found', 404);
-		}
-
-		// access the customer record
-		$customer = VikRentCar::getCPinInstance()->getCustomerFromBooking($order['id']);
-
-		$q = "SELECT * FROM `#__vikrentcar_customers_orders` WHERE `idorder`=".(int)$order['id'].";";
-		$dbo->setQuery($q);
-		$custorder = $dbo->loadAssoc();
-		if (!$custorder) {
-			throw new Exception('No customer found', 404);
-		}
-
-		// booking details page
-		$goto = JRoute::rewrite('index.php?option=com_vikrentcar&view=order&sid=' . $order['sid'] . '&ts=' . $order['ts'] . (!empty($pitemid) ? '&Itemid=' . $pitemid : ''), false);
-
-		// make sure pre-checkin is allowed
-		$precheckin = VikRentCar::precheckinEnabled();
-		if ($precheckin) {
-			// make sure the limit of days in advance is reflected
-			$precheckin_mind = VikRentCar::precheckinMinOffset();
-			if ($precheckin_mind < 0) {
-				// validation made prior to check-out date and time
-				$precheckin = time() <= strtotime("{$precheckin_mind} days 23:59:59", $order['checkout']);
-			} else {
-				// classic validation prior to check-in date and time
-				$precheckin_lim_ts = strtotime("+{$precheckin_mind} days 00:00:00");
-				$precheckin = ($precheckin_lim_ts <= $order['checkin'] || ($precheckin_mind === 1 && time() <= $order['checkin']));
-			}
-		}
-		if (!$precheckin) {
-			// raise error and redirect in case of website or OTA booking
-			VikError::raiseWarning('', 'Pre-checkin not allowed at this time');
-			$app->redirect($goto);
-			exit;
-		}
-
-		// build guest details
-		$guests_details = array();
-
-		// list of keys for the guests details collected via front-end
-		$front_keys = array();
-		
-		foreach ($pguests as $ind => $adults) {
-			foreach ($adults as $aduind => $details) {
-				foreach ($details as $detkey => $detval) {
-					// accept no raw HTML tags as keys
-					$detkey = htmlspecialchars(strip_tags($detkey));
-					if (!$detkey) {
-						continue;
-					}
-					if (!in_array($detkey, $front_keys)) {
-						// push the key of the guest details for later comparison
-						array_push($front_keys, $detkey);
-					}
-					if (strlen($detval)) {
-						// push value only if not empty
-						if (!isset($guests_details[$ind])) {
-							$guests_details[$ind] = array();
-						}
-						if (!isset($guests_details[$ind][$aduind])) {
-							$guests_details[$ind][$aduind] = array();
-						}
-						$guests_details[$ind][$aduind][$detkey] = $detval;
-					}
-				}
-			}
-		}
-
-		/**
-		 * Compare the current data collected to the back-end drivers_data in case there are some
-		 * fields dedicated to just the back-end for the admins (like extra_notes), and merge.
-		 */
-		$curpaxdata = json_decode($custorder['drivers_data'], true);
-		if (is_array($curpaxdata) && count($curpaxdata)) {
-			foreach ($curpaxdata as $ind => $adults) {
-				if (!isset($guests_details[$ind])) {
-					// current pax data include a room not present, set it to not lose it
-					$guests_details[$ind] = $adults;
-				}
-				foreach ($adults as $aduind => $details) {
-					if (!isset($guests_details[$ind][$aduind])) {
-						// current pax data include a guest not present, set it to not lose it
-						$guests_details[$ind][$aduind] = $details;
-					}
-					foreach ($details as $detkey => $detval) {
-						// accept no raw HTML tags as keys
-						$detkey = htmlspecialchars(strip_tags($detkey));
-						if (!$detkey) {
-							continue;
-						}
-						if (!in_array($detkey, $front_keys)) {
-							// merge this key probably reserved to the back-end
-							$guests_details[$ind][$aduind][$detkey] = $detval;
-						}
-					}
-				}
-			}
-		}
-		
-		// update checkin information
-		$q = "UPDATE `#__vikrentcar_customers_orders` SET `drivers_data`=".$dbo->quote(json_encode($guests_details))." WHERE `id`=".(int)$custorder['id'].";";
-		$dbo->setQuery($q);
-		$dbo->execute();
-
-		// Booking History
-		VikRentCar::getOrderHistoryInstance()->setBid($order['id'])->store('PC');
-
-		/**
-		 * Invoke the callback on the pax registration driver.
-		 * 
-		 * @since 	1.17.5 (J) - 1.7.5 (WP)
-		 */
-		VRCCheckinPax::callbackPrecheckinDataStored(
-			VRCFactory::getConfig()->getString('checkindata', 'basic'),
-			(array) $guests_details,
-			(array) $order,
-			(array) $customer
-		);
-
-		// print success message and redirect
-		$app->enqueueMessage(JText::translate('VRCSUBMITPRECHECKINTNKS'));
 		$app->redirect($goto);
 	}
 }

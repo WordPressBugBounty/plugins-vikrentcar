@@ -216,7 +216,7 @@ class VikRentCarViewOrders extends JViewVikRentCar
 			}
 		}
 		
-		$this->rows = $rows;
+		$this->rows = ($rows ?? null) ?: [];
 		$this->lim0 = $lim0;
 		$this->navbut = $navbut;
 		$this->all_locations = $all_locations;

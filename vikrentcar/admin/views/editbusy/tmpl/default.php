@@ -805,11 +805,6 @@ function vrcRemoveExtraCost(elem) {
 				</div>
 			</div>
 		</div>
-		<input type="hidden" name="task" value="">
-		<input type="hidden" name="idcar" value="<?php echo (int)$row['idcar']; ?>">
-		<input type="hidden" name="idbusy" value="<?php echo isset($busy['id']) ? $busy['id'] : '0'; ?>">
-		<input type="hidden" name="idorder" value="<?php echo (int)$row['id']; ?>">
-		<input type="hidden" name="option" value="com_vikrentcar" />
 		<?php
 		echo !empty($pgoto) ? '<input type="hidden" name="goto" value="' . JHtml::fetch('esc_attr', $pgoto) . '">' : '';
 		$preturn = VikRequest::getString('return', '', 'request');
@@ -822,11 +817,17 @@ function vrcRemoveExtraCost(elem) {
 		$pforce_availability = VikRequest::getInt('force_av', 0, 'request');
 		echo $pforce_availability ? '<input type="hidden" name="force_av" value="' . $pforce_availability . '">' : '';
 		?>
+		<input type="hidden" name="task" value="">
+		<input type="hidden" name="idcar" value="<?php echo (int)$row['idcar']; ?>">
+		<input type="hidden" name="idbusy" value="<?php echo isset($busy['id']) ? $busy['id'] : '0'; ?>">
+		<input type="hidden" name="idorder" value="<?php echo (int)$row['id']; ?>">
+		<input type="hidden" name="option" value="com_vikrentcar" />
+		<?php echo JHtml::fetch( 'form.token' ); ?>
 	</form>
 </div>
 
 <script type="text/javascript">
-jQuery(document).ready(function() {
+jQuery(function() {
 	jQuery('#pickupdate').val('<?php echo $rit; ?>').attr('data-alt-value', '<?php echo $rit; ?>');
 	jQuery('#releasedate').val('<?php echo $con; ?>').attr('data-alt-value', '<?php echo $con; ?>');
 	jQuery('.vrc-pricetype-radio').change(function() {

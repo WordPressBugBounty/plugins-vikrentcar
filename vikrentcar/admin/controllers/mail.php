@@ -85,6 +85,10 @@ class VikRentCarControllerMail extends JControllerAdmin
 	 */
 	public function update_ve_contwraper()
 	{
+		if (!JSession::checkToken()) {
+            VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+        }
+
 		$app   = JFactory::getApplication();
 		$input = $app->input;
 

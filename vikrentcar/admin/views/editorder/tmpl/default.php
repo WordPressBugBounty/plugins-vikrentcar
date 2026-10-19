@@ -378,25 +378,24 @@ function toggleDiscount(elem) {
 				</div>
 				<?php
 			}
-			if (($row['status'] == 'standby' || (is_array($tar) && count($tar) && count($tar[0]))) && time() < $row['ritiro']) {
-				/**
-				 * @wponly 	Rewrite order view URI
-				 */
-				$model 		= JModel::getInstance('vikrentcar', 'shortcodes');
-				$itemid 	= $model->best('order');
-				$order_uri 	= '';
-				if ($itemid) {
-					$order_uri = JRoute::rewrite("index.php?option=com_vikrentcar&Itemid={$itemid}&view=order&sid={$row['sid']}&ts={$row['ts']}");
-				} else {
-					VikError::raiseWarning('', 'No Shortcodes of type Order Details found, or no Shortcodes of this type are being used in Pages/Posts.');
+			if (($row['status'] == 'standby' || (is_array($tar) && !empty($tar[0]))) && time() < $row['ritiro']) {
+				if (VRCPlatformDetection::isWordPress()) {
+					/**
+					 * @wponly 	display warning message if no valid Shortcodes found
+					 */
+					$model  = JModel::getInstance('vikrentcar', 'shortcodes');
+					$itemid = $model->best('order');
+					if (!$itemid) {
+						VikError::raiseWarning('', 'No Shortcodes of type Order Details found, or no Shortcodes of this type are being used in Pages/Posts.');
+					}
 				}
 				?>
 				<div class="vrc-bookingdet-command">
-					<button onclick="window.open('<?php echo $order_uri; ?>', '_blank');" type="button" class="btn btn-secondary"><i class="icon-eye"></i> <?php echo JText::translate('VRCVIEWORDFRONT'); ?></button>
+					<button onclick="window.open('<?php echo VikRentCar::externalroute('index.php?option=com_vikrentcar&view=order&sid=' . $row['sid'] . '&ts=' . $row['ts'], false); ?>', '_blank');" type="button" class="btn btn-secondary"><i class="icon-eye"></i> <?php echo JText::translate('VRCVIEWORDFRONT'); ?></button>
 				</div>
 				<?php
 			}
-			if ($row['status'] == "confirmed" && is_array($tar) && count($tar) && count($tar[0])) {
+			if ($row['status'] == "confirmed" && is_array($tar) && !empty($tar[0])) {
 				?>
 				<div class="vrc-bookingdet-command">
 					<button class="btn btn-success" type="button" onclick="document.location.href='index.php?option=com_vikrentcar&task=resendordemail&cid[]=<?php echo $row['id']; ?>';"><i class="icon-mail"></i> <?php echo JText::translate('VRCRESENDORDEMAIL'); ?></button>
@@ -820,7 +819,7 @@ function toggleDiscount(elem) {
 							//VRC 1.6 - Coupon
 							$usedcoupon = false;
 							$origisdue = $isdue;
-							if (strlen($row['coupon']) > 0) {
+							if (!empty($row['coupon'])) {
 								$usedcoupon = true;
 								$expcoupon = explode(";", $row['coupon']);
 								$isdue = $isdue - $expcoupon[1];
@@ -1031,7 +1030,7 @@ function toggleDiscount(elem) {
 					</div>
 					<div class="vrc-bookingdet-noteslogs-cont">
 						<div id="vradminnotesdiv" style="display: block;">
-							<textarea name="adminnotes" class="vradminnotestarea"><?php echo JHtml::fetch('esc_textarea', $row['adminnotes']); ?></textarea>
+							<textarea name="adminnotes" class="vradminnotestarea"><?php echo JHtml::fetch('esc_textarea', (string) $row['adminnotes']); ?></textarea>
 							<br clear="all"/>
 							<input type="submit" name="updadmnotes" value="<?php echo JHtml::fetch('esc_attr', JText::translate('VRCUPDATEBTN')); ?>" class="btn vrc-config-btn" />
 						</div>
@@ -1053,7 +1052,7 @@ function toggleDiscount(elem) {
 									<tbody>
 									<?php
 									foreach ($history as $hist) {
-										$hdescr = strpos($hist['descr'], '<') !== false ? $hist['descr'] : nl2br($hist['descr']);
+										$hdescr = strpos((string) $hist['descr'], '<') !== false ? $hist['descr'] : nl2br((string) $hist['descr']);
 										?>
 										<tr class="vrc-booking-history-row">
 											<td><?php echo $history_obj->validType($hist['type'], true); ?></td>
@@ -1278,7 +1277,7 @@ function setSpecialTplTag(taid, tpltag) {
 		tplobj.focus();
 	}
 }
-jQuery(document).ready(function() {
+jQuery(function() {
 	// sessionStorage for current tab
 	if (typeof sessionStorage !== 'undefined' && !window.location.hash) {
 		var curtab = sessionStorage.getItem('vrcEditOrderTab<?php echo $row['id']; ?>');

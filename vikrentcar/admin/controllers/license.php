@@ -29,6 +29,12 @@ class VikRentCarControllerLicense extends JControllerAdmin
 	 */
 	public function validate()
 	{
+		if (!JSession::checkToken() && !JSession::checkToken('get'))
+		{
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		if (!JFactory::getUser()->authorise('core.admin', 'com_vikrentcar'))
 		{
 			// not authorised to view this resource
@@ -66,6 +72,12 @@ class VikRentCarControllerLicense extends JControllerAdmin
 	 */
 	public function downloadpro()
 	{
+		if (!JSession::checkToken() && !JSession::checkToken('get'))
+		{
+			// missing CSRF-proof token
+			VRCHttpDocument::getInstance()->close(403, JText::translate('JINVALID_TOKEN'));
+		}
+
 		if (!JFactory::getUser()->authorise('core.admin', 'com_vikrentcar'))
 		{
 			// not authorised to view this resource

@@ -706,7 +706,7 @@ if ($ord['status'] == 'confirmed') {
 								<label for="vrccancemail" id="vrcformcancemail"><?php echo JText::translate('VRCREQUESTCANCMODEMAIL'); ?></label>
 							</div>
 							<div class="vrcordcancform-entry-inp">
-								<input type="text" class="vrcinput" name="email" id="vrccancemail" value="<?php echo $ord['custmail']; ?>"/>
+								<input type="text" class="vrcinput" name="email" id="vrccancemail" value="<?php echo JHtml::fetch('esc_attr', $ord['custmail']); ?>"/>
 							</div>
 						</div>
 						<div class="vrcordcancform-entry">
