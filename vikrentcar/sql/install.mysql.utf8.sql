@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_customers` (
   `bdate` varchar(16) DEFAULT NULL,
   `pbirth` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__vikrentcar_customers_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_customers_orders` (
   `idorder` int(10) NOT NULL,
   `drivers_data` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__vikrentcar_cronjobs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_cronjobs` (
   `flag_char` text DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__vikrentcar_dispcost` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_orders` (
   `idorder_ical` varchar(256) DEFAULT NULL,
   `drivers_count` tinyint(2) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__vikrentcar_orderhistory` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -328,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `#__vikrentcar_orderhistory` (
   `total` decimal(12,2) DEFAULT NULL,
   `data` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__vikrentcar_oohfees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

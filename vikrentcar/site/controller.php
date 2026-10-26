@@ -1613,19 +1613,34 @@ class VikRentCarController extends JControllerVikRentCar
 
 	public function reqinfo()
 	{
-		$pcarid = VikRequest::getInt('carid', '', 'request');
-		$pitemid = VikRequest::getInt('Itemid', '', 'request');
 		$dbo = JFactory::getDbo();
 		$mainframe = JFactory::getApplication();
 		$vrc_app = VikRentCar::getVrcApplication();
+
+		$pcarid = VikRequest::getInt('carid', 0, 'request');
+		$pitemid = VikRequest::getInt('Itemid', 0, 'request');
 		if (!empty($pcarid)) {
 			$q = "SELECT `id`,`name`,`params` FROM `#__vikrentcar_cars` WHERE `id`=".(int)$pcarid.";";
 			$dbo->setQuery($q);
-			$dbo->execute();
-			if ($dbo->getNumRows() == 1) {
-				$car = $dbo->loadAssocList();
-				$car_params = !empty($car[0]['params']) ? json_decode($car[0]['params'], true) : array();
+			$car = $dbo->loadAssocList();
+			if ($car) {
+				$car_params = !empty($car[0]['params']) ? ((array) json_decode($car[0]['params'], true)) : [];
 				$goto = JRoute::rewrite('index.php?option=com_vikrentcar&view=cardetails&carid='.$car[0]['id'].'&Itemid='.$pitemid, false);
+
+				if (!JSession::checkToken()) {
+					// missing CSRF-proof token
+					$mainframe->enqueueMessage(JText::translate('JINVALID_TOKEN'), 'error');
+					$mainframe->redirect($goto);
+					$mainframe->close();
+				}
+
+				if (!boolval(($car_params['reqinfo'] ?? 0))) {
+					// contact requests have been disabled
+					$mainframe->enqueueMessage(JText::translate('JERROR_ALERTNOAUTHOR'), 'error');
+					$mainframe->redirect($goto);
+					$mainframe->close();
+				}
+
 				$preqname = VikRequest::getString('reqname', '', 'request');
 				$preqemail = VikRequest::getString('reqemail', '', 'request');
 				$preqmess = VikRequest::getString('reqmess', '', 'request');

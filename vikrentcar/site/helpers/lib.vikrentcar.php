@@ -3665,13 +3665,13 @@ class VikRentCar
 	/**
 	 * Returns the current contract text to be used inside PDF files.
 	 * 
-	 * @param 	VikRentCarTranslator 	$vrc_tn 	optional translator object.
+	 * @param 	?VikRentCarTranslator 	$vrc_tn 	optional translator object.
 	 * 
 	 * @return 	string
 	 * 
 	 * @since 	1.15.5 (J) - 1.4.0 (WP)
 	 */
-	public static function getContractText(VikRentCarTranslator $vrc_tn = null)
+	public static function getContractText(?VikRentCarTranslator $vrc_tn = null)
 	{
 		$dbo = JFactory::getDbo();
 

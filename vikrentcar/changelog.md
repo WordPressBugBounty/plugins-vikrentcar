@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.10
+
+*Release date - 26 October 2026*
+
+- Updated charset and collation to utf8mb4 for some database tables to support emojis.
+- XSS prevention with custom fields management functions.
+
 ## 1.4.9
 
 *Release date - 19 October 2026*

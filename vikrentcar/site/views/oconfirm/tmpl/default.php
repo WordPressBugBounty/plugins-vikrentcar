@@ -808,9 +808,9 @@ if (is_array($cfields)) {
 			$isreq = "";
 		}
 		if (!empty($cf['poplink'])) {
-			$fname = "<a href=\"" . $cf['poplink'] . "\" id=\"vrcf" . $cf['id'] . "\" rel=\"{handler: 'iframe', size: {x: 750, y: 600}}\" target=\"_blank\" class=\"vrcmodal\">" . JText::translate($cf['name']) . "</a>";
+			$fname = "<a href=\"" . JHtml::fetch('esc_url', $cf['poplink']) . "\" id=\"vrcf" . $cf['id'] . "\" rel=\"{handler: 'iframe', size: {x: 750, y: 600}}\" target=\"_blank\" class=\"vrcmodal\">" . JHtml::fetch('esc_html', JText::translate($cf['name'])) . "</a>";
 		} else {
-			$fname = "<label id=\"vrcf" . $cf['id'] . "\" for=\"vrcf-inp" . $cf['id'] . "\">" . JText::translate($cf['name']) . "</label>";
+			$fname = "<label id=\"vrcf" . $cf['id'] . "\" for=\"vrcf-inp" . $cf['id'] . "\">" . JHtml::fetch('esc_html', JText::translate($cf['name'])) . "</label>";
 		}
 		if ($cf['type'] == "text") {
 			$def_textval = '';
@@ -930,7 +930,7 @@ if (is_array($cfields)) {
 			$cfsepclass = strlen(JText::translate($cf['name'])) > 30 ? "vrcseparatorcflong" : "vrcseparatorcf";
 		?>
 			<div class="vrcdivcustomfield vrccustomfldinfo">
-				<div class="<?php echo $cfsepclass; ?>"><?php echo JText::translate($cf['name']); ?></div>
+				<div class="<?php echo $cfsepclass; ?>"><?php echo JHtml::fetch('esc_html', JText::translate($cf['name'])); ?></div>
 			</div>
 		<?php
 		} else {

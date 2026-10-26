@@ -169,11 +169,11 @@ $nowts = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 							<textarea name="reqmess" id="reqmess" placeholder="<?php echo JText::translate('VRCCARREQINFOMESS'); ?>"></textarea>
 						</div>
 					<?php
-					if (count($this->terms_fields)) {
+					if ($this->terms_fields) {
 						if (!empty($this->terms_fields['poplink'])) {
-							$fname = "<a href=\"" . $this->terms_fields['poplink'] . "\" id=\"vrcf\" rel=\"{handler: 'iframe', size: {x: 750, y: 600}}\" target=\"_blank\" class=\"vrcmodalframe\">" . JText::translate($this->terms_fields['name']) . "</a>";
+							$fname = "<a href=\"" . JHtml::fetch('esc_url', $this->terms_fields['poplink']) . "\" id=\"vrcf\" rel=\"{handler: 'iframe', size: {x: 750, y: 600}}\" target=\"_blank\" class=\"vrcmodalframe\">" . JHtml::fetch('esc_html', JText::translate($this->terms_fields['name'])) . "</a>";
 						} else {
-							$fname = "<label id=\"vrcf\" for=\"vrcf-inp\" style=\"display: inline-block;\">" . JText::translate($this->terms_fields['name']) . "</label>";
+							$fname = "<label id=\"vrcf\" for=\"vrcf-inp\" style=\"display: inline-block;\">" . JHtml::fetch('esc_html', JText::translate($this->terms_fields['name'])) . "</label>";
 						}
 						?>
 						<div class="vrcdialog-reqinfo-formentry vrcdialog-reqinfo-formentry-ckbox">
@@ -201,6 +201,7 @@ $nowts = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 							<button type="submit" class="btn vrc-pref-color-btn"><?php echo JText::translate('VRCCARREQINFOSEND'); ?></button>
 						</div>
 					</div>
+					<?php echo JHtml::fetch('form.token'); ?>
 				</form>
 			</div>
 		</div>

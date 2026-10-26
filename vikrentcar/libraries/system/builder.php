@@ -181,6 +181,16 @@ class VikRentCarBuilder
 		});
 
 		/**
+		 * Helper function registered for escaping URLs.
+		 * 
+		 * @since 	1.4.10
+		 */
+		JHtml::register('esc_url', function($url, $protocols = null)
+		{
+			return esc_url($url, $protocols);
+		});
+
+		/**
 		 * Attempt to turn on the SQL_BIG_SELECTS setting at runtime, to avoid
 		 * SQL errors like "The SELECT would examine more than MAX_JOIN_SIZE rows;".
 		 * Since we do this operation at runtime, we attempt to suppress the DB errors

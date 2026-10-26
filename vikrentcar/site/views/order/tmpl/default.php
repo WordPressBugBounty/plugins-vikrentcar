@@ -160,7 +160,7 @@ $tax = $isdue - $imp;
 // coupon
 $usedcoupon = false;
 $origisdue = $isdue;
-if (strlen($ord['coupon']) > 0) {
+if (!empty($ord['coupon'])) {
 	$usedcoupon = true;
 	$expcoupon = explode(";", $ord['coupon']);
 	$isdue = $isdue - $expcoupon[1];

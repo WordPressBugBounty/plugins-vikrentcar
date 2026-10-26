@@ -12,7 +12,7 @@
 defined('ABSPATH') or die('No script kiddies please!');
 
 // Software version
-define('VIKRENTCAR_SOFTWARE_VERSION', '1.4.9');
+define('VIKRENTCAR_SOFTWARE_VERSION', '1.4.10');
 
 // Base path
 define('VIKRENTCAR_BASE', dirname(__FILE__));

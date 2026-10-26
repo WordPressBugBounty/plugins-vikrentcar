@@ -206,6 +206,13 @@ class VikRentCarLiteHelper
 	 */
 	public function listenTosFieldSavingTask()
 	{
+		$user = JFactory::getUser();
+
+		if (!$this->app->isAdmin() || !$user->authorise('core.edit', 'com_vikrentcar') || !$user->authorise('core.vrc.management', 'com_vikrentcar'))
+		{
+			VRCHttpDocument::getInstance($this->app)->close(403, JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// check if we should save the TOS field
 		if ($this->app->input->get('task') == 'customf.savetosajax')
 		{
