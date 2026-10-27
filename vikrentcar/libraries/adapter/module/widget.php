@@ -187,8 +187,16 @@ class JWidget extends WP_Widget
 			// extract class from wrapper
 			if (preg_match("/class=\"([a-z0-9_\-\s]*)\"/i", $args['before_widget'], $match))
 			{
+				/**
+				 * The widget class suffix is now sanitized before rendering, as FSE doesn't seem
+				 * to invoke the widget `update` method any longer.
+				 * 
+				 * @since 10.1.74
+				 */
+				$config['moduleclass_sfx'] = preg_replace("/[^a-zA-Z0-9_\-\s]+/", '', $config['moduleclass_sfx']);
+
 				// replace class attribute with previous classes and the custom suffix
-				$args['before_widget'] = str_replace($match[0], 'class="' . $match[1] . ' ' . $config['moduleclass_sfx'] . '"', $args['before_widget']);
+				$args['before_widget'] = str_replace($match[0], 'class="' . $match[1] . ' ' . esc_attr($config['moduleclass_sfx']) . '"', $args['before_widget']);
 			}
 		}
 		
@@ -619,27 +627,6 @@ if (typeof VIK_WIDGET_SAVE_LOOKUP === 'undefined') {
 })(jQuery);
 JS
 		);
-	}
-
-	/**
-	 * Sanitize widget form values as they are saved.
-	 *
-	 * @param 	array 	$new_instance 	Values just sent to be saved.
-	 * @param 	array 	$old_instance 	Previously saved values from database.
-	 *
-	 * @return 	array 	Updated safe values to be saved.
-	 *
-	 * @since 	10.1.21
-	 */
-	public function update($new_instance, $old_instance)
-	{
-		if (!empty($new_instance['moduleclass_sfx']))
-		{
-			// make mod class suffix safe
-			$new_instance['moduleclass_sfx'] = preg_replace("/[^a-zA-Z0-9_\-\s]+/", '', $new_instance['moduleclass_sfx']);
-		}
-
-		return $new_instance;
 	}
 
 	/**

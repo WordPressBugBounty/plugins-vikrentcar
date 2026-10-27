@@ -402,6 +402,24 @@ class VikRentCarController extends JControllerVikRentCar
 			$tar = VikRentCar::applySeasonsCar($tar, $ppickup, $prelease, $pplace);
 		}
 
+		/**
+		 * Normalise options and related data string.
+		 * 
+		 * @since 	1.15.14 (J) - 1.4.11 (WP)
+		 */
+		$stepo = explode(';', $poptionals ?? '');
+		foreach ($stepo as $optKey => $optData) {
+			if (empty($optData)) {
+				unset($stepo[$optKey]);
+				continue;
+			}
+			$stept = explode(':', $optData);
+			$stept[0] = (int) $stept[0];
+			$stept[1] = max(1, (int) ($stept[1] ?? 1));
+			$stepo[$optKey] = implode(':', $stept);
+		}
+		$poptionals = implode(';', $stepo);
+
 		$isdue = VikRentCar::sayCostPlusIva($tar[0]['cost'], $tar[0]['idprice']);
 		$car_cost = $tar[0]['cost'];
 		$net_tar = VikRentCar::sayCostMinusIva($tar[0]['cost'], $tar[0]['idprice']);

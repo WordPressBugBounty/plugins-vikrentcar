@@ -50,6 +50,22 @@ class JApplication
 	private $status = null;
 
 	/**
+	 * Document adapter instance.
+	 *
+	 * @var JDocument
+	 * @since 10.1.74  Moved from `JFactory`.
+	 */
+	private $document = null;
+
+	/**
+	 * Language adapter instance.
+	 *
+	 * @var JLanguage
+	 * @since 10.1.74  Moved from `JFactory`.
+	 */
+	private $language = null;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param 	JInput 	$input 	The input handler.
@@ -121,6 +137,9 @@ class JApplication
 	{
 		if ($name == 'input')
 		{
+			/**
+			 * @deprecated 10.1.74  Use `getInput()` instead.
+			 */
 			return $this->input;	
 		}
 
@@ -806,5 +825,73 @@ class JApplication
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Get the application input object.
+	 *
+	 * @return  JInput
+	 *
+	 * @since   10.1.74
+	 */
+	public function getInput()
+	{
+		return $this->input;
+	}
+
+	/**
+	 * Get a document object.
+	 * Returns the global document object, only creating it if it doesn't already exist.
+	 *
+	 * @return  JDocument  The document adapter.
+	 * 
+	 * @since   10.1.74    Moved from `JFactory`.
+	 */
+	public function getDocument()
+	{
+		if ($this->document === null)
+		{
+			JLoader::import('adapter.application.document');
+			$this->document = new JDocument;
+		}
+
+		return $this->document;
+	}
+
+	/**
+	 * Get a language object.
+	 * Returns the global language object, only creating it if it doesn't already exist.
+	 *
+	 * @return  JLanguage  The language adapter.
+	 * 
+	 * @since   10.1.74    Moved from `JFactory`.
+	 */
+	public function getLanguage()
+	{
+		if ($this->language === null)
+		{
+			JLoader::import('adapter.language.language');
+			$this->language = JLanguage::getInstance();
+		}
+
+		return $this->language;
+	}
+
+	/**
+	 * Get a session object.
+	 *
+	 * @return  JSession  The session adapter.
+	 * 
+	 * @since   10.1.74   Moved from `JFactory`.
+	 */
+	public function getSession()
+	{
+		JLoader::import('adapter.session.session');
+		JLoader::import('adapter.session.handler');
+
+		// attempt to start the session before using it
+		JSessionHandler::start();
+
+		return JSession::getInstance();
 	}
 }

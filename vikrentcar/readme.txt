@@ -3,7 +3,7 @@ Contributors: e4jvikwp
 Tags: car rental, rent a car, vehicles, rental management, vehicles booking
 Requires at least: 4.7
 Tested up to: 7.1
-Stable tag: 1.4.10
+Stable tag: 1.4.11
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -112,6 +112,13 @@ You can create several vehicles through the back-end, each with a total number o
 
 == Changelog ==
 
+= 1.4.11 =
+*Release date - 27 October 2026*
+
+* Core framework updated.
+* Fixed invalid capability check affecting front-end pages.
+* Security improvements.
+
 = 1.4.10 =
 *Release date - 26 October 2026*
 
@@ -167,11 +174,6 @@ You can create several vehicles through the back-end, each with a total number o
 
 * Various framework fixes.
 * Multiple security improvements.
-
-= 1.4.2 =
-*Release date - 27 June 2024*
-
-* Fixed issue with type-hinting values.
 
 = Earlier versions =
 

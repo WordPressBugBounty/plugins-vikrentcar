@@ -565,7 +565,7 @@ function vrcRemoveExtraCost(elem) {
 									$oval = "";
 									if (intval($o['hmany']) == 1) {
 										if (array_key_exists($o['id'], $arropt)) {
-											$oval = $arropt[$o['id']];
+											$oval = (int) $arropt[$o['id']];
 										}
 									} else {
 										if (array_key_exists($o['id'], $arropt)) {
@@ -599,7 +599,7 @@ function vrcRemoveExtraCost(elem) {
 											</div>
 										</div>
 										<div class="vrc-editbooking-car-option-check">
-											<?php echo (intval($o['hmany'])==1 ? "<input type=\"number\" name=\"optid".$o['id']."\" id=\"optid".$o['id']."\" value=\"".$oval."\" min=\"0\" size=\"5\" />" : "<input type=\"checkbox\" name=\"optid".$o['id']."\" id=\"optid".$o['id']."\" value=\"".$optquancheckb."\"".$oval."/>"); ?>
+											<?php echo (intval($o['hmany']) == 1 ? "<input type=\"number\" name=\"optid" . $o['id'] . "\" id=\"optid" . $o['id'] . "\" value=\"" . JHtml::fetch('esc_attr', $oval) . "\" min=\"0\" size=\"5\" />" : "<input type=\"checkbox\" name=\"optid" . $o['id'] . "\" id=\"optid" . $o['id'] . "\" value=\"" . JHtml::fetch('esc_attr', $optquancheckb) . "\"" . $oval . "/>"); ?>
 										</div>
 									</div>
 									<?php

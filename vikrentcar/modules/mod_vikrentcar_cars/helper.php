@@ -20,6 +20,8 @@ class Modvikrentcar_carsHelper
 
 		$showcatname = intval($params->get('showcatname')) == 1 ? true : false;
 		$query = $params->get('query');
+		$ordering = strtoupper((string) $params->get('order')) === 'DESC' ? 'DESC' : 'ASC';
+		$limit = max(1, (int) $params->get('numb'));
 
 		$cars = [];
 
@@ -59,7 +61,7 @@ class Modvikrentcar_carsHelper
 			$cars = self::sortCarsByPrice($cars, $params);
 		} elseif ($query == 'name') {
 			// order by name
-			$q = "SELECT `id`,`name`,`img`,`idcat`,`startfrom`,`short_info`,`idcarat` FROM `#__vikrentcar_cars` WHERE `avail`='1' ORDER BY `#__vikrentcar_cars`.`name` ".strtoupper($params->get('order'))." LIMIT ".$params->get('numb').";";
+			$q = "SELECT `id`,`name`,`img`,`idcat`,`startfrom`,`short_info`,`idcarat` FROM `#__vikrentcar_cars` WHERE `avail`='1' ORDER BY `#__vikrentcar_cars`.`name` " . $ordering . " LIMIT " . $limit . ";";
 			$dbo->setQuery($q);
 			$cars = $dbo->loadAssocList();
 			if ($cars) {
@@ -92,7 +94,8 @@ class Modvikrentcar_carsHelper
 			}
 		} else {
 			// sort by category
-			$q = "SELECT `id`,`name`,`img`,`idcat`,`info`,`startfrom`,`short_info`,`idcarat` FROM `#__vikrentcar_cars` WHERE `avail`='1' AND (`idcat`='".$params->get('catid').";' OR `idcat` LIKE '".$params->get('catid').";%' OR `idcat` LIKE '%;".$params->get('catid').";%' OR `idcat` LIKE '%;".$params->get('catid').";') ORDER BY `#__vikrentcar_cars`.`name` ".strtoupper($params->get('order'))." LIMIT ".$params->get('numb').";";
+			$categoryId = (string) ($params->get('catid') ?: '');
+			$q = "SELECT `id`,`name`,`img`,`idcat`,`info`,`startfrom`,`short_info`,`idcarat` FROM `#__vikrentcar_cars` WHERE `avail`='1' AND (`idcat`=" . $dbo->q($categoryId . ';') . " OR `idcat` LIKE " . $dbo->q($categoryId . ';%') . " OR `idcat` LIKE " . $dbo->q('%;' . $categoryId . ';%') . " OR `idcat` LIKE " . $dbo->q('%;' . $categoryId . ';') . ") ORDER BY `#__vikrentcar_cars`.`name` " . $ordering . " LIMIT " . $limit . ";";
 			$dbo->setQuery($q);
 			$cars = $dbo->loadAssocList();
 			if ($cars) {
@@ -173,7 +176,7 @@ class Modvikrentcar_carsHelper
 
 	public static function limitRes($cars, $params)
 	{
-		return array_slice($cars, 0, $params->get('numb'));
+		return array_slice($cars, 0, (int) $params->get('numb'));
 	}
 
 	public static function getTranslator()
@@ -222,24 +225,23 @@ class Modvikrentcar_carsHelper
 					//tooltip icon text is not empty
 					if (!empty($a['icon'])) {
 						//an icon has been uploaded: display the image
-						$carat .= "<span class=\"vrc-carat-cont\"><span class=\"vrc-expl\" data-vrc-expl=\"".$a['textimg']."\"><img src=\"".VRC_ADMIN_URI."resources/".$a['icon']."\" alt=\"" . $a['name'] . "\" /></span></span>\n";
+						$carat .= "<span class=\"vrc-carat-cont\"><span class=\"vrc-expl\" data-vrc-expl=\"" . JHtml::fetch('esc_attr', $a['textimg']) . "\"><img src=\"" . VRC_ADMIN_URI . "resources/" . $a['icon'] . "\" alt=\"" . JHtml::fetch('esc_attr', $a['name']) . "\" /></span></span>\n";
 					} else {
 						if (strpos($a['textimg'], '</i>') !== false) {
-							//the tooltip icon text is a font-icon, we can use the name as tooltip
-							$carat .= "<span class=\"vrc-carat-cont\"><span class=\"vrc-expl\" data-vrc-expl=\"".$a['name']."\">".$a['textimg']."</span></span>\n";
+							// the tooltip icon text is a font-icon, we can use the name as tooltip
+							$carat .= "<span class=\"vrc-carat-cont\"><span class=\"vrc-expl\" data-vrc-expl=\"" . JHtml::fetch('esc_attr', $a['name']) . "\">" . $a['textimg'] . "</span></span>\n";
 						} else {
-							//display just the text
-							$carat .= "<span class=\"vrc-carat-cont\">".$a['textimg']."</span>\n";
+							// display just the text
+							$carat .= "<span class=\"vrc-carat-cont\">" . JHtml::fetch('esc_html', $a['textimg']) . "</span>\n";
 						}
 					}
 				} else {
-					$carat .= (!empty($a['icon']) ? "<span class=\"vrc-carat-cont\"><img src=\"".VRC_ADMIN_URI."resources/" . $a['icon'] . "\" alt=\"" . $a['name'] . "\" title=\"" . $a['name'] . "\"/></span>\n" : "<span class=\"vrc-carat-cont\">".$a['name']."</span>\n");
+					$carat .= (!empty($a['icon']) ? "<span class=\"vrc-carat-cont\"><img src=\"" . VRC_ADMIN_URI . "resources/" . $a['icon'] . "\" alt=\"" . JHtml::fetch('esc_attr', $a['name']) . "\" title=\"" . JHtml::fetch('esc_attr', $a['name']) . "\"/></span>\n" : "<span class=\"vrc-carat-cont\">" . JHtml::fetch('esc_html', $a['name']) . "</span>\n");
 				}
 				$carat .= "</div>";
 			}
 			$carat .= "</div>\n";
 		}
 		return $carat;
-	}
-	
+	}	
 }

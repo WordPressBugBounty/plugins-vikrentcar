@@ -3,7 +3,7 @@
 Plugin Name:  VikRentCar
 Plugin URI:   https://vikwp.com/plugin/vikrentcar
 Description:  Robust Car Rental Management Software.
-Version:      1.4.10
+Version:      1.4.11
 Author:       E4J s.r.l.
 Author URI:   https://vikwp.com
 License:      GPL2

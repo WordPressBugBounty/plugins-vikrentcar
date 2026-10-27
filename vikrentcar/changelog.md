@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.11
+
+*Release date - 27 October 2026*
+
+- Core framework updated.
+- Fixed invalid capability check affecting front-end pages.
+- Security improvements.
+
 ## 1.4.10
 
 *Release date - 26 October 2026*

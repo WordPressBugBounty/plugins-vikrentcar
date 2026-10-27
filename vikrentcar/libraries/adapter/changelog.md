@@ -1,5 +1,27 @@
 # Framework Changelog
 
+### 10.1.74
+
+*Release date - 27 October 2026*
+
+##### ADD
+
+* Implemented `JApplication::getDocument()` method.
+* Implemented `JApplication::getInput()` method.
+* Implemented `JApplication::getLanguage()` method.
+* Implemented `JApplication::getSession()` method.
+
+##### CHANGE
+
+* Deprecated `JFactory::getDocument()` method. Use `JFactory::getApplication()->getDocument()` instead.
+* Deprecated `JFactory::getLanguage()` method. Use `JFactory::getApplication()->getLanguage()` instead.
+* Deprecated `JFactory::getSession()` method. Use `JFactory::getApplication()->getSession()` instead.
+* Deprecated direct access to `JApplication::$input` property. Use `JApplication::getInput()` method instead.
+* Removed `JWidget::update()` override method.
+* Widget class suffix is now sanitized before rendering rather than before saving.
+
+---
+
 ### 10.1.73
 
 *Release date - 9 June 2026*

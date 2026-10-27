@@ -26,20 +26,6 @@ abstract class JFactory
 	private static $application = null;
 
 	/**
-	 * Language adapter instance.
-	 *
-	 * @var JLanguage
-	 */
-	private static $language = null;
-
-	/**
-	 * Document adapter instance.
-	 *
-	 * @var JDocument
-	 */
-	private static $document = null;
-
-	/**
 	 * Access point to retrieve the current database instance.
 	 *
 	 * @return 	JDatabase  Global database adapter.
@@ -57,7 +43,7 @@ abstract class JFactory
 	 * Get an application object.
 	 * Returns the global application object, only creating it if it doesn't already exist.
 	 *
-	 * @return 	JApplication  The application adapter.
+	 * @return  JApplication  The application adapter.
 	 */
 	public static function getApplication()
 	{
@@ -75,55 +61,41 @@ abstract class JFactory
 	 * Get a language object.
 	 * Returns the global language object, only creating it if it doesn't already exist.
 	 *
-	 * @return  JLanguage 	The language adapter.
+	 * @return  JLanguage   The language adapter.
+	 * 
+	 * @deprecated 10.1.74  Use `JFactory::getApplication()->getLanguage()` instead.
 	 */
 	public static function getLanguage()
 	{
-		if (static::$language === null)
-		{
-			JLoader::import('adapter.language.language');
-
-			static::$language = JLanguage::getInstance();
-		}
-
-		return static::$language;
+		return static::getApplication()->getLanguage();
 	}
 
 	/**
 	 * Get a session object.
 	 * Returns the global session object, only creating it if it doesn't already exist.
 	 *
-	 * @param 	array 	$options  An array containing session options (@unused).
+	 * @param   array     $options  An array containing session options (@unused).
 	 *
-	 * @return  JSession 	The session adapter.
+	 * @return  JSession  The session adapter.
+	 * 
+	 * @deprecated 10.1.74  Use `JFactory::getApplication()->getSession()` instead.
 	 */
-	public static function getSession(array $options = array())
+	public static function getSession(array $options = [])
 	{
-		JLoader::import('adapter.session.session');
-		JLoader::import('adapter.session.handler');
-
-		// attempt to start the session before using it
-		JSessionHandler::start();
-
-		return JSession::getInstance();
+		return static::getApplication()->getSession();
 	}
 
 	/**
 	 * Get a document object.
 	 * Returns the global document object, only creating it if it doesn't already exist.
 	 *
-	 * @return  JDocument 	The document adapter.
+	 * @return  JDocument   The document adapter.
+	 * 
+	 * @deprecated 10.1.74  Use `JFactory::getApplication()->getDocument()` instead.
 	 */
 	public static function getDocument()
 	{
-		if (static::$document === null)
-		{
-			JLoader::import('adapter.application.document');
-
-			static::$document = new JDocument();
-		}
-
-		return static::$document;
+		return static::getApplication()->getDocument();
 	}
 
 	/**
