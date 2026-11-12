@@ -13,9 +13,10 @@ defined('ABSPATH') or die('No script kiddies please!');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class VikRentCarViewHourscharges extends JViewVikRentCar {
-	
-	function display($tpl = null) {
+class VikRentCarViewHourscharges extends JViewVikRentCar
+{
+	public function display($tpl = null)
+	{
 		// Set the toolbar
 		$this->addToolBar();
 
@@ -48,8 +49,7 @@ class VikRentCarViewHourscharges extends JViewVikRentCar {
 		$carrows = $dbo->loadAssoc();
 		$q = "SELECT * FROM `#__vikrentcar_prices`;";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		$prices = $dbo->getNumRows() > 0 ? $dbo->loadAssocList() : "";
+		$prices = $dbo->loadAssocList();
 		$pnewtar = VikRequest::getString('newdispcost', '', 'request');
 		$phhoursfrom = VikRequest::getInt('hhoursfrom', '', 'request');
 		$phhoursto = VikRequest::getInt('hhoursto', '', 'request');
@@ -61,7 +61,7 @@ class VikRentCarViewHourscharges extends JViewVikRentCar {
 			$phhoursto = 23;
 		}
 		//
-		if (!empty($pnewtar) && !empty($phhoursfrom) && is_array($prices)) {
+		if ((JSession::checkToken() || JSession::checkToken('get')) && !empty($pnewtar) && !empty($phhoursfrom) && $prices) {
 			if (empty($phhoursto) || $phhoursfrom == $phhoursto) {
 				foreach ($prices as $pr) {
 					$tmpvarone = VikRequest::getFloat('hprice'.$pr['id'], '', 'request');
@@ -111,11 +111,9 @@ class VikRentCarViewHourscharges extends JViewVikRentCar {
 		}
 		$q = "SELECT * FROM `#__vikrentcar_hourscharges` WHERE `idcar`='".$carrows['id']."' ORDER BY `#__vikrentcar_hourscharges`.`ehours` ASC, `#__vikrentcar_hourscharges`.`idprice` ASC;";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		$rows = $dbo->getNumRows() > 0 ? $dbo->loadAssocList() : "";
+		$rows = $dbo->loadAssocList();
 		$q = "SELECT `id`,`name` FROM `#__vikrentcar_cars` ORDER BY `#__vikrentcar_cars`.`name` ASC;";
 		$dbo->setQuery($q);
-		$dbo->execute();
 		$allc = $dbo->loadAssocList();
 
 		$this->carrows = $carrows;
@@ -137,5 +135,4 @@ class VikRentCarViewHourscharges extends JViewVikRentCar {
 			JToolBarHelper::deleteList(JText::translate('VRCDELCONFIRM'), 'removehourscharges', JText::translate('VRMAINTARIFFEDEL'));
 		}
 	}
-
 }

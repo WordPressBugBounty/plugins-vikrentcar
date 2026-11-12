@@ -47,6 +47,7 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 								}
 								?>
 								</select>
+								<?php echo JHtml::fetch( 'form.token' ); ?>
 							</form>
 						</div>
 					</div>
@@ -85,11 +86,11 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 										<div class="vrc-ratestable-nights">
 											<div class="vrc-ratestable-night-from">
 												<span><?php echo JText::translate('VRDAYSFROM'); ?></span>
-												<input type="number" name="hhoursfrom" id="hhoursfrom" value="<?php echo !is_array($prices) ? '1' : ''; ?>" min="1" />
+												<input type="number" name="hhoursfrom" id="hhoursfrom" value="<?php echo empty($prices) ? '1' : ''; ?>" min="1" />
 											</div>
 											<div class="vrc-ratestable-night-to">
 												<span><?php echo JText::translate('VRDAYSTO'); ?></span>
-												<input type="number" name="hhoursto" id="hhoursto" value="<?php echo !is_array($prices) ? '30' : ''; ?>" min="1" max="999" />
+												<input type="number" name="hhoursto" id="hhoursto" value="<?php echo empty($prices) ? '30' : ''; ?>" min="1" max="999" />
 											</div>
 										</div>
 									</div>
@@ -97,7 +98,7 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 										<div class="vrc-ratestable-lbl"><?php echo JText::translate('VRCHOURLYPRICES'); ?></div>
 										<div class="vrc-ratestable-newprices">
 									<?php
-									if (is_array($prices)) {
+									if ($prices) {
 										foreach ($prices as $pr) {
 											?>
 											<div class="vrc-ratestable-newprice">
@@ -132,6 +133,7 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 									<input type="submit" class="btn vrc-config-btn" name="newdispcost" value="<?php echo JHtml::fetch('esc_attr', JText::translate('VRINSERT')); ?>"/>
 									<input type="hidden" name="cid[]" value="<?php echo JHtml::fetch('esc_attr', $idcar); ?>"/>
 									<input type="hidden" name="task" value="tariffshours"/>
+									<?php echo JHtml::fetch( 'form.token' ); ?>
 								</div>
 							</form>
 
@@ -153,6 +155,7 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 					<form name="adminForm" id="adminForm" action="index.php" method="post">
 						<input type="hidden" name="task" value="">
 						<input type="hidden" name="option" value="com_vikrentcar">
+						<?php echo JHtml::fetch( 'form.token' ); ?>
 					</form>
 					<?php
 				} else {
@@ -259,7 +262,7 @@ if (is_file(VRC_ADMIN_PATH.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.$
 </div>
 
 <script type="text/javascript">
-jQuery(document).ready(function() {
+jQuery(function() {
 	jQuery('#hhoursfrom').change(function() {
 		var fnights = parseInt(jQuery(this).val());
 		if (!isNaN(fnights)) {

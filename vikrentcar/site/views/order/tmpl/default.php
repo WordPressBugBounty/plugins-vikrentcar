@@ -216,7 +216,7 @@ if ($ord['status'] == 'confirmed') {
 	
 		<div class="vrc-order-details-top-element vrc-order-details-top-cdet">
 			<div class="vrc-order-details-text-wrap">
-				<span class="vrcvordudatatitle"><?php echo JText::translate('VRPERSDETS'); ?></span> <?php echo nl2br($ord['custdata']); ?>
+				<span class="vrcvordudatatitle"><?php echo JText::translate('VRPERSDETS'); ?></span> <?php echo nl2br(JHtml::fetch('esc_html', $ord['custdata'])); ?>
 			<?php
 			$cpin = VikRentCar::getCPinIstance();
 			$customer = $cpin->getCustomerFromBooking($ord['id']);

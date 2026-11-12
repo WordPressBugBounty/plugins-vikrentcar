@@ -213,7 +213,7 @@ class VikRentCarController extends JControllerVikRentCar
 		if ($cfields) {
 			foreach ($cfields as $cf) {
 				if (intval($cf['required']) == 1 && $cf['type'] != 'separator') {
-					$tmpcfval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$tmpcfval = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 					if (strlen(str_replace(" ", "", trim($tmpcfval))) <= 0) {
 						$suffdata = false;
 						break;
@@ -228,7 +228,7 @@ class VikRentCarController extends JControllerVikRentCar
 			$emailwasfound = false;
 			foreach ($cfields as $cf) {
 				if (intval($cf['isemail']) == 1 && $emailwasfound == false) {
-					$useremail = trim(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
+					$useremail = trim(strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request')));
 					if (VikRentCar::validEmail($useremail)) {
 						// valid email address
 						$emailwasfound = true;
@@ -245,29 +245,29 @@ class VikRentCarController extends JControllerVikRentCar
 					}
 				}
 				if ($cf['isnominative'] == 1) {
-					$tmpcfval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$tmpcfval = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 					if (strlen(str_replace(" ", "", trim($tmpcfval))) > 0) {
 						$nominatives[] = $tmpcfval;
 					}
 				}
 				if ($cf['isphone'] == 1) {
-					$tmpcfval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$tmpcfval = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 					if (strlen(str_replace(" ", "", trim($tmpcfval))) > 0) {
 						$phone_number = $tmpcfval;
 					}
 				}
 				if (!empty($cf['flag'])) {
-					$tmpcfval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$tmpcfval = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 					if (strlen(str_replace(" ", "", trim($tmpcfval))) > 0) {
 						$fieldflags[$cf['flag']] = $tmpcfval;
 					}
 				}
 				if ($cf['type'] != 'separator' && $cf['type'] != 'country' && ( $cf['type'] != 'checkbox' || ($cf['type'] == 'checkbox' && intval($cf['required']) != 1) ) ) {
-					$arrcustdata[JText::translate($cf['name'])] = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
-					$arrcfields[$cf['id']] = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
-					$nextorderdata['customfields'][$cf['id']] = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$arrcustdata[JText::translate($cf['name'])] = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
+					$arrcfields[$cf['id']] = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
+					$nextorderdata['customfields'][$cf['id']] = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 				} elseif ($cf['type'] == 'country') {
-					$countryval = VikRequest::getString('vrcf' . $cf['id'], '', 'request');
+					$countryval = strip_tags(VikRequest::getString('vrcf' . $cf['id'], '', 'request'));
 					if (!empty($countryval) && strstr($countryval, '::') !== false) {
 						$countryparts = explode('::', $countryval);
 						$usercountry = $countryparts[0];

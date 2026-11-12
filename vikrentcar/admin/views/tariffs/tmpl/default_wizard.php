@@ -52,6 +52,7 @@ $currencysymb = VikRentCar::getCurrencySymb(true);
 				<input type="hidden" name="ddaysfrom" value="1" />
 				<input type="hidden" name="ddaysto" value="30" />
 				<input type="hidden" name="cid[]" value="<?php echo (int)$this->carrows['id']; ?>" />
+				<?php echo JHtml::fetch( 'form.token' ); ?>
 			</form>
 		</div>
 	</div>

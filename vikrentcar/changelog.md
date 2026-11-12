@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.12
+
+*Release date - 12 November 2026*
+
+- Various escaping, CSRF and capability checks added.
+- Introduced reservation model.
+- New default rental orders SID value format.
+- Hook added to define a custom SID format among the supported ones.
+- Various fixes and security improvements.
+
 ## 1.4.11
 
 *Release date - 27 October 2026*

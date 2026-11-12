@@ -325,6 +325,7 @@ if (count($pickuparr) && count($dropoffarr)) {
 					<input type="hidden" name="task" value="calendar"/>
 					<input type="hidden" name="cid[]" value="<?php echo (int)$car['id']; ?>"/>
 					<input type="hidden" name="option" value="com_vikrentcar" />
+					<?php echo JHtml::fetch('form.token'); ?>
 				</form>
 			</div>
 		</fieldset>

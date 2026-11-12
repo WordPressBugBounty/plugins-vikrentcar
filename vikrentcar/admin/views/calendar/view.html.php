@@ -103,7 +103,15 @@ class VikRentCarViewCalendar extends JViewVikRentCar {
 				}
 			}
 		}
-		if (!empty($ppickupdate) && !empty($preleasedate)) {
+
+		// check if rental orders can be created
+		$canCreateBooking = (JSession::checkToken() || JSession::checkToken('get')) && JFactory::getUser()->authorise('core.vrc.orders', 'com_vikrentcar');
+		if (!empty($ppickupdate) && !empty($preleasedate) && !$canCreateBooking) {
+			VikError::raiseWarning('', JText::translate('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// check if a new rental order should be created
+		if (!empty($ppickupdate) && !empty($preleasedate) && $canCreateBooking) {
 			if (VikRentCar::dateIsValid($ppickupdate) && VikRentCar::dateIsValid($preleasedate)) {
 				$first = VikRentCar::getDateTimestamp($ppickupdate, $ppickuph, $ppickupm);
 				$second = VikRentCar::getDateTimestamp($preleasedate, $preleaseh, $preleasem);

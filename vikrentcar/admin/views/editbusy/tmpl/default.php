@@ -593,7 +593,7 @@ function vrcRemoveExtraCost(elem) {
 									?>
 									<div class="vrc-editbooking-car-option">
 										<div class="vrc-editbooking-car-option-inner">
-											<label for="optid<?php echo $o['id']; ?>"><?php echo $o['name']; ?></label>
+											<label for="optid<?php echo $o['id']; ?>"><?php echo JHtml::fetch('esc_html', $o['name']); ?></label>
 											<div class="vrc-editbooking-car-option-price">
 												<?php echo $currencysymb; ?> <?php echo VikRentCar::numberFormat(VikRentCar::sayOptionalsPlusIva($thisoptcost, $o['idiva'], $row)); ?>
 											</div>
@@ -762,7 +762,7 @@ function vrcRemoveExtraCost(elem) {
 									?>
 									<div class="vrc-editbooking-car-option">
 										<div class="vrc-editbooking-car-option-inner">
-											<label for="optid<?php echo $o['id']; ?>"><?php echo $o['name']; ?></label>
+											<label for="optid<?php echo $o['id']; ?>"><?php echo JHtml::fetch('esc_html', $o['name']); ?></label>
 											<div class="vrc-editbooking-car-option-check">
 												<?php echo (intval($o['hmany'])==1 ? "<input type=\"number\" name=\"optid".$o['id']."\" id=\"optid".$o['id']."\" value=\"\" min=\"0\" size=\"4\" />" : "<input type=\"checkbox\" name=\"optid".$o['id']."\" id=\"optid".$o['id']."\" value=\"1\" />"); ?>
 											</div>

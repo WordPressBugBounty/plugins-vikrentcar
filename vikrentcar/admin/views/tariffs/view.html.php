@@ -13,9 +13,10 @@ defined('ABSPATH') or die('No script kiddies please!');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class VikRentCarViewTariffs extends JViewVikRentCar {
-	
-	function display($tpl = null) {
+class VikRentCarViewTariffs extends JViewVikRentCar
+{
+	public function display($tpl = null)
+	{
 		// Set the toolbar
 		$this->addToolBar();
 
@@ -48,12 +49,11 @@ class VikRentCarViewTariffs extends JViewVikRentCar {
 		$carrows = $dbo->loadAssoc();
 		$q = "SELECT * FROM `#__vikrentcar_prices`;";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		$prices = $dbo->getNumRows() > 0 ? $dbo->loadAssocList() : "";
+		$prices = $dbo->loadAssocList();
 		$pnewtar = VikRequest::getString('newdispcost', '', 'request');
 		$pddaysfrom = VikRequest::getInt('ddaysfrom', '', 'request');
 		$pddaysto = VikRequest::getInt('ddaysto', '', 'request');
-		if (!empty($pnewtar) && !empty($pddaysfrom) && is_array($prices)) {
+		if ((JSession::checkToken() || JSession::checkToken('get')) && !empty($pnewtar) && !empty($pddaysfrom) && $prices) {
 			if (empty($pddaysto) || $pddaysfrom == $pddaysto) {
 				foreach ($prices as $pr) {
 					$tmpvarone = VikRequest::getFloat('dprice'.$pr['id'], '', 'request');
@@ -103,11 +103,9 @@ class VikRentCarViewTariffs extends JViewVikRentCar {
 		}
 		$q = "SELECT * FROM `#__vikrentcar_dispcost` WHERE `idcar`='".$carrows['id']."' ORDER BY `#__vikrentcar_dispcost`.`days` ASC, `#__vikrentcar_dispcost`.`idprice` ASC;";
 		$dbo->setQuery($q);
-		$dbo->execute();
-		$rows = $dbo->getNumRows() > 0 ? $dbo->loadAssocList() : "";
+		$rows = $dbo->loadAssocList();
 		$q = "SELECT `id`,`name` FROM `#__vikrentcar_cars` ORDER BY `#__vikrentcar_cars`.`name` ASC;";
 		$dbo->setQuery($q);
-		$dbo->execute();
 		$allc = $dbo->loadAssocList();
 
 		$this->carrows = $carrows;
@@ -129,5 +127,4 @@ class VikRentCarViewTariffs extends JViewVikRentCar {
 			JToolBarHelper::deleteList(JText::translate('VRCDELCONFIRM'), 'removetariffs', JText::translate('VRMAINTARIFFEDEL'));
 		}
 	}
-
 }

@@ -455,12 +455,12 @@ function toggleDiscount(elem) {
 							<?php
 							if (strlen($custd_lbl)) {
 								?>
-							<span class="vrc-bookingdet-userdetail-lbl"><?php echo $custd_lbl; ?></span>
+							<span class="vrc-bookingdet-userdetail-lbl"><?php echo JHtml::fetch('esc_html', $custd_lbl); ?></span>
 								<?php
 							}
 							if (strlen($custd_val)) {
 								?>
-							<span class="vrc-bookingdet-userdetail-val"><?php echo $custd_val; ?></span>
+							<span class="vrc-bookingdet-userdetail-val"><?php echo JHtml::fetch('esc_html', $custd_val); ?></span>
 								<?php
 							}
 							?>
@@ -471,11 +471,11 @@ function toggleDiscount(elem) {
 						if ($row['closure'] > 0) {
 							?>
 						<div class="vrc-bookingdet-userdetail">
-							<span class="vrc-bookingdet-userdetail-val"><?php echo nl2br($row['custdata']); ?></span>
+							<span class="vrc-bookingdet-userdetail-val"><?php echo nl2br(JHtml::fetch('esc_html', $row['custdata'])); ?></span>
 						</div>
 							<?php
 						} else {
-							echo nl2br($row['custdata']);
+							echo nl2br(JHtml::fetch('esc_html', $row['custdata']));
 							?>
 						<div class="vrc-bookingdet-userdetail">
 							<span class="vrc-bookingdet-userdetail-val">&nbsp;</span>
@@ -1110,6 +1110,7 @@ function toggleDiscount(elem) {
 			echo '<input type="hidden" name="goto" value="' . JHtml::fetch('esc_attr', $pgoto) . '">';
 		}
 		?>
+		<?php echo JHtml::fetch('form.token'); ?>
 	</form>
 </div>
 
@@ -1235,6 +1236,7 @@ function toggleDiscount(elem) {
 					<input type="hidden" name="email" id="emailto" value="<?php echo JHtml::fetch('esc_attr', $row['custmail']); ?>" />
 					<input type="hidden" name="goto" value="<?php echo urlencode('index.php?option=com_vikrentcar&task=editorder&cid[]='.$row['id']); ?>" />
 					<input type="hidden" name="task" value="sendcustomemail" />
+					<?php echo JHtml::fetch('form.token'); ?>
 				</form>
 			</div>
 		</div>

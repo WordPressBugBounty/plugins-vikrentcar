@@ -7448,6 +7448,9 @@ class VikRentCarController extends JControllerVikRentCar
 	}
 
 	public function sendcustomemail() {
+		if (!JSession::checkToken()) {
+			throw new Exception(JText::translate('JINVALID_TOKEN'), 403);
+		}
 		$dbo = JFactory::getDbo();
 		$mainframe = JFactory::getApplication();
 		$vrc_tn = VikRentCar::getTranslator();

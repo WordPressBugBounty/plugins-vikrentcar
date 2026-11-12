@@ -3,7 +3,7 @@ Contributors: e4jvikwp
 Tags: car rental, rent a car, vehicles, rental management, vehicles booking
 Requires at least: 4.7
 Tested up to: 7.1
-Stable tag: 1.4.11
+Stable tag: 1.4.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -112,6 +112,15 @@ You can create several vehicles through the back-end, each with a total number o
 
 == Changelog ==
 
+= 1.4.12 =
+*Release date - 12 November 2026*
+
+* Various escaping, CSRF and capability checks added.
+* Introduced reservation model.
+* New default rental orders SID value format.
+* Hook added to define a custom SID format among the supported ones.
+* Various fixes and security improvements.
+
 = 1.4.11 =
 *Release date - 27 October 2026*
 
@@ -168,12 +177,6 @@ You can create several vehicles through the back-end, each with a total number o
 * Added new option to Search Form shortcode for forcing a category. 
 * Core framework updated.
 * Multiple back-end security improvements.
-
-= 1.4.3 =
-*Release date - 21 January 2025*
-
-* Various framework fixes.
-* Multiple security improvements.
 
 = Earlier versions =
 

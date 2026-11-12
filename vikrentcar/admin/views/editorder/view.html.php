@@ -13,9 +13,10 @@ defined('ABSPATH') or die('No script kiddies please!');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class VikRentCarViewEditorder extends JViewVikRentCar {
-	
-	function display($tpl = null) {
+class VikRentCarViewEditorder extends JViewVikRentCar
+{
+	public function display($tpl = null)
+	{
 		// Set the toolbar
 		$this->addToolBar();
 
@@ -59,6 +60,10 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 				$customer['country_img'] = '<img src="'.VRC_ADMIN_URI.'resources/countries/'.$customer['country'].'.png'.'" title="'.$customer['country'].'" class="vrc-country-flag vrc-country-flag-left"/>';
 			}
 		}
+
+		// CSRF token validation
+		$applyChanges = JSession::checkToken() || JSession::checkToken('get');
+
 		$padminnotes = VikRequest::getString('adminnotes', '', 'request');
 		$pupdadmnotes = VikRequest::getString('updadmnotes', '', 'request');
 		$pnewpayment = VikRequest::getString('newpayment', '', 'request');
@@ -68,13 +73,14 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 		$pcustphone = VikRequest::getString('custphone', '', 'request');
 		$pnominative = VikRequest::getString('nominative', '', 'request');
 		$pcarindex = VikRequest::getInt('carindex', -1, 'request');
-		if (!empty($padminnotes) || !empty($pupdadmnotes)) {
+
+		if ($applyChanges && (!empty($padminnotes) || !empty($pupdadmnotes))) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `adminnotes`=".$dbo->quote($padminnotes)." WHERE `id`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$dbo->execute();
 			$row['adminnotes'] = $padminnotes;
 		}
-		if (!empty($pnewpayment) && is_array($payments)) {
+		if ($applyChanges && !empty($pnewpayment) && is_array($payments)) {
 			foreach ($payments as $npay) {
 				if ((int)$npay['id'] == (int)$pnewpayment) {
 					$newpayvalid = $npay['id'].'='.$npay['name'];
@@ -86,13 +92,13 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 				}
 			}
 		}
-		if (!empty($pnewlang)) {
+		if ($applyChanges && !empty($pnewlang)) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `lang`=".$dbo->quote($pnewlang)." WHERE `id`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$dbo->execute();
 			$row['lang'] = $pnewlang;
 		}
-		if (strlen($padmindisc) > 0) {
+		if ($applyChanges && strlen($padmindisc) > 0) {
 			if (floatval($padmindisc) > 0.00) {
 				$admincoupon = '-1;'.floatval($padmindisc).';'.JText::translate('VRCADMINDISCOUNT');
 			} else {
@@ -103,19 +109,19 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 			$dbo->execute();
 			$row['coupon'] = $admincoupon;
 		}
-		if (strlen($pcustmail) > 0) {
+		if ($applyChanges && strlen($pcustmail) > 0) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `custmail`=".$dbo->quote($pcustmail)." WHERE `id`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$dbo->execute();
 			$row['custmail'] = $pcustmail;
 		}
-		if (strlen($pcustphone) > 0) {
+		if ($applyChanges && strlen($pcustphone) > 0) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `phone`=".$dbo->quote($pcustphone)." WHERE `id`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$dbo->execute();
 			$row['phone'] = $pcustphone;
 		}
-		if ($pcarindex >= 0 && $pcarindex != $row['carindex']) {
+		if ($applyChanges && $pcarindex >= 0 && $pcarindex != $row['carindex']) {
 			/**
 			 * Grab the information of the car to build the details of the
 			 * update for the car index associated with the order.
@@ -135,7 +141,7 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 			$dbo->execute();
 			$row['carindex'] = $pcarindex;
 		}
-		if (strlen($pnominative) > 0) {
+		if ($applyChanges && strlen($pnominative) > 0) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `nominative`=".$dbo->quote($pnominative)." WHERE `id`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$dbo->execute();
@@ -143,7 +149,7 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 		}
 		$pnewamountpayable = VikRequest::getFloat('newamountpayable', -1, 'request');
 		// we update the amount payable also if the input is 0.0 (float) as the default value is -1 (int)
-		if (($pnewamountpayable > 0 || ($pnewamountpayable == 0 && is_float($pnewamountpayable))) && (float)$row['payable'] != $pnewamountpayable) {
+		if ($applyChanges && (($pnewamountpayable > 0 || ($pnewamountpayable == 0 && is_float($pnewamountpayable))) && (float)$row['payable'] != $pnewamountpayable)) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `payable`=" . $dbo->quote($pnewamountpayable) . " WHERE `id`=" . $row['id'] . ";";
 			$dbo->setQuery($q);
 			$dbo->execute();
@@ -152,7 +158,7 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 			VikRentCar::getOrderHistoryInstance()->setBid($row['id'])->store('PB', JText::sprintf('VRC_NEWPAYABLE_AMOUNT', VikRentCar::numberFormat($pnewamountpayable)));
 		}
 		$pmakepay = VikRequest::getInt('makepay', 0, 'request');
-		if ($pmakepay > 0) {
+		if ($applyChanges && $pmakepay > 0) {
 			$q = "UPDATE `#__vikrentcar_orders` SET `paymcount`=" . $pmakepay . " WHERE `id`=" . $row['id'] . ";";
 			$dbo->setQuery($q);
 			$dbo->execute();
@@ -170,7 +176,8 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 	/**
 	 * Sets the toolbar
 	 */
-	protected function addToolBar() {
+	protected function addToolBar()
+	{
 		JToolBarHelper::title(JText::translate('VRMAINORDERTITLEEDIT'), 'vikrentcar');
 		JToolBarHelper::cancel( 'canceledorder', JText::translate('VRBACK'));
 		JToolBarHelper::spacer();
@@ -179,5 +186,4 @@ class VikRentCarViewEditorder extends JViewVikRentCar {
 		JToolBarHelper::custom( 'next_order', 'forward', 'forward', JText::translate('VRCJQCALNEXT'), false);
 		JToolBarHelper::spacer();
 	}
-
 }

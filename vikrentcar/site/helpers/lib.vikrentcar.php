@@ -2395,35 +2395,106 @@ class VikRentCar
 		return $cost;
 	}
 
-	public static function getSecretLink()
+	/**
+	 * Builds and returns a unique "secret" value
+	 * (SID) for a new order record.
+	 * 
+	 * @param 	bool 	$rotateFormat  Whether to force a random format.
+	 * 
+	 * @return 	string 	The computed secret value according to settings.
+	 * 
+	 * @since 	1.15.14 (J) - 1.4.12 (WP) added support for multiple and actionable SID value formats.
+	 */
+	public static function getSecretLink(bool $rotateFormat = false)
 	{
-		$sid = mt_rand();
-		$dbo = JFactory::getDbo();
-		$q = "SELECT `sid` FROM `#__vikrentcar_orders`;";
-		$dbo->setQuery($q);
-		$dbo->execute();
-		if (@ $dbo->getNumRows() > 0) {
-			$all = $dbo->loadAssocList();
-			foreach ($all as $s) {
-				$arr[] = $s['sid'];
-			}
-			if (in_array($sid, $arr)) {
-				while (in_array($sid, $arr)) {
-					$sid++;
-				}
-			}
+		// list of known SID formats
+		$knownFormats = ['uuid', 'random_bytes', 'alnum', 'int', 'rotation'];
+
+		// detect format to use
+		$defaultFormat = $knownFormats[0];
+
+		// trigger event to allow third-party plugins to define the SID format
+		VRCFactory::getPlatform()->getDispatcher()->trigger('onDetectBookingSidFormat', [&$defaultFormat, $knownFormats]);
+
+		// determine final format to use
+		$defaultFormat = in_array($defaultFormat, $knownFormats) ? $defaultFormat : $knownFormats[0];
+
+		// detect random rotation format
+		if ($defaultFormat === 'rotation' || $rotateFormat) {
+			// apply a random known format
+			unset($knownFormats[array_search('rotation', $knownFormats)]);
+			shuffle($knownFormats);
+			$defaultFormat = $knownFormats[0];
 		}
-		return $sid;
+
+		// access the reservation model
+		$model = new VRCModelReservation;
+
+		do {
+			// generate the unique SID value
+			if ($defaultFormat === 'uuid') {
+				// random UUID v4 string of total 36 characters
+				$reservationSid = static::uuid();
+			} elseif ($defaultFormat === 'random_bytes') {
+				// random value computed from 8 bytes and converted into a 16 hex chars long string
+				$reservationSid = bin2hex(random_bytes(8));
+			} elseif ($defaultFormat === 'alnum') {
+				// random serial alphanumeric string of 12 chars
+				$reservationSid = static::getCPinInstance()->generateSerialCode(12, [
+					'abcdefghijklmnopqrstuvwxyz',
+					'123456789',
+				]);
+			} elseif ($defaultFormat === 'int') {
+				// legacy format ("int") for a random integer value not restricted to any minimum or maximum values
+				// the obtained string is ~10 digits long (by average)
+				$reservationSid = (string) mt_rand();
+			} else {
+				// random UUID v4 string of total 36 characters
+				$reservationSid = static::uuid();
+			}
+		} while ($model->getItem(['sid' => $reservationSid]));
+
+		// return the computed and unique SID value
+		return $reservationSid;
 	}
 
-	public static function buildCustData($arr, $sep)
+	/**
+	 * Generates a random UUID v4.
+	 *
+	 * A UUID is a 16-octet (128-bit) number. In its canonical form, a UUID is represented by 32 
+	 * hexadecimal digits, displayed in five groups separated by hyphens, in the form 8-4-4-4-12
+	 * for a total of 36 characters (32 alphanumeric characters and four hyphens).
+	 *
+	 * @return 	string
+	 *
+	 * @since 	1.15.14 (J) - 1.4.12 (WP)
+	 */
+	public static function uuid()
 	{
-		$cdata = "";
+		// generate 16 random bytes through CSPRNG
+		$data = random_bytes(16);
+
+		// four most significant bits holds version number 4
+		$data[6] = chr((ord($data[6]) & 0x0f) | 0x40);
+		// two most significant bits holds zero and one for variant DCE1.1
+		$data[8] = chr((ord($data[8]) & 0x3f) | 0x80);
+
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	public static function buildCustData(array $arr, ?string $sep = null)
+	{
+		$cdata = '';
+		$sep = $sep ?? '';
+
 		foreach ($arr as $k => $e) {
-			if (strlen($e)) {
-				$cdata .= (strlen($k) > 0 ? $k . ": " : "") . $e . $sep;
+			if (!is_string($e) || !strlen($e)) {
+				continue;
 			}
+			$k = preg_replace('/[^\p{L}0-9\_\- ]+/u', '', $k);
+			$cdata .= (strlen($k) ? $k . ": " : "") . trim(strip_tags($e)) . $sep;
 		}
+
 		return $cdata;
 	}
 

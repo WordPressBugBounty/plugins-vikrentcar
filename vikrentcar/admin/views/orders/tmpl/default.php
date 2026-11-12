@@ -499,8 +499,8 @@ $filters_set = false;
 			}
 			//
 			//Customer Details
-			$custdata = $row['custdata'];
-			$custdata_parts = explode("\n", $row['custdata']);
+			$custdata = (string) $row['custdata'];
+			$custdata_parts = explode("\n", (string) $row['custdata']);
 			if (count($custdata_parts) > 2 && strpos($custdata_parts[0], ':') !== false && strpos($custdata_parts[1], ':') !== false) {
 				//get the first two fields
 				$custvalues = array();
@@ -522,8 +522,16 @@ $filters_set = false;
 				}
 			}
 			if (strlen($custdata) > 45) {
-				$custdata = substr($custdata, 0, 45)." ...";
+				if (function_exists('mb_substr')) {
+					$custdata = mb_substr($custdata, 0, 45, 'UTF-8') . " ...";
+				} else {
+					$custdata = substr($custdata, 0, 45) . " ...";
+				}
 			}
+
+			// escape raw customer data at this point
+			$custdata = $this->escape($custdata);
+
 			$q = "SELECT `c`.*,`co`.`idorder` FROM `#__vikrentcar_customers` AS `c` LEFT JOIN `#__vikrentcar_customers_orders` `co` ON `c`.`id`=`co`.`idcustomer` WHERE `co`.`idorder`=".$row['id'].";";
 			$dbo->setQuery($q);
 			$cust_country = $dbo->loadAssocList();
